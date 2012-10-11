@@ -22,6 +22,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 		btn = document.createElement('input');
 		btn.type = 'image';
 
+		data.business = el.src.split('?merchant=')[1];
+
 		if (isCart) {
 			data.cmd = '_cart';
 			data.add = true;
@@ -57,7 +59,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				if (PAYPAL.apps.MiniCart) {
 					PAYPAL.apps.MiniCart.render();
 				}
-			}
+			};
 
 			document.body.appendChild(script);
 		}
