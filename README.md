@@ -40,7 +40,7 @@ You can pass additional data values to the button as well. The following are cur
 * `data-shipping2` The cost of shipping each additional unit of this item
 * `data-tax` Transaction-based tax override variable
 
-**Discounts** 
+**Discounts**
 * `data-discount_amount` Discount amount associated with an item
 * `data-discount_amount2` Discount amount associated with each additional quantity of the item
 * `data-discount_rate` Discount rate (percentage) for an item
