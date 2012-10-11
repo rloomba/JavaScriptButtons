@@ -25,9 +25,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 		if (isCart) {
 			data.cmd = '_cart';
 			data.add = true;
+			data.bn = 'WPS_CART_DYNAMIC_BTN';
+
 			btn.src = '//www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif';
 		} else {
 			data.cmd = '_xclick';
+			data.bn = 'WPS_BUY_NOW_DYNAMIC_BTN';
+
 			btn.src = '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif';
 		}
 
