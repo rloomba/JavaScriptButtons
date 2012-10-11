@@ -25,7 +25,7 @@ Add To Cart buttons lets users add multiple items to their PayPal cart.
 ```html
 <script src="paypal.js"
     data-type="cart"
-    data-business="6XF3MPZBZV6HU"
+    data-business="MERCHANT_ID"
     data-item_name="Add to cart!"
     data-amount="1.00"
 ></script>
