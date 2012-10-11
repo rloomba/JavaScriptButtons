@@ -13,7 +13,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 	var PAYPAL_URL = 'https://www.paypal.com/cgi-bin/webscr',
 		CART_BTN_URL = '//www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif',
 		BUY_BTN_URL = '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif',
-		MINICART_URL = 'http://www.minicartjs.com/build/minicart.js'
+		MINICART_URL = 'http://www.minicartjs.com/build/minicart.js';
 
 
 	/**
