@@ -1,6 +1,7 @@
 
 
 
+
 # HTML payment buttons
 
 Integrating with our HTML payment buttons are as easy as including a snippet of code. We have two flavors of buttons for you to use:
@@ -10,14 +11,12 @@ Buy Now buttons are for single item purchases.
 
 ```html
 <script src="paypal.js"
-    data-paypal-checkout="buy-now"
-    data-paypal-button="true"
-    data-paypal-business="12345abc"
-    data-paypal-item-name="Buy me now!"
-    data-paypal-amount="1.00"
+    data-type="buy"
+    data-business="MERCHANT_ID"
+    data-item_name="Buy me now!"
+    data-amount="1.00"
 ></script>
 ```
-
 
 
 ## Add To Cart
@@ -25,20 +24,9 @@ Add To Cart buttons lets users add multiple items to their PayPal cart.
 
 ```html
 <script src="paypal.js"
-    data-paypal-checkout="cart"
-    data-paypal-button="true"
-    data-paypal-business="12345abc"
-    data-paypal-item-name="Add me to cart"
-    data-paypal-amount="1.00"
-></script>
-```
-
-
-# API payment buttons
-
-```html
-<script src="paypal.js"
-    data-paypal-checkout="api"
-    data-paypal-button="true"
+    data-type="cart"
+    data-business="MERCHANT_ID"
+    data-item_name="Add to cart!"
+    data-amount="1.00"
 ></script>
 ```
