@@ -16,22 +16,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 		MINICART_URL = 'http://www.minicartjs.com/build/minicart.js';
 
 
-	/**
-	 * Utility function to load another script
-	 *
-	 * @param url {String} The URL of the script to load
-	 * @param callback {Function} The function to execute afterwards
-	 * @param identified (String) The signature of the script (used to prevent dual loading)
-	 */
-	function loadScript(url, callback, identifier) {
-		if (!identifier || !window[identifier]) {
-			var script = document.createElement('script');
-			script.async = true;
-			script.src = url;
-			script.onload = callback;
-
-			document.body.appendChild(script);
-		}
+	// Don't execute the code multiple times!
+	if (PAYPAL.apps.DynamicButton) {
+		return;
 	}
 
 
@@ -126,6 +113,25 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		return app;
 	}());
+
+
+	/**
+	 * Utility function to load another script
+	 *
+	 * @param url {String} The URL of the script to load
+	 * @param callback {Function} The function to execute afterwards
+	 * @param identified (String) The signature of the script (used to prevent dual loading)
+	 */
+	function loadScript(url, callback, identifier) {
+		if (!identifier || !window[identifier]) {
+			var script = document.createElement('script');
+			script.async = true;
+			script.src = url;
+			script.onload = callback;
+
+			document.body.appendChild(script);
+		}
+	}
 
 
 	PAYPAL.apps.DynamicButton.init();
