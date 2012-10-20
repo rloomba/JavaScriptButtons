@@ -11,7 +11,7 @@ Buy Now buttons are for single item purchases.
 
 ```html
 <script src="paypal.js?merchant=MERCHANT_ID"
-    data-type="buy"
+    data-type="buynow"
     data-item_name="Buy me now!"
     data-amount="1.00"
 ></script>

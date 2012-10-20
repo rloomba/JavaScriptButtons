@@ -40,13 +40,21 @@ PAYPAL.apps = PAYPAL.apps || {};
 		 * @param el {HTMLElement} The element to replace
 		 * @param type (String) The type of the button to render
 		 * @param data {Object} An object of key/value data to set as button params
+		 * @return {Boolean}
 		 */
 		app.renderButton = function (el, type, data) {
 			var merchantId = el.src.split('?merchant=')[1],
 				form = document.createElement('form'),
 				btn = document.createElement('input'),
 				hidden = document.createElement('input'),
-				btn, hidden, input, key;
+				input, key;
+
+			// Don't render if there's no merchant ID
+			if (merchantId) {
+				data.business = merchantId;
+			} else {
+				return false;
+			}
 
 			btn.type = 'image';
 			hidden.type = 'hidden';
@@ -69,10 +77,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 				btn.src = BUY_BTN_URL;
 			}
 
-			if (merchantId) {
-				data.business = merchantId
-			}
-
 			for (key in data) {
 				input = hidden.cloneNode(true);
 				input.name = key;
@@ -92,6 +96,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 					PAYPAL.apps.MiniCart.render();
 				}, 'PAYPAL.apps.MiniCart');
 			}
+
+			return true;
 		};
 
 		/**
