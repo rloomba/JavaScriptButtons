@@ -10,16 +10,16 @@ PAYPAL.apps = PAYPAL.apps || {};
 	'use strict';
 
 
-	var PAYPAL_URL = 'https://www.paypal.com/cgi-bin/webscr',
-		CART_BTN_URL = '//www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif',
-		BUY_BTN_URL = '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif',
-		MINICART_URL = 'http://www.minicartjs.com/build/minicart.js';
-
-
 	// Don't execute the code multiple times!
 	if (PAYPAL.apps.DynamicButton) {
 		return;
 	}
+
+
+	var PAYPAL_URL = 'https://www.paypal.com/cgi-bin/webscr',
+		CART_BTN_URL = '//www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif',
+		BUY_BTN_URL = '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif',
+		MINICART_URL = 'http://www.minicartjs.com/build/minicart.js';
 
 
 	PAYPAL.apps.DynamicButton = (function () {
@@ -48,11 +48,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 				hidden = document.createElement('input'),
 				btn, hidden, input, key;
 
+			btn.type = 'image';
+			hidden.type = 'hidden';
 			form.method = 'post';
 			form.action = PAYPAL_URL;
 			form.appendChild(btn);
-			hidden.type = 'hidden';
-			btn.type = 'image';
 
 			// Cart buttons
 			if (type === 'cart') {
@@ -103,9 +103,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			for (i = 0, len = nodes.length; i < len; i++) {
 				node = nodes[i];
-				data = node.dataset;
+				data = getDataSet(node);
+				button = data && data.button;
 
-				if ((button = data.button)) {
+				if (button) {
 					this.renderButton(node, button, data);
 				}
 			}
@@ -131,6 +132,34 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			document.body.appendChild(script);
 		}
+	}
+
+
+	/**
+	 * Utility function to polyfill dataset functionality for browsers
+	 *
+	 * @param el {HTMLElement} The element to check
+	 * @return {Object}
+	 */
+	function getDataSet(el) {
+		var dataset = el.dataset,
+			attrs, attr, matches, len, i;
+
+		if (!dataset) {
+			dataset = {};
+
+			if ((attrs = el.attributes)) {
+				for (i = 0, len = attrs.length; i < len; i++) {
+					attr = attrs[i];
+
+					if ((matches = /^data-(.+)/.exec(attr.name))) {
+						dataset[matches[1]] = attr.value;
+					}
+				}
+			}
+		}
+
+		return dataset;
 	}
 
 
