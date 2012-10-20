@@ -11,9 +11,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 
 	// Don't execute the code multiple times!
-	if (PAYPAL.apps.DynamicButton) {
-		return;
-	}
+	// See issue #5
+	//if (PAYPAL.apps.DynamicButton) {
+	//	return;
+	//}
 
 
 	var PAYPAL_URL = 'https://www.paypal.com/cgi-bin/webscr',

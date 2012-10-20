@@ -129,8 +129,8 @@ body{font-size:16px;}
 <p>Buy Now buttons are for single item purchases.</p>
 
 <pre><code>&lt;script src="paypal.js?merchant=6XF3MPZBZV6HU"
-    data-type="buynow"
-    data-item_name="Buy me now!"
+    data-button="buynow"
+    data-item-name="Buy me now!"
     data-amount="1.00"
 &gt;&lt;/script&gt;</code></pre>
 
@@ -139,7 +139,22 @@ body{font-size:16px;}
     data-item_name="Buy me now!"
     data-amount="1.00"
 ></script>
-</p>
+
+
+<h3 id="hosted-buttons">Hosted Buttons</h3>
+
+<p>Hosted buttons are extra secure.</p>
+
+<pre><code>&lt;script src="paypal.js?merchant=6XF3MPZBZV6HU"
+	data-button="cart"
+    data-hosted_button_id="8R63A645E2QB6"
+&gt;&lt;/script&gt;</code></pre>
+
+<script src="paypal.js?merchant=6XF3MPZBZV6HU"
+	data-button="cart"
+    data-hosted_button_id="8R63A645E2QB6"
+></script>
+
 
 <h3 id="add-to-cart">Add To Cart</h3>
 
@@ -147,8 +162,8 @@ body{font-size:16px;}
 
 
 <pre><code>&lt;script src="paypal.js?merchant=6XF3MPZBZV6HU"
-    data-type="cart"
-    data-item_name="Add to cart!"
+    data-button="cart"
+    data-item-name="Add to cart!"
     data-amount="1.00"
 &gt;&lt;/script&gt;</code></pre>
 
