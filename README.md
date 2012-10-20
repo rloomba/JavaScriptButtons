@@ -46,3 +46,12 @@ You can pass additional data values to the button as well. The following are cur
 * `data-discount_rate` Discount rate (percentage) for an item
 * `data-discount_rate2` Discount rate (percentage) for each additional quantity of the item
 * `data-discount_num` Number of additional quantities of the item to which the discount applies
+
+
+## Merchant ID
+Your merchant ID needs to be added to the URL of the referenced script. This ID can either be your Secure Merchant ID, which can be found by logging into your PayPal account and visiting your profile, or your email address.
+
+## Authors
+
+**Jeff Harrell**  
+[https://github.com/jeffharrell](https://github.com/jeffharrell)

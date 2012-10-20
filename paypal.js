@@ -172,4 +172,3 @@ PAYPAL.apps = PAYPAL.apps || {};
 	PAYPAL.apps.DynamicButton.init();
 
 }());
-
