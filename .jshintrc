@@ -10,7 +10,7 @@
     // Whether the standard browser globals should be predefined.
     "browser": true,
     // Whether the Node.js environment globals should be predefined.
-    "node": true,
+    "node": false,
     // Whether the Rhino environment globals should be predefined.
     "rhino": false,
     // Whether CouchDB globals should be predefined.
@@ -28,7 +28,7 @@
     "dojo": false,
 
     // Custom predefined globals.
-    "predef": ["Backbone", "__devenv", "resourceRoot"],
+    "predef": [],
 
     // Development
 
@@ -136,7 +136,7 @@
     // Whether all forms of subscript notation are allowed.
     "sub": false,
     // Whether trailing whitespace rules apply.
-    "trailing": false,
+    "trailing": true,
     // Whether strict whitespace rules apply.
     "white": false,
     // Specify indentation.
