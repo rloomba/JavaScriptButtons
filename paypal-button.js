@@ -49,7 +49,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				hidden = document.createElement('input'),
 				input, key;
 
-			// Don't render if there's no merchant ID
+			// Don't render without the merchant ID
 			if (merchantId) {
 				data.business = merchantId;
 			} else {
