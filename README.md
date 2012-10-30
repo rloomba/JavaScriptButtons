@@ -30,19 +30,19 @@ Add To Cart buttons lets users add multiple items to their PayPal cart.
 You can pass additional data values to the button as well. The following are currently supported:
 
 **Item details**
-* `data-item-name` Description of the item
-* `data-item-number` The number of the item
+* `data-item_name` Description of the item
+* `data-item_number` The number of the item
 * `data-quantity` Number of items
 * `data-shipping` The cost of shipping this item
 * `data-shipping2` The cost of shipping each additional unit of this item
 * `data-tax` Transaction-based tax override variable
 
 **Discounts**
-* `data-discount-amount` Discount amount associated with an item
-* `data-discount-amount2` Discount amount associated with each additional quantity of the item
-* `data-discount-rate` Discount rate (percentage) for an item
-* `data-discount-rate2` Discount rate (percentage) for each additional quantity of the item
-* `data-discount-num` Number of additional quantities of the item to which the discount applies
+* `data-discount_amount` Discount amount associated with an item
+* `data-discount_amount2` Discount amount associated with each additional quantity of the item
+* `data-discount_rate` Discount rate (percentage) for an item
+* `data-discount_rate2` Discount rate (percentage) for each additional quantity of the item
+* `data-discount_num` Number of additional quantities of the item to which the discount applies
 
 
 ## Merchant ID
