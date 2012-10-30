@@ -1,0 +1,3 @@
+[submodule "lib/MiniCart"]
+	path = lib/MiniCart
+	url = git://github.com/jeffharrell/MiniCart.git
