@@ -130,13 +130,13 @@ body{font-size:16px;}
 
 <pre><code>&lt;script src="paypal-button.js?merchant=6XF3MPZBZV6HU"
     data-button="buynow"
-    data-item-name="Buy me now!"
+    data-name="Buy me now!"
     data-amount="1.00"
 &gt;&lt;/script&gt;</code></pre>
 
 <script src="paypal-button.js?merchant=6XF3MPZBZV6HU"
     data-button="buynow"
-    data-item-name="Buy me now!"
+    data-name="Buy me now!"
     data-amount="1.00"
 ></script>
 
@@ -147,12 +147,12 @@ body{font-size:16px;}
 
 <pre><code>&lt;script src="paypal-button.js?merchant=6XF3MPZBZV6HU"
     data-button="cart"
-    data-hosted_button_id="8R63A645E2QB6"
+    data-id="8R63A645E2QB6"
 &gt;&lt;/script&gt;</code></pre>
 
 <script src="paypal-button.js?merchant=6XF3MPZBZV6HU"
 	data-button="cart"
-    data-hosted-button-id="8R63A645E2QB6"
+    data-id="8R63A645E2QB6"
 ></script>
 
 
@@ -163,13 +163,13 @@ body{font-size:16px;}
 
 <pre><code>&lt;script src="paypal-button.js?merchant=6XF3MPZBZV6HU"
     data-button="cart"
-    data-item-name="Add to cart!"
+    data-name="Add to cart!"
     data-amount="1.00"
 &gt;&lt;/script&gt;</code></pre>
 
 <script script src="paypal-button.js?merchant=6XF3MPZBZV6HU"
     data-button="cart"
-    data-item-name="Add to cart!"
+    data-name="Add to cart!"
     data-amount="1.00"
 ></script>
 
@@ -180,23 +180,13 @@ body{font-size:16px;}
 <p><strong>Item details</strong></p>
 
 <ul>
-<li><code>data-item_name</code> Description of the item</li>
-<li><code>data-item_number</code> The number of the item</li>
+<li><code>data-name</code> Description of the item</li>
+<li><code>data-number</code> The number of the item</li>
 <li><code>data-quantity</code> Number of items</li>
 <li><code>data-shipping</code> The cost of shipping this item</li>
-<li><code>data-shipping2</code> The cost of shipping each additional unit of this item</li>
 <li><code>data-tax</code> Transaction-based tax override variable</li>
 </ul>
 
-<p><strong>Discounts</strong> </p>
-
-<ul>
-<li><code>data-discount_amount</code> Discount amount associated with an item</li>
-<li><code>data-discount_amount2</code> Discount amount associated with each additional quantity of the item</li>
-<li><code>data-discount_rate</code> Discount rate (percentage) for an item</li>
-<li><code>data-discount_rate2</code> Discount rate (percentage) for each additional quantity of the item</li>
-<li><code>data-discount_num</code> Number of additional quantities of the item to which the discount applies</li>
-</ul>
 
 <script src="https://raw.github.com/jeffharrell/MiniCart/master/minicart.js"></script>
 </body>

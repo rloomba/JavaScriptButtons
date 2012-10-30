@@ -9,7 +9,7 @@ Buy Now buttons are for single item purchases.
 ```html
 <script src="paypal-button.js?merchant=MERCHANT_ID"
     data-button="buynow"
-    data-item_name="Buy me now!"
+    data-item_name="Buy now!"
     data-amount="1.00"
 ></script>
 ```
@@ -26,23 +26,15 @@ Add To Cart buttons lets users add multiple items to their PayPal cart.
 ></script>
 ```
 
-## Button parameters
-You can pass additional data values to the button as well. The following are currently supported:
+## Button variables
+All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables) are supported by prefixing their name with "data-". Here are the most commonly used:
 
-**Item details**
-* `data-item_name` Description of the item
-* `data-item_number` The number of the item
-* `data-quantity` Number of items
+* `data-name` Description of the item
+* `data-number` The number of the item
+* `data-quantity` Quantity of items to purchase
 * `data-shipping` The cost of shipping this item
-* `data-shipping2` The cost of shipping each additional unit of this item
 * `data-tax` Transaction-based tax override variable
-
-**Discounts**
-* `data-discount_amount` Discount amount associated with an item
-* `data-discount_amount2` Discount amount associated with each additional quantity of the item
-* `data-discount_rate` Discount rate (percentage) for an item
-* `data-discount_rate2` Discount rate (percentage) for each additional quantity of the item
-* `data-discount_num` Number of additional quantities of the item to which the discount applies
+* `data-id` The hosted ID of the button (if applicable)
 
 
 ## Merchant ID

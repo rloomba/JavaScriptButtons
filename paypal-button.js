@@ -10,90 +10,107 @@ PAYPAL.apps = PAYPAL.apps || {};
 	'use strict';
 
 
+	var app = {},
+		prettyParams = {
+			id: 'hosted_button_id',
+			name: 'item_name',
+			number: 'item_number'
+
+		},
+		buttonUrls = {
+			buynow: '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif',
+			cart: '//www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif',
+			default: '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif'
+		};
+
+
 	if (!PAYPAL.apps.ButtonFactory) {
-		PAYPAL.apps.ButtonFactory = (function () {
-			var PAYPAL_URL = 'https://www.paypal.com/cgi-bin/webscr',
-				CART_BTN_URL = '//www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif',
-				BUY_BTN_URL = '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif',
-				app = {};
+		/**
+		 * A count of each type of button on the page
+		 */
+		app.buttons = {
+			buy: 0,
+			cart: 0,
+			api: 0
+		};
 
-			/**
-			 * A count of each type of button on the page
-			 */
-			app.buttons = {
-				buy: 0,
-				cart: 0,
-				api: 0
-			};
+		/**
+		 * Renders a button in place of the given element
+		 *
+		 * @param el {HTMLElement} The element to replace
+		 * @param type (String) The type of the button to render
+		 * @param data {Object} An object of key/value data to set as button params
+		 * @return {Boolean}
+		 */
+		app.create = function (el, type, data) {
+			var merchantId = el.src.split('?merchant=')[1],
+				form = document.createElement('form'),
+				btn = document.createElement('input'),
+				hidden = document.createElement('input'),
+				input, key;
 
-			/**
-			 * Renders a button in place of the given element
-			 *
-			 * @param el {HTMLElement} The element to replace
-			 * @param type (String) The type of the button to render
-			 * @param data {Object} An object of key/value data to set as button params
-			 * @return {Boolean}
-			 */
-			app.create = function (el, type, data) {
-				var merchantId = el.src.split('?merchant=')[1],
-					form = document.createElement('form'),
-					btn = document.createElement('input'),
-					hidden = document.createElement('input'),
-					input, key;
+			// Don't render if there's no merchant ID
+			if (merchantId) {
+				data.business = merchantId;
+			} else {
+				return false;
+			}
 
-				// Don't render if there's no merchant ID
-				if (merchantId) {
-					data.business = merchantId;
-				} else {
-					return false;
-				}
+			btn.type = 'image';
+			hidden.type = 'hidden';
+			form.method = 'post';
+			form.action = "https://www.paypal.com/cgi-bin/webscr";
+			form.appendChild(btn);
 
-				btn.type = 'image';
-				hidden.type = 'hidden';
-				form.method = 'post';
-				form.action = PAYPAL_URL;
-				form.appendChild(btn);
+			// Cart buttons
+			if (type === 'cart') {
+				data.cmd = '_cart';
+				data.add = true;
+			// Hosted buttons
+			} else if (data.hosted_button_id) {
+				data.cmd = '_s-xclick';
+			// Plain text buttons
+			} else {
+				data.cmd = '_xclick';
+			}
 
-				// Cart buttons
-				if (type === 'cart') {
-					data.cmd = '_cart';
-					data.add = true;
-					btn.src = CART_BTN_URL;
-				// Hosted buttons
-				} else if (data.hosted_button_id) {
-					data.cmd = '_s-xclick';
-					btn.src = BUY_BTN_URL;
-				// Plain text buttons
-				} else {
-					data.cmd = '_xclick';
-					btn.src = BUY_BTN_URL;
-				}
+			btn.src = getButtonUrl(type);
 
-				for (key in data) {
-					input = hidden.cloneNode(true);
-					input.name = key;
-					input.value = data[key];
+			for (key in data) {
+				input = hidden.cloneNode(true);
+				input.name = prettyParams[key] || key;
+				input.value = data[key];
 
-					form.appendChild(input);
-				}
+				form.appendChild(input);
+			}
 
-				el.parentNode.replaceChild(form, el);
+			el.parentNode.replaceChild(form, el);
 
-				// Register it
-				this.buttons[type] += 1;
+			// Register it
+			this.buttons[type] += 1;
 
-				// If the Mini Cart is present then register the button
-				if (type === 'cart' && PAYPAL.apps.MiniCart) {
-					PAYPAL.apps.MiniCart.bindForm(form);
-				}
+			// If the Mini Cart is present then register the button
+			if (type === 'cart' && PAYPAL.apps.MiniCart) {
+				PAYPAL.apps.MiniCart.bindForm(form);
+			}
 
-				return true;
-			};
+			return true;
+		};
 
-
-			return app;
-		}());
+		// Export the app
+		PAYPAL.apps.ButtonFactory = app;
 	}
+
+
+	/**
+	 * Utility function to return the rendered button image URL
+	 *
+	 * @param type {String} The type of button to render
+	 * @return {String}
+	 */
+	function getButtonUrl(type) {
+		return buttonUrls[type] || buttonUrls.default;
+	 }
 
 
 	/**
