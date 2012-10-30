@@ -7,9 +7,9 @@ Integrating with our HTML payment buttons are as easy as including a snippet of 
 Buy Now buttons are for single item purchases.
 
 ```html
-<script src="paypal-button.js?merchant=MERCHANT_ID"
+<script src="paypal-button.js?merchant=YOUR_MERCHANT_ID"
     data-button="buynow"
-    data-item_name="Buy now!"
+    data-name="Buy now!"
     data-amount="1.00"
 ></script>
 ```
@@ -19,9 +19,9 @@ Buy Now buttons are for single item purchases.
 Add To Cart buttons lets users add multiple items to their PayPal cart.
 
 ```html
-<script src="paypal-button.js?merchant=MERCHANT_ID"
+<script src="paypal-button.js?merchant=YOUR_MERCHANT_ID"
     data-button="cart"
-    data-item_name="Add to cart!"
+    data-name="Add to cart!"
     data-amount="1.00"
 ></script>
 ```
