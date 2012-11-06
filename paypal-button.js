@@ -37,22 +37,19 @@ PAYPAL.apps = PAYPAL.apps || {};
 		/**
 		 * Renders a button in place of the given element
 		 *
-		 * @param el {HTMLElement} The element to replace
+		 * @param parent {HTMLElement} The element to add the button to
 		 * @param type (String) The type of the button to render
 		 * @param data {Object} An object of key/value data to set as button params
 		 * @return {Boolean}
 		 */
-		app.create = function (el, type, data) {
-			var merchantId = el.src.split('?merchant=')[1],
-				form = document.createElement('form'),
+		app.create = function (parent, type, data) {
+			var form = document.createElement('form'),
 				btn = document.createElement('input'),
 				hidden = document.createElement('input'),
 				input, key;
 
 			// Don't render without the merchant ID
-			if (merchantId) {
-				data.business = merchantId;
-			} else {
+			if (!data.business) {
 				return false;
 			}
 
@@ -84,7 +81,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				form.appendChild(input);
 			}
 
-			el.parentNode.replaceChild(form, el);
+			parent.appendChild(form);
 
 			// Register it
 			this.buttons[type] += 1;
@@ -144,15 +141,19 @@ PAYPAL.apps = PAYPAL.apps || {};
 	// Init the buttons
 	var ButtonFactory = PAYPAL.apps.ButtonFactory,
 		nodes = document.getElementsByTagName('script'),
-		node, data, button, i, len;
+		node, data, button, business, i, len;
 
 	for (i = 0, len = nodes.length; i < len; i++) {
 		node = nodes[i];
 		data = getDataSet(node);
 		button = data && data.button;
+		business = data.business = node.src.split('?merchant=')[1];
 
-		if (button) {
-			ButtonFactory.create(node, button, data);
+		if (button && business) {
+			ButtonFactory.create(node.parentNode, button, data);
+
+			// Clean up
+			node.parentNode.removeChild(node);
 		}
 	}
 
