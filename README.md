@@ -31,6 +31,7 @@ All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_
 
 * `data-name` Description of the item
 * `data-number` The number of the item
+* `data-amount` The price of the item
 * `data-quantity` Quantity of items to purchase
 * `data-shipping` The cost of shipping this item
 * `data-tax` Transaction-based tax override variable
