@@ -23,7 +23,7 @@ module.exports = function (grunt) {
 				dest: 'dist/paypal-button.min.js'
 			},
 			bundled: {
-				src: [ '<banner:meta.banner>', 'lib/MiniCart/minicart.js', 'src/paypal.button.js' ],
+				src: [ '<banner:meta.banner>', 'lib/MiniCart/minicart.js', 'src/paypal-button.js' ],
 				dest: 'dist/paypal-button-minicart.min.js'
 			}
 		}
