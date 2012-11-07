@@ -20,7 +20,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		buttonUrls = {
 			buynow: '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif',
 			cart: '//www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif',
-			default: '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif'
+			basic: '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif'
 		};
 
 
@@ -106,8 +106,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @return {String}
 	 */
 	function getButtonUrl(type) {
-		return buttonUrls[type] || buttonUrls.default;
-	 }
+		return buttonUrls[type] || buttonUrls.basic;
+	}
 
 
 	/**
