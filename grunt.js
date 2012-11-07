@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 		jshint: {
 			options: jshintOptions
 		},
-		concat: {
+		min: {
 			dist: {
 				src: [ '<banner:meta.banner>', 'src/paypal-button.js' ],
 				dest: 'dist/paypal-button.min.js'
@@ -31,6 +31,6 @@ module.exports = function (grunt) {
 
 
 	// Default task.
-	grunt.registerTask('default', 'lint concat');
+	grunt.registerTask('default', 'lint min');
 
 };

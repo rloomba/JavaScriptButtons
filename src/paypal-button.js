@@ -88,7 +88,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			// If the Mini Cart is present then register the button
 			if (type === 'cart' && PAYPAL.apps.MiniCart) {
-				PAYPAL.apps.MiniCart.bindForm(form);
+				var MiniCart = PAYPAL.apps.MiniCart;
+
+				if (!MiniCart.UI.itemList) {
+					MiniCart.render();
+				} else {
+					MiniCart.bindForm(form);
+				}
 			}
 
 			return true;
