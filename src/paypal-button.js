@@ -64,7 +64,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				data.cmd = '_cart';
 				data.add = true;
 			// Hosted buttons
-			} else if (data.hosted_button_id) {
+			} else if (data.id) {
 				data.cmd = '_s-xclick';
 			// Plain text buttons
 			} else {
@@ -87,7 +87,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			this.buttons[type] += 1;
 
 			// If the Mini Cart is present then register the button
-			if (type === 'cart' && PAYPAL.apps.MiniCart && !data.hosted_button_id) {
+			if (type === 'cart' && PAYPAL.apps.MiniCart && !data.id) {
 				var MiniCart = PAYPAL.apps.MiniCart;
 
 				if (!MiniCart.UI.itemList) {
