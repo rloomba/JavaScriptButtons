@@ -59,13 +59,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 			form.action = "https://www.paypal.com/cgi-bin/webscr";
 			form.appendChild(btn);
 
+			// Hosted buttons
+			if (data.id) {
+				data.cmd = '_s-xclick';
 			// Cart buttons
-			if (type === 'cart') {
+			} else if (type === 'cart') {
 				data.cmd = '_cart';
 				data.add = true;
-			// Hosted buttons
-			} else if (data.id) {
-				data.cmd = '_s-xclick';
 			// Plain text buttons
 			} else {
 				data.cmd = '_xclick';
