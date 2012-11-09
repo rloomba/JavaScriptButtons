@@ -58,6 +58,19 @@ PAYPAL.apps = PAYPAL.apps || {};
 				normalized[prettyParams[key] || key] = data[key];
 			}
 
+			// Hosted buttons
+			if (normalized.hosted_button_id) {
+				normalized.cmd = '_s-xclick';
+			// Cart buttons
+			} else if (type === 'cart') {
+				normalized.cmd = '_cart';
+				normalized.add = true;
+			// Plain text buttons
+			} else {
+				normalized.cmd = '_xclick';
+			}
+
+			// Build the UI components
 			if (type === 'qr') {
 				button = buildQR(normalized);
 			} else {
@@ -97,18 +110,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 		form.action = paypalURL;
 		form.appendChild(btn);
 
-		// Hosted buttons
-		if (data.id) {
-			data.cmd = '_s-xclick';
-		// Cart buttons
-		} else if (type === 'cart') {
-			data.cmd = '_cart';
-			data.add = true;
-		// Plain text buttons
-		} else {
-			data.cmd = '_xclick';
-		}
-
 		btn.src = getButtonImg(type);
 
 		for (key in data) {
@@ -141,7 +142,21 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @return {HTMLElement}
 	 */
 	function buildQR(data) {
-		// http://chart.googleapis.com/chart?cht=qr&chl=http://" + currentURL + "&chs=250x250
+		var img = document.createElement('img'),
+			size = data.size || 250,
+			url = paypalURL + '?',
+			key;
+
+		for (key in data) {
+			url += key + '=' + data[key] + '&';
+		}
+
+		url = encodeURIComponent(url);
+
+		img.src = 'http://chart.googleapis.com/chart?cht=qr&chl=' + url + '&chs=' + size + 'x' + size;
+		img.width = img.width = size;
+
+		return img;
 	}
 
 

@@ -8,7 +8,7 @@ Buy Now buttons are for single item purchases.
 ```html
 <script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="buynow"
-    data-name="Buy now!"
+    data-name="My product"
     data-amount="1.00"
 ></script>
 ```
@@ -20,10 +20,22 @@ Add To Cart buttons lets users add multiple items to their PayPal cart.
 ```html
 <script src="paypal-button-minicart.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="cart"
-    data-name="Add to cart!"
+    data-name="Product in your cart"
     data-amount="1.00"
 ></script>
 ```
+
+### QR Codes
+QR codes which can be scanned with a smart phone can also be easily generated.
+
+```html
+<script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
+    data-button="qr"
+    data-name="Product via QR code"
+    data-amount="1.00"
+></script>
+```
+
 
 ## Button variables
 All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables) are supported by prefixing their name with "data-". Here are the most commonly used:
