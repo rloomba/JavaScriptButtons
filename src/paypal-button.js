@@ -11,13 +11,14 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 
 	var app = {},
+		paypalURL = 'https://www.paypal.com/cgi-bin/webscr',
 		prettyParams = {
 			id: 'hosted_button_id',
 			name: 'item_name',
 			number: 'item_number'
 
 		},
-		buttonUrls = {
+		buttonImgs = {
 			buynow: '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif',
 			cart: '//www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif',
 			basic: '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif'
@@ -25,12 +26,14 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 
 	if (!PAYPAL.apps.ButtonFactory) {
+
 		/**
 		 * A count of each type of button on the page
 		 */
 		app.buttons = {
 			buy: 0,
 			cart: 0,
+			qr: 0,
 			api: 0
 		};
 
@@ -43,65 +46,102 @@ PAYPAL.apps = PAYPAL.apps || {};
 		 * @return {Boolean}
 		 */
 		app.create = function (parent, type, data) {
-			var form = document.createElement('form'),
-				btn = document.createElement('input'),
-				hidden = document.createElement('input'),
-				input, key;
+			var normalized = {}, button, key;
 
 			// Don't render without the merchant ID
 			if (!data.business) {
 				return false;
 			}
 
-			btn.type = 'image';
-			hidden.type = 'hidden';
-			form.method = 'post';
-			form.action = "https://www.paypal.com/cgi-bin/webscr";
-			form.appendChild(btn);
-
-			// Hosted buttons
-			if (data.id) {
-				data.cmd = '_s-xclick';
-			// Cart buttons
-			} else if (type === 'cart') {
-				data.cmd = '_cart';
-				data.add = true;
-			// Plain text buttons
-			} else {
-				data.cmd = '_xclick';
-			}
-
-			btn.src = getButtonUrl(type);
-
+			// Normalize the data's keys
 			for (key in data) {
-				input = hidden.cloneNode(true);
-				input.name = prettyParams[key] || key;
-				input.value = data[key];
-
-				form.appendChild(input);
+				normalized[prettyParams[key] || key] = data[key];
 			}
 
-			parent.appendChild(form);
+			if (type === 'qr') {
+				button = buildQR(normalized);
+			} else {
+				button = buildForm(type, normalized);
+			}
+
+			// Add it to the DOM
+			parent.appendChild(button);
 
 			// Register it
 			this.buttons[type] += 1;
 
-			// If the Mini Cart is present then register the button
-			if (type === 'cart' && PAYPAL.apps.MiniCart && !data.id) {
-				var MiniCart = PAYPAL.apps.MiniCart;
-
-				if (!MiniCart.UI.itemList) {
-					MiniCart.render();
-				} else {
-					MiniCart.bindForm(form);
-				}
-			}
-
 			return true;
 		};
 
-		// Export the app
+
 		PAYPAL.apps.ButtonFactory = app;
+	}
+
+
+	/**
+	 * Builds the form DOM structure for a button
+	 *
+	 * @param type (String) The type of the button to render
+	 * @param data {Object} An object of key/value data to set as button params
+	 * @return {HTMLElement}
+	 */
+	function buildForm(type, data) {
+		var form = document.createElement('form'),
+			btn = document.createElement('input'),
+			hidden = document.createElement('input'),
+			input, key;
+
+		btn.type = 'image';
+		hidden.type = 'hidden';
+		form.method = 'post';
+		form.action = paypalURL;
+		form.appendChild(btn);
+
+		// Hosted buttons
+		if (data.id) {
+			data.cmd = '_s-xclick';
+		// Cart buttons
+		} else if (type === 'cart') {
+			data.cmd = '_cart';
+			data.add = true;
+		// Plain text buttons
+		} else {
+			data.cmd = '_xclick';
+		}
+
+		btn.src = getButtonImg(type);
+
+		for (key in data) {
+			input = hidden.cloneNode(true);
+			input.name = key;
+			input.value = data[key];
+
+			form.appendChild(input);
+		}
+
+		// If the Mini Cart is present then register the form
+		if (PAYPAL.apps.MiniCart && data.cmd === '_cart') {
+			var MiniCart = PAYPAL.apps.MiniCart;
+
+			if (!MiniCart.UI.itemList) {
+				MiniCart.render();
+			} else {
+				MiniCart.bindForm(form);
+			}
+		}
+
+		return form;
+	}
+
+
+	/**
+	 * Builds the image for a QR code
+	 *
+	 * @param data {Object} An object of key/value data to set as button params
+	 * @return {HTMLElement}
+	 */
+	function buildQR(data) {
+		// http://chart.googleapis.com/chart?cht=qr&chl=http://" + currentURL + "&chs=250x250
 	}
 
 
@@ -111,8 +151,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @param type {String} The type of button to render
 	 * @return {String}
 	 */
-	function getButtonUrl(type) {
-		return buttonUrls[type] || buttonUrls.basic;
+	function getButtonImg(type) {
+		return buttonImgs[type] || buttonImgs.basic;
 	}
 
 
