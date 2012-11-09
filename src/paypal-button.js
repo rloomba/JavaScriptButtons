@@ -126,9 +126,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			if (!MiniCart.UI.itemList) {
 				MiniCart.render();
-			} else {
-				MiniCart.bindForm(form);
 			}
+
+			MiniCart.bindForm(form);
 		}
 
 		return form;
