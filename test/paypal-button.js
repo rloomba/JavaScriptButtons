@@ -1,15 +1,19 @@
 /*jshint node:true, evil:true */
-/*global describe:true, it:true, PAYPAL:true */
+/*global describe:true, it:true, PAYPAL:true, document:true, window:true */
 
 
 var fs = require('fs'),
-	should = require('should');
+	should = require('should'),
+	jsdom = require('jsdom').jsdom,
+	document = jsdom(fs.readFileSync('./test/index.html').toString()),
+	window = document.createWindow();
 
 
 eval(fs.readFileSync('src/paypal-button.js').toString());
 
 
 
+// Test the object's integrity
 describe('PAYPAL.apps.ButtonFactory', function () {
 	'use strict';
 
@@ -30,6 +34,7 @@ describe('PAYPAL.apps.ButtonFactory', function () {
 });
 
 
+// Test the create method
 describe('PAYPAL.apps.ButtonFactory.create', function () {
 	'use strict';
 
@@ -42,6 +47,16 @@ describe('PAYPAL.apps.ButtonFactory.create', function () {
 		var result = PAYPAL.apps.ButtonFactory.create();
 
 		result.should.equal(false);
+	});
+
+	it('Should return an element if no parameters', function () {
+		var result = PAYPAL.apps.ButtonFactory.create({
+			business: '6XF3MPZBZV6HU',
+			item: 'Buy now',
+			amount: '1.00'
+		});
+
+		result.should.be.a('object');
 	});
 
 });

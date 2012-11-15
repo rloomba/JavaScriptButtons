@@ -40,16 +40,16 @@ PAYPAL.apps = PAYPAL.apps || {};
 		/**
 		 * Renders a button in place of the given element
 		 *
-		 * @param parent {HTMLElement} The element to add the button to
-		 * @param type (String) The type of the button to render
 		 * @param data {Object} An object of key/value data to set as button params
-		 * @return {Boolean}
+		 * @param type (String) The type of the button to render
+		 * @param parent {HTMLElement} The element to add the button to (Optional)
+		 * @return {HTMLElement}
 		 */
-		app.create = function (parent, type, data) {
+		app.create = function (data, type, parent) {
 			var normalized = {}, button, key;
 
-			// Don't render without the merchant ID
-			if (!data.business) {
+			// Don't render without the correct data
+			if (!data || !data.business) {
 				return false;
 			}
 
@@ -77,13 +77,15 @@ PAYPAL.apps = PAYPAL.apps || {};
 				button = buildForm(type, normalized);
 			}
 
-			// Add it to the DOM
-			parent.appendChild(button);
-
 			// Register it
 			this.buttons[type] += 1;
 
-			return true;
+			// Add it to the DOM
+			if (parent) {
+				parent.appendChild(button);
+			}
+
+			return button;
 		};
 
 
@@ -212,7 +214,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			business = data.business = node.src.split('?merchant=')[1];
 
 			if (button && business) {
-				ButtonFactory.create(node.parentNode, button, data);
+				ButtonFactory.create(data, button, node.parentNode);
 
 				// Clean up
 				node.parentNode.removeChild(node);
