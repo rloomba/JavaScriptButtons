@@ -200,21 +200,23 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 
 	// Init the buttons
-	var ButtonFactory = PAYPAL.apps.ButtonFactory,
-		nodes = document.getElementsByTagName('script'),
-		node, data, button, business, i, len;
+	if (typeof document !== 'undefined') {
+		var ButtonFactory = PAYPAL.apps.ButtonFactory,
+			nodes = document.getElementsByTagName('script'),
+			node, data, button, business, i, len;
 
-	for (i = 0, len = nodes.length; i < len; i++) {
-		node = nodes[i];
-		data = node && getDataSet(node);
-		button = data && data.button;
-		business = data.business = node.src.split('?merchant=')[1];
+		for (i = 0, len = nodes.length; i < len; i++) {
+			node = nodes[i];
+			data = node && getDataSet(node);
+			button = data && data.button;
+			business = data.business = node.src.split('?merchant=')[1];
 
-		if (button && business) {
-			ButtonFactory.create(node.parentNode, button, data);
+			if (button && business) {
+				ButtonFactory.create(node.parentNode, button, data);
 
-			// Clean up
-			node.parentNode.removeChild(node);
+				// Clean up
+				node.parentNode.removeChild(node);
+			}
 		}
 	}
 
