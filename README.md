@@ -49,20 +49,27 @@ All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_
 * `data-id` The hosted ID of the button (if applicable)
 
 
-## Getting your PayPal merchant ID
+## Getting your Merchant ID
 Your merchant ID needs to be added to the URL of the referenced script. This ID can either be your Secure Merchant ID, which can be found by logging into your PayPal account and visiting your profile, or your email address.
 
 
-## Downloading the code
-For the unminified code you can clone this repo and use the JavaScript in src/paypal-button.js.
+## Download the code
+For the unminified files you can clone this repo and use the code in src/paypal-button.js.
 
 
 ## Browser support 
-The JavaScript buttons have been tested and work in all modern browsers including Chrome, Safari, Firefox, and Internet Explorer 7+.
+The JavaScript buttons have been tested and work in all modern browsers including:
+
+* Chrome
+* Safari
+* Firefox
+* Internet Explorer 7+.
 
 
 ## Contributing
-We love contributions! If you'd like to contribute please submit a pull request via Github. [Mocha](https://github.com/visionmedia/mocha) is used to run our test cases, so please be sure to run these prior to your pull request and make sure nothing is broken.
+We love contributions! If you'd like to contribute please submit a pull request via Github. 
+
+[Mocha](https://github.com/visionmedia/mocha) is used to run our test cases. Please be sure to run these prior to your pull request and ensure nothing is broken.
 
 ## Authors
 **Jeff Harrell**  
