@@ -145,6 +145,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		var img = document.createElement('img'),
 			size = data.size || 250,
 			url = paypalURL + '?',
+			pattern = 13,
 			key;
 
 		for (key in data) {
@@ -153,8 +154,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		url = encodeURIComponent(url);
 
-		img.src = 'http://chart.googleapis.com/chart?cht=qr&chl=' + url + '&chs=' + size + 'x' + size;
-		img.width = img.width = size;
+		img.src = 'https://www.paypal.com/webapps/ppint/qrcode?data=' + url + '&pattern=' + pattern + '&' + url + '&height=' + size;
 
 		return img;
 	}
