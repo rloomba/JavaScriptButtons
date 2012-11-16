@@ -151,7 +151,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			key;
 
 		for (key in data) {
-			url += key + '=' + data[key] + '&';
+			url += key + '=' + encodeURIComponent(data[key]) + '&';
 		}
 
 		url = encodeURIComponent(url);
