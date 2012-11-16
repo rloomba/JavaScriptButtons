@@ -1,6 +1,8 @@
 ## HTML payment buttons
 
-Integrating with our HTML payment buttons are as easy as including a snippet of code. We have two flavors of buttons for you to use:
+Integrating with our HTML payment buttons are as easy as including a snippet of code. [Try it out and configure your own](http://paypal.github.com/JavaScriptButtons/).
+
+We have two flavors of buttons for you to use:
 
 ### Buy Now
 Buy Now buttons are for single item purchases.
@@ -53,7 +55,7 @@ All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_
 Your merchant ID needs to be added to the URL of the referenced script. This ID can either be your Secure Merchant ID, which can be found by logging into your PayPal account and visiting your profile, or your email address.
 
 
-## Download the code
+## Download
 To download the production-ready JavaScript you'll need to save one of these files:
 
 * [JavaScript Buttons](https://github.com/paypal/JavaScriptButtons/blob/master/dist/paypal-button.min.js)
