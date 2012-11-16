@@ -54,7 +54,24 @@ Your merchant ID needs to be added to the URL of the referenced script. This ID 
 
 
 ## Download the code
-For the unminified files you can clone this repo and use the code in src/paypal-button.js.
+To download the production-ready JavaScript you'll need to save one of these files:
+
+* [JavaScript Buttons](https://github.com/paypal/JavaScriptButtons/blob/master/dist/paypal-button.min.js)
+* [JavaScript Buttons + MiniCart](https://github.com/paypal/JavaScriptButtons/blob/master/dist/paypal-button-minicart.min.js)
+
+The first file gives you support for PayPal's JavaScript buttons. The second file has the same code from the first, but also contains functionality for the [PayPal Mini Cart](https://github.com/jeffharrell/MiniCart).
+
+To see the un-minified code you can take a peek at [paypal-button.js](https://github.com/paypal/JavaScriptButtons/blob/master/src/paypal-button.js).
+
+
+## JavaScript API
+There's even a fancy JavaScript API if you'd like to pragmatically create your buttons.
+
+**PAYPAL.apps.ButtonFactory.create(data, type, parentNode)**  
+Creates and returns an HTML element that contains the button code. 
+> **data** - A JavaScript object containing the button variables  
+> **type** - The button type, e.g. "buynow", "cart", "qr"  
+> **parentNode** - An HTML element to add the newly created button to (Optional)  
 
 
 ## Browser support 
