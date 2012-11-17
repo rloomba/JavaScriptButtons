@@ -93,3 +93,6 @@ We love contributions! If you'd like to contribute please submit a pull request 
 ## Authors
 **Jeff Harrell**  
 [https://github.com/jeffharrell](https://github.com/jeffharrell)
+
+**Mark Stuart**
+[https://github.com/mstuart](https://github.com/mstuart)
