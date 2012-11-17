@@ -94,5 +94,5 @@ We love contributions! If you'd like to contribute please submit a pull request 
 **Jeff Harrell**  
 [https://github.com/jeffharrell](https://github.com/jeffharrell)
 
-**Mark Stuart**
+**Mark Stuart**  
 [https://github.com/mstuart](https://github.com/mstuart)
