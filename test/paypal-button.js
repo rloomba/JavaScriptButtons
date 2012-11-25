@@ -59,15 +59,48 @@ describe('PAYPAL.apps.ButtonFactory.buttons', function () {
 	
 	'use strict';
 	
-	it('Should have two cart buttons', function () {
-		var result = PAYPAL.apps.ButtonFactory.buttons.cart;
+	it('Should have two buy now buttons', function () {
+		var result = PAYPAL.apps.ButtonFactory.buttons.buynow;
 		
 		result.should.equal(2);
+	});
+	
+	it('Should have four cart buttons', function () {
+		var result = PAYPAL.apps.ButtonFactory.buttons.cart;
+		
+		result.should.equal(4);
 	});
 	
 	it('Should have one QR code', function () {
 		var result = PAYPAL.apps.ButtonFactory.buttons.qr;
 		
 		result.should.equal(1);
+	});
+});
+
+// Test multi-language support
+describe('Multi-language button images', function () {
+	
+	'use strict';
+	
+	it('Should have a spanish version of Buy Now button', function () {
+		var spanishButton = document.getElementById('buynowSpanish'),
+			spanishImage = spanishButton.getElementsByTagName('input')[0].src;
+		
+		spanishImage.should.include('es_ES');
+	});
+	
+	it('Should have a french version of Cart button', function () {
+		var frenchButton = document.getElementById('cartFrench'),
+			frenchImage = frenchButton.getElementsByTagName('input')[0].src;
+		
+		frenchImage.should.include('fr_FR');
+	});
+	
+	it('Should have a german version of Hosted button', function () {
+		var germanButton = document.getElementById('hostedGerman'),
+			germanImage = germanButton.getElementsByTagName('input')[0].src;
+		
+		germanImage.should.include('de_DE');
 	});
 });

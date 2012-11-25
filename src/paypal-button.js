@@ -15,15 +15,14 @@ PAYPAL.apps = PAYPAL.apps || {};
 		prettyParams = {
 			id: 'hosted_button_id',
 			name: 'item_name',
-			number: 'item_number'
-
+			number: 'item_number',
+			lang: 'lc'
 		},
 		buttonImgs = {
-			buynow: '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif',
-			cart: '//www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif',
-			basic: '//www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif'
+			buynow: '//www.paypalobjects.com/{lang}/i/btn/btn_buynow_LG.gif',
+			cart: '//www.paypalobjects.com/{lang}/i/btn/btn_cart_LG.gif',
+			basic: '//www.paypalobjects.com/{lang}/i/btn/btn_buynow_LG.gif'
 		};
-
 
 	if (!PAYPAL.apps.ButtonFactory) {
 
@@ -31,7 +30,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		 * A count of each type of button on the page
 		 */
 		app.buttons = {
-			buy: 0,
+			buynow: 0,
 			cart: 0,
 			qr: 0,
 			api: 0
@@ -112,7 +111,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		form.action = paypalURL;
 		form.appendChild(btn);
 
-		btn.src = getButtonImg(type);
+		btn.src = getButtonImg(type, data.lc);
 
 		for (key in data) {
 			input = hidden.cloneNode(true);
@@ -168,8 +167,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @param type {String} The type of button to render
 	 * @return {String}
 	 */
-	function getButtonImg(type) {
-		return buttonImgs[type] || buttonImgs.basic;
+	function getButtonImg(type, lang) {
+		var img = buttonImgs[type] || buttonImgs.basic,
+			regex = new RegExp("\\{lang\\}", "gm");
+		
+		lang = lang || "en_US";
+		
+		return img.replace(regex, lang);
 	}
 
 
