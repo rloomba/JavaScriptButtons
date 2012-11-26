@@ -59,16 +59,16 @@ describe('PAYPAL.apps.ButtonFactory.buttons', function () {
 	
 	'use strict';
 	
-	it('Should have two buy now buttons', function () {
+	it('Should have three buy now buttons', function () {
 		var result = PAYPAL.apps.ButtonFactory.buttons.buynow;
 		
-		result.should.equal(2);
+		result.should.equal(3);
 	});
 	
-	it('Should have four cart buttons', function () {
+	it('Should have six cart buttons', function () {
 		var result = PAYPAL.apps.ButtonFactory.buttons.cart;
 		
-		result.should.equal(4);
+		result.should.equal(6);
 	});
 	
 	it('Should have one QR code', function () {
@@ -102,5 +102,32 @@ describe('Multi-language button images', function () {
 			germanImage = germanButton.getElementsByTagName('input')[0].src;
 		
 		germanImage.should.include('de_DE');
+	});
+});
+
+// Test multiple button image sizes
+describe('Multiple button image sizes', function () {
+	
+	'use strict';
+	
+	it('Should have a small version of Buy Now button', function () {
+		var buynowSmallButton = document.getElementById('buynowSmall'),
+			buynowSmallImg = buynowSmallButton.getElementsByTagName('input')[0].src;
+		
+		buynowSmallImg.should.include('SM');
+	});
+	
+	it('Should have a small version of Cart button', function () {
+		var cartSmallButton = document.getElementById('cartSmall'),
+			cartSmallImg = cartSmallButton.getElementsByTagName('input')[0].src;
+		
+		cartSmallImg.should.include('SM');
+	});
+	
+	it('Should have a small version of Hosted button', function () {
+		var hostedSmallButton = document.getElementById('hostedSmall'),
+			hostedSmallImg = hostedSmallButton.getElementsByTagName('input')[0].src;
+		
+		hostedSmallImg.should.include('SM');
 	});
 });

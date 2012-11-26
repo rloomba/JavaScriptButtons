@@ -19,9 +19,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 			lang: 'lc'
 		},
 		buttonImgs = {
-			buynow: '//www.paypalobjects.com/{lang}/i/btn/btn_buynow_LG.gif',
-			cart: '//www.paypalobjects.com/{lang}/i/btn/btn_cart_LG.gif',
-			basic: '//www.paypalobjects.com/{lang}/i/btn/btn_buynow_LG.gif'
+			buynow: '//www.paypalobjects.com/{lang}/i/btn/btn_buynow_{size}.gif',
+			cart: '//www.paypalobjects.com/{lang}/i/btn/btn_cart_{size}.gif',
+			basic: '//www.paypalobjects.com/{lang}/i/btn/btn_buynow_{size}.gif'
 		};
 
 	if (!PAYPAL.apps.ButtonFactory) {
@@ -111,7 +111,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		form.action = paypalURL;
 		form.appendChild(btn);
 
-		btn.src = getButtonImg(type, data.lc);
+		btn.src = getButtonImg(type, data);
 
 		for (key in data) {
 			input = hidden.cloneNode(true);
@@ -167,13 +167,17 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @param type {String} The type of button to render
 	 * @return {String}
 	 */
-	function getButtonImg(type, lang) {
+	function getButtonImg(type, data) {
 		var img = buttonImgs[type] || buttonImgs.basic,
-			regex = new RegExp("\\{lang\\}", "gm");
+			lang = data.lc || 'en_US',
+			size = 'LG';
 		
-		lang = lang || "en_US";
+		// Convert "pretty sizes" to expected sizes
+		if (data.size === 'small') {
+			size = 'SM';
+		}
 		
-		return img.replace(regex, lang);
+		return img.replace(/\{lang\}/, lang).replace(/\{size\}/, size);
 	}
 
 
