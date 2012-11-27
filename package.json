@@ -11,5 +11,8 @@
 		"grunt": "*",
 		"should": "*",
 		"jsdom": "*"
+	},
+	"scripts": {
+			"test": "mocha"
 	}
 }
