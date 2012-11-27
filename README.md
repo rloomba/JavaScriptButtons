@@ -42,13 +42,14 @@ QR codes which can be scanned with a smart phone can also be easily generated.
 ## Button variables
 All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables) are supported by prefixing their name with "data-". Here are the most commonly used:
 
-* `data-name` Description of the item
-* `data-number` The number of the item
-* `data-amount` The price of the item
-* `data-quantity` Quantity of items to purchase
-* `data-shipping` The cost of shipping this item
-* `data-tax` Transaction-based tax override variable
-* `data-id` The hosted ID of the button (if applicable)
+* `data-name` Description of the item.
+* `data-number` The number of the item.
+* `data-amount` The price of the item.
+* `data-quantity` Quantity of items to purchase.
+* `data-shipping` The cost of shipping this item.
+* `data-tax` Transaction-based tax override variable.
+* `data-size` For button images: `small` and `large` work. For QR codes enter the pixel length of the longest side.
+* `data-id` The hosted ID of the button (if applicable).
 
 
 ## Getting your Merchant ID
