@@ -1,4 +1,12 @@
  language: node_js
+ 
+ # test on these node.js versions
  node_js:
    - "0.8"
    - "0.6"
+
+ before_script:
+   # Run lint on every commit
+   - npm install -g grunt
+   - npm install
+   - grunt lint
