@@ -90,6 +90,8 @@ We love contributions! If you'd like to contribute please submit a pull request 
 
 [Mocha](https://github.com/visionmedia/mocha) is used to run our test cases. Please be sure to run these prior to your pull request and ensure nothing is broken.
 
+[![Build Status](https://travis-ci.org/mstuart/JavaScriptButtons.png)](https://travis-ci.org/mstuart/JavaScriptButtons)
+
 ## Authors
 **Jeff Harrell**  
 [https://github.com/jeffharrell](https://github.com/jeffharrell)
