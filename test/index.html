@@ -8,32 +8,88 @@
 <body>
 	<script src="../lib/MiniCart/minicart.js"></script>
 
-	<div id="buynow">
-		<h2>Buy Now</h2>
+	<div id="buynowSmall">
+		<h2>Buy Now (Small)</h2>
+		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
+		    data-button="buynow"
+		    data-name="Buy now!"
+		    data-amount="1.00"
+		    data-size="small"
+		></script>
+	</div>
+	
+	<div id="buynowLarge">
+		<h2>Buy Now (Large)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="buynow"
 		    data-name="Buy now!"
 		    data-amount="1.00"
 		></script>
 	</div>
+	
+	<div id="buynowSpanish">
+		<h2>Buy Now (Spanish)</h2>
+		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
+		    data-button="buynow"
+		    data-name="Buy now!"
+		    data-amount="1.00"
+		    data-lang="es_ES"
+		></script>
+	</div>
 
-
-	<div id="cart">
-		<h2>Cart</h2>
+	<div id="cartSmall">
+		<h2>Cart (Small)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="cart"
 		    data-name="Add to cart!"
 		    data-amount="1.00"
+		    data-size="small"
+		></script>
+	</div>
+	
+	<div id="cartLarge">
+		<h2>Cart (Large)</h2>
+		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
+		    data-button="cart"
+		    data-name="Add to cart!"
+		    data-amount="1.00"
+		    data-size="large"
 		></script>
 	</div>
 
-
-	<div id="hosted">
-		<h2>Hosted</h2>
-
+	<div id="cartFrench">
+		<h2>Cart (French)</h2>
+		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
+		    data-button="cart"
+		    data-name="Add to cart!"
+		    data-amount="1.00"
+		    data-lang="fr_FR"
+		></script>
+	</div>
+	
+	<div id="hostedSmall">
+		<h2>Hosted (Small)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 			data-button="cart"
 		    data-id="8R63A645E2QB6"
+		    data-size="small"
+		></script>
+	</div>
+
+	<div id="hostedLarge">
+		<h2>Hosted</h2>
+		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
+			data-button="cart"
+		    data-id="8R63A645E2QB6"
+		></script>
+	</div>
+	
+	<div id="hostedGerman">
+		<h2>Hosted (German)</h2>
+		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
+			data-button="cart"
+		    data-id="8R63A645E2QB6"
+		    data-lang="de_DE"
 		></script>
 	</div>
 
