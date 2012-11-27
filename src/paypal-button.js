@@ -12,6 +12,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 	var app = {},
 		paypalURL = 'https://www.paypal.com/cgi-bin/webscr',
+		bnCode = 'JavaScriptButton_{type}',
 		prettyParams = {
 			id: 'hosted_button_id',
 			name: 'item_name',
@@ -19,9 +20,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 			lang: 'lc'
 		},
 		buttonImgs = {
-			buynow: '//www.paypalobjects.com/{lang}/i/btn/btn_buynow_{size}.gif',
-			cart: '//www.paypalobjects.com/{lang}/i/btn/btn_cart_{size}.gif',
-			basic: '//www.paypalobjects.com/{lang}/i/btn/btn_buynow_{size}.gif'
+			buynow: '//www.paypalobjects.com/{locale}/i/btn/btn_buynow_{size}.gif',
+			cart: '//www.paypalobjects.com/{locale}/i/btn/btn_cart_{size}.gif',
+			basic: '//www.paypalobjects.com/{locale}/i/btn/btn_buynow_{size}.gif'
 		};
 
 	if (!PAYPAL.apps.ButtonFactory) {
@@ -39,41 +40,50 @@ PAYPAL.apps = PAYPAL.apps || {};
 		/**
 		 * Renders a button in place of the given element
 		 *
-		 * @param data {Object} An object of key/value data to set as button params
+		 * @param raw {Object} An object of key/value data to set as button params
 		 * @param type (String) The type of the button to render
 		 * @param parent {HTMLElement} The element to add the button to (Optional)
 		 * @return {HTMLElement}
 		 */
-		app.create = function (data, type, parent) {
-			var normalized = {}, button, key;
+		app.create = function (raw, type, parent) {
+			var data = {}, button, key, size;
 
 			// Don't render without the correct data
-			if (!data || !data.business) {
+			if (!raw || !raw.business) {
 				return false;
 			}
 
 			// Normalize the data's keys
-			for (key in data) {
-				normalized[prettyParams[key] || key] = data[key];
+			for (key in raw) {
+				data[prettyParams[key] || key] = raw[key];
 			}
 
+			// Setup defaults
+			type = type || 'basic';
+
 			// Hosted buttons
-			if (normalized.hosted_button_id) {
-				normalized.cmd = '_s-xclick';
+			if (data.hosted_button_id) {
+				data.cmd = '_s-xclick';
 			// Cart buttons
 			} else if (type === 'cart') {
-				normalized.cmd = '_cart';
-				normalized.add = true;
+				data.cmd = '_cart';
+				data.add = true;
 			// Plain text buttons
 			} else {
-				normalized.cmd = '_xclick';
+				data.cmd = '_xclick';
 			}
+
+			// Create the button name
+			data.bn = bnCode.replace(/\{type\}/, type);
 
 			// Build the UI components
 			if (type === 'qr') {
-				button = buildQR(normalized);
+				size = data.size;
+				delete data.size;
+
+				button = buildQR(data, size);
 			} else {
-				button = buildForm(type, normalized);
+				button = buildForm(type, data);
 			}
 
 			// Register it
@@ -111,7 +121,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		form.action = paypalURL;
 		form.appendChild(btn);
 
-		btn.src = getButtonImg(type, data);
+		btn.src = getButtonImg(type, data.size, data.lc);
 
 		for (key in data) {
 			input = hidden.cloneNode(true);
@@ -140,14 +150,18 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * Builds the image for a QR code
 	 *
 	 * @param data {Object} An object of key/value data to set as button params
+	 * @param size {String} The size of QR code's longest side
+	 * @param locale {String} The locale
 	 * @return {HTMLElement}
 	 */
-	function buildQR(data) {
+	function buildQR(data, size, locale) {
 		var img = document.createElement('img'),
-			size = data.size || 250,
 			url = paypalURL + '?',
 			pattern = 13,
 			key;
+
+		// QR defaults
+		size = size || 250;
 
 		for (key in data) {
 			url += key + '=' + encodeURIComponent(data[key]) + '&';
@@ -165,19 +179,18 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * Utility function to return the rendered button image URL
 	 *
 	 * @param type {String} The type of button to render
+	 * @param size {String} The size of button (small/large)
+	 * @param locale {String} The locale
 	 * @return {String}
 	 */
-	function getButtonImg(type, data) {
-		var img = buttonImgs[type] || buttonImgs.basic,
-			lang = data.lc || 'en_US',
-			size = 'LG';
-		
-		// Convert "pretty sizes" to expected sizes
-		if (data.size === 'small') {
-			size = 'SM';
-		}
-		
-		return img.replace(/\{lang\}/, lang).replace(/\{size\}/, size);
+	function getButtonImg(type, size, locale) {
+		var img = buttonImgs[type] || buttonImgs.basic;
+
+		// Image defaults
+		locale = locale || 'en_US';
+		size = (size === 'small') ? 'SM' : 'LG';
+
+		return img.replace(/\{locale\}/, locale).replace(/\{size\}/, size);
 	}
 
 
