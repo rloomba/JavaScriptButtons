@@ -86,10 +86,12 @@ The JavaScript buttons have been tested and work in all modern browsers includin
 * Internet Explorer 7+.
 
 
-## Contributing
+## Contributing [![Build Status](https://travis-ci.org/paypal/JavaScriptButtons.png)](https://travis-ci.org/paypal/JavaScriptButtons)
+
 We love contributions! If you'd like to contribute please submit a pull request via Github. 
 
 [Mocha](https://github.com/visionmedia/mocha) is used to run our test cases. Please be sure to run these prior to your pull request and ensure nothing is broken.
+
 
 ## Authors
 **Jeff Harrell**  
