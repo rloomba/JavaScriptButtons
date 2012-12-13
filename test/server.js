@@ -2,7 +2,6 @@
 /*global describe:true, it:true, PAYPAL:true, document:true, window:true */
 
 var fs = require('fs'),
-	should = require('should'),
 	jsdom = require('jsdom').jsdom;
 
 global.document = jsdom(fs.readFileSync(__dirname + '/index.html').toString());

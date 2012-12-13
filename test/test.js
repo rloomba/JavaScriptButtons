@@ -1,4 +1,5 @@
 var PAYPAL = require('../src/paypal-button.js');
+require('should');
 
 // Test the object's integrity
 describe('PAYPAL.apps.ButtonFactory', function () {
