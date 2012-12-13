@@ -4,10 +4,10 @@
 var fs = require('fs'),
 	should = require('should'),
 	jsdom = require('jsdom').jsdom,
-	document = jsdom(fs.readFileSync('./test/index.html').toString()),
+	document = jsdom(fs.readFileSync(__dirname + '/index.html').toString()),
 	window = document.createWindow();
 
-eval(fs.readFileSync('src/paypal-button.js').toString());
+eval(fs.readFileSync(__dirname + '/../src/paypal-button.js').toString());
 
 // Test the object's integrity
 describe('PAYPAL.apps.ButtonFactory', function () {
