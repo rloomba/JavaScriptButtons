@@ -233,6 +233,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		for (i = 0, len = nodes.length; i < len; i++) {
 			node = nodes[i];
+			if (!node || !node.src) continue;
+
 			data = node && getDataSet(node);
 			button = data && data.button;
 			business = data.business = node.src.split('?merchant=')[1];
