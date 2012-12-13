@@ -19,6 +19,6 @@
 		"jsdom": "*"
 	},
 	"scripts": {
-		"test": "mocha"
+		"test": "mocha test/server.js"
 	}
 }
