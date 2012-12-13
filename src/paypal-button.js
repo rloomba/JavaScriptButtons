@@ -1,6 +1,9 @@
 if (typeof PAYPAL === 'undefined' || !PAYPAL) {
 	var PAYPAL = {};
 }
+if (typeof module === 'object' && typeof module.exports === 'object') {
+	module.exports = PAYPAL;
+}
 
 PAYPAL.apps = PAYPAL.apps || {};
 
