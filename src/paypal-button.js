@@ -1,6 +1,9 @@
 if (typeof PAYPAL === 'undefined' || !PAYPAL) {
 	var PAYPAL = {};
 }
+if (typeof module === 'object' && typeof module.exports === 'object') {
+	module.exports = PAYPAL;
+}
 
 PAYPAL.apps = PAYPAL.apps || {};
 
@@ -230,6 +233,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		for (i = 0, len = nodes.length; i < len; i++) {
 			node = nodes[i];
+			if (!node || !node.src) continue;
+
 			data = node && getDataSet(node);
 			button = data && data.button;
 			business = data.business = node.src.split('?merchant=')[1];

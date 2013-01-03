@@ -1,13 +1,5 @@
-/*jshint node:true, evil:true */
-/*global describe:true, it:true, PAYPAL:true, document:true, window:true */
-
-var fs = require('fs'),
-	should = require('should'),
-	jsdom = require('jsdom').jsdom,
-	document = jsdom(fs.readFileSync('./test/index.html').toString()),
-	window = document.createWindow();
-
-eval(fs.readFileSync('src/paypal-button.js').toString());
+var PAYPAL = require('../src/paypal-button.js');
+require('should');
 
 // Test the object's integrity
 describe('PAYPAL.apps.ButtonFactory', function () {

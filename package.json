@@ -9,7 +9,7 @@
 	"testling": {
 		"browsers": ["ie6", "ie7", "ie8", "ie9", "firefox/15", "chrome/22", "opera/12", "safari/5.1"],
 		"harness" : "mocha",
-		"files": "test/*.js"
+		"files": "test/browser.js"
 	},
 	"dependencies": {},
 	"devDependencies": {
@@ -19,6 +19,6 @@
 		"jsdom": "*"
 	},
 	"scripts": {
-		"test": "mocha"
+		"test": "mocha test/server.js"
 	}
 }
