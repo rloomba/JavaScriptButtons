@@ -6,6 +6,6 @@
 
  before_script:
    # Run lint on every commit
-   - npm install grunt
-   - npm install
-   - grunt lint
+   # - npm install grunt
+   # - npm install
+   # - grunt lint
