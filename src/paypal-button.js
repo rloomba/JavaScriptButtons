@@ -136,13 +136,12 @@ PAYPAL.apps = PAYPAL.apps || {};
 		for (key in items) {
 			item = items[key];
 
-			input = child = hidden.cloneNode(true);
-			input.name = item.key;
-			input.value = item.value;
-
 			if (item.isEditable) {
+				input = document.createElement('input');
 				input.type = 'text';
 				input.className = 'paypal-input';
+				input.name = item.key;
+				input.value = item.value;
 
 				label = document.createElement('label');
 				label.className = 'paypal-label';
@@ -152,6 +151,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 				child = document.createElement('p');
 				child.className = 'paypal-group';
 				child.appendChild(label);
+			} else {
+				input = child = hidden.cloneNode(true);
+				input.name = item.key;
+				input.value = item.value;
 			}
 
 			form.appendChild(child);
