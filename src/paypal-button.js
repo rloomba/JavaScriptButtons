@@ -131,6 +131,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		form.method = 'post';
 		form.action = paypalURL;
 		form.className = 'paypal-button';
+		form.target = '_top';
 
 		for (key in items) {
 			item = items[key];
