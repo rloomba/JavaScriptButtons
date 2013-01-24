@@ -47,8 +47,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			buynow: 0,
 			cart: 0,
 			hosted: 0,
-			qr: 0,
-			script: 0
+			qr: 0
 		};
 
 		/**
@@ -94,8 +93,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 			if (type === 'qr') {
 				button = buildQR(data, data.items.size);
 				data.remove('size');
-			} else if (type === 'script') {
-				button = buildScript(data);
 			} else {
 				button = buildForm(data, type);
 			}
