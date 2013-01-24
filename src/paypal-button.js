@@ -12,6 +12,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 	var app = {},
 		paypalURL = 'https://www.paypal.com/cgi-bin/webscr',
+		qrCodeURL = 'https://www.paypal.com/webapps/ppint/qrcode?data={url}&pattern={pattern}&height={size}',
+		scriptURL = 'paypal-button.min.js',
 		bnCode = 'JavaScriptButton_{type}',
 		prettyParams = {
 			id: 'hosted_button_id',
@@ -27,7 +29,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 	if (!PAYPAL.apps.ButtonFactory) {
 
 		/**
-		 * Initial config for the app
+		 * Initial config for the app. These values can be overridden by the page.
 		 */
 		app.config = {
 			labels: {
@@ -45,35 +47,34 @@ PAYPAL.apps = PAYPAL.apps || {};
 			buynow: 0,
 			cart: 0,
 			hosted: 0,
-			qr: 0
+			qr: 0,
+			script: 0
 		};
 
 		/**
 		 * Renders a button in place of the given element
 		 *
+		 * @param business {Object} The ID or email address of the merchant to create the button for
 		 * @param raw {Object} An object of key/value data to set as button params
 		 * @param type (String) The type of the button to render
 		 * @param parent {HTMLElement} The element to add the button to (Optional)
 		 * @return {HTMLElement}
 		 */
-		app.create = function (raw, type, parent) {
+		app.create = function (business, raw, type, parent) {
 			var data = new DataStore(), button, key;
 
-			// Don't render without the correct data
-			if (!raw || !raw.business) {
-				return false;
-			}
+			if (!business) { return false; }
 
 			// Normalize the data's keys and add to a data store
 			for (key in raw) {
 				data.add(prettyParams[key] || key, raw[key].value, raw[key].isEditable);
 			}
 
-			// Setup defaults
+			// Defaults
 			type = type || 'buynow';
 
 			// Hosted buttons
-			if (data.hosted_button_id) {
+			if (data.items.hosted_button_id) {
 				type = 'hosted';
 				data.add('cmd', '_s-xclick');
 			// Cart buttons
@@ -85,15 +86,18 @@ PAYPAL.apps = PAYPAL.apps || {};
 				data.add('cmd', '_xclick');
 			}
 
-			// Create the button name
+			// Add common data
+			data.add('business', business);
 			data.add('bn', bnCode.replace(/\{type\}/, type));
 
 			// Build the UI components
 			if (type === 'qr') {
 				button = buildQR(data, data.items.size);
 				data.remove('size');
+			} else if (type === 'script') {
+				button = buildScript(data);
 			} else {
-				button = buildForm(type, data);
+				button = buildForm(data, type);
 			}
 
 			// Register it
@@ -115,11 +119,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 	/**
 	 * Builds the form DOM structure for a button
 	 *
-	 * @param type (String) The type of the button to render
 	 * @param data {Object} An object of key/value data to set as button params
+	 * @param type (String) The type of the button to render
 	 * @return {HTMLElement}
 	 */
-	function buildForm(type, data) {
+	function buildForm(data, type) {
 		var form = document.createElement('form'),
 			btn = document.createElement('input'),
 			hidden = document.createElement('input'),
@@ -198,13 +202,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		for (key in items) {
 			item = items[key];
-
 			url += item.key + '=' + encodeURIComponent(item.value) + '&amp;';
 		}
 
 		url = encodeURIComponent(url);
-
-		img.src = 'https://www.paypal.com/webapps/ppint/qrcode?data=' + url + '&amp;pattern=' + pattern + '&amp;' + url + '&amp;height=' + size;
+		img.src = qrCodeURL.replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
 
 		return img;
 	}
@@ -279,7 +281,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 	if (typeof document !== 'undefined') {
 		var ButtonFactory = PAYPAL.apps.ButtonFactory,
 			nodes = document.getElementsByTagName('script'),
-			node, data, button, business, i, len;
+			node, data, type, business, i, len;
 
 		for (i = 0, len = nodes.length; i < len; i++) {
 			node = nodes[i];
@@ -287,11 +289,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 			if (!node || !node.src) { continue; }
 
 			data = node && getDataSet(node);
-			button = data && data.button;
-			business = data.business = node.src.split('?merchant=')[1];
+			type = data && data.button && data.button.value;
+			business = node.src.split('?merchant=')[1];
 
-			if (button && business) {
-				ButtonFactory.create(data, button, node.parentNode);
+			if (business) {
+				ButtonFactory.create(business, data, type, node.parentNode);
 
 				// Clean up
 				node.parentNode.removeChild(node);
