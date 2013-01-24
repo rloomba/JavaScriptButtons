@@ -1,9 +1,6 @@
 if (typeof PAYPAL === 'undefined' || !PAYPAL) {
 	var PAYPAL = {};
 }
-if (typeof module === 'object' && typeof module.exports === 'object') {
-	module.exports = PAYPAL;
-}
 
 PAYPAL.apps = PAYPAL.apps || {};
 
@@ -15,6 +12,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 	var app = {},
 		paypalURL = 'https://www.paypal.com/cgi-bin/webscr',
+		qrCodeURL = 'https://www.paypal.com/webapps/ppint/qrcode?data={url}&pattern={pattern}&height={size}',
+		scriptURL = 'paypal-button.min.js',
 		bnCode = 'JavaScriptButton_{type}',
 		prettyParams = {
 			id: 'hosted_button_id',
@@ -24,11 +23,22 @@ PAYPAL.apps = PAYPAL.apps || {};
 		},
 		buttonImgs = {
 			buynow: '//www.paypalobjects.com/{locale}/i/btn/btn_buynow_{size}.gif',
-			cart: '//www.paypalobjects.com/{locale}/i/btn/btn_cart_{size}.gif',
-			basic: '//www.paypalobjects.com/{locale}/i/btn/btn_buynow_{size}.gif'
+			cart: '//www.paypalobjects.com/{locale}/i/btn/btn_cart_{size}.gif'
 		};
 
 	if (!PAYPAL.apps.ButtonFactory) {
+
+		/**
+		 * Initial config for the app. These values can be overridden by the page.
+		 */
+		app.config = {
+			labels: {
+				item_name: 'Item',
+				item_number: 'Number',
+				amount: 'Amount',
+				quantity: 'Quantity'
+			}
+		};
 
 		/**
 		 * A count of each type of button on the page
@@ -36,57 +46,55 @@ PAYPAL.apps = PAYPAL.apps || {};
 		app.buttons = {
 			buynow: 0,
 			cart: 0,
-			qr: 0,
-			api: 0
+			hosted: 0,
+			qr: 0
 		};
 
 		/**
 		 * Renders a button in place of the given element
 		 *
+		 * @param business {Object} The ID or email address of the merchant to create the button for
 		 * @param raw {Object} An object of key/value data to set as button params
 		 * @param type (String) The type of the button to render
 		 * @param parent {HTMLElement} The element to add the button to (Optional)
 		 * @return {HTMLElement}
 		 */
-		app.create = function (raw, type, parent) {
-			var data = {}, button, key, size;
+		app.create = function (business, raw, type, parent) {
+			var data = new DataStore(), button, key;
 
-			// Don't render without the correct data
-			if (!raw || !raw.business) {
-				return false;
-			}
+			if (!business) { return false; }
 
-			// Normalize the data's keys
+			// Normalize the data's keys and add to a data store
 			for (key in raw) {
-				data[prettyParams[key] || key] = raw[key];
+				data.add(prettyParams[key] || key, raw[key].value, raw[key].isEditable);
 			}
 
-			// Setup defaults
-			type = type || 'basic';
+			// Defaults
+			type = type || 'buynow';
 
 			// Hosted buttons
-			if (data.hosted_button_id) {
-				data.cmd = '_s-xclick';
+			if (data.items.hosted_button_id) {
+				type = 'hosted';
+				data.add('cmd', '_s-xclick');
 			// Cart buttons
 			} else if (type === 'cart') {
-				data.cmd = '_cart';
-				data.add = true;
+				data.add('cmd', '_cart');
+				data.add('add', true);
 			// Plain text buttons
 			} else {
-				data.cmd = '_xclick';
+				data.add('cmd', '_xclick');
 			}
 
-			// Create the button name
-			data.bn = bnCode.replace(/\{type\}/, type);
+			// Add common data
+			data.add('business', business);
+			data.add('bn', bnCode.replace(/\{type\}/, type));
 
 			// Build the UI components
 			if (type === 'qr') {
-				size = data.size;
-				delete data.size;
-
-				button = buildQR(data, size);
+				button = buildQR(data, data.items.size);
+				data.remove('size');
 			} else {
-				button = buildForm(type, data);
+				button = buildForm(data, type);
 			}
 
 			// Register it
@@ -108,31 +116,53 @@ PAYPAL.apps = PAYPAL.apps || {};
 	/**
 	 * Builds the form DOM structure for a button
 	 *
-	 * @param type (String) The type of the button to render
 	 * @param data {Object} An object of key/value data to set as button params
+	 * @param type (String) The type of the button to render
 	 * @return {HTMLElement}
 	 */
-	function buildForm(type, data) {
+	function buildForm(data, type) {
 		var form = document.createElement('form'),
 			btn = document.createElement('input'),
 			hidden = document.createElement('input'),
-			input, key;
+			items = data.items,
+			item, child, label, input, key;
 
 		btn.type = 'image';
 		hidden.type = 'hidden';
 		form.method = 'post';
 		form.action = paypalURL;
-		form.appendChild(btn);
+		form.className = 'paypal-button';
+		form.target = '_top';
 
-		btn.src = getButtonImg(type, data.size, data.lc);
+		for (key in items) {
+			item = items[key];
 
-		for (key in data) {
-			input = hidden.cloneNode(true);
-			input.name = key;
-			input.value = data[key];
+			if (item.isEditable) {
+				input = document.createElement('input');
+				input.type = 'text';
+				input.className = 'paypal-input';
+				input.name = item.key;
+				input.value = item.value;
 
-			form.appendChild(input);
+				label = document.createElement('label');
+				label.className = 'paypal-label';
+				label.appendChild(document.createTextNode(app.config.labels[item.key] + ' ' || ''));
+				label.appendChild(input);
+
+				child = document.createElement('p');
+				child.className = 'paypal-group';
+				child.appendChild(label);
+			} else {
+				input = child = hidden.cloneNode(true);
+				input.name = item.key;
+				input.value = item.value;
+			}
+
+			form.appendChild(child);
 		}
+
+		form.appendChild(btn);
+		btn.src = getButtonImg(type, data.size, data.lc);
 
 		// If the Mini Cart is present then register the form
 		if (PAYPAL.apps.MiniCart && data.cmd === '_cart') {
@@ -161,18 +191,19 @@ PAYPAL.apps = PAYPAL.apps || {};
 		var img = document.createElement('img'),
 			url = paypalURL + '?',
 			pattern = 13,
-			key;
+			items = data.items,
+			item, key;
 
 		// QR defaults
 		size = size || 250;
 
-		for (key in data) {
-			url += key + '=' + encodeURIComponent(data[key]) + '&';
+		for (key in items) {
+			item = items[key];
+			url += item.key + '=' + encodeURIComponent(item.value) + '&amp;';
 		}
 
 		url = encodeURIComponent(url);
-
-		img.src = 'https://www.paypal.com/webapps/ppint/qrcode?data=' + url + '&pattern=' + pattern + '&' + url + '&height=' + size;
+		img.src = qrCodeURL.replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
 
 		return img;
 	}
@@ -187,7 +218,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @return {String}
 	 */
 	function getButtonImg(type, size, locale) {
-		var img = buttonImgs[type] || buttonImgs.basic;
+		var img = buttonImgs[type] || buttonImgs.buynow;
 
 		// Image defaults
 		locale = locale || 'en_US';
@@ -198,25 +229,23 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 
 	/**
-	 * Utility function to polyfill dataset functionality for browsers
+	 * Utility function to polyfill dataset functionality with a bit of a spin
 	 *
 	 * @param el {HTMLElement} The element to check
 	 * @return {Object}
 	 */
 	function getDataSet(el) {
-		var dataset = el.dataset,
-			attrs, attr, matches, len, i;
+		var dataset = {}, attrs, attr, matches, len, i;
 
-		if (!dataset) {
-			dataset = {};
+		if ((attrs = el.attributes)) {
+			for (i = 0, len = attrs.length; i < len; i++) {
+				attr = attrs[i];
 
-			if ((attrs = el.attributes)) {
-				for (i = 0, len = attrs.length; i < len; i++) {
-					attr = attrs[i];
-
-					if ((matches = /^data-(.+)/.exec(attr.name))) {
-						dataset[matches[1]] = attr.value;
-					}
+				if ((matches = /^data-([a-z]+)(-editable)?/i.exec(attr.name))) {
+					dataset[matches[1]] = {
+						value: attr.value,
+						isEditable: !!matches[2]
+					};
 				}
 			}
 		}
@@ -225,22 +254,43 @@ PAYPAL.apps = PAYPAL.apps || {};
 	}
 
 
+	/**
+	 * A storage object to create structured methods around a button's data
+	 */
+	function DataStore() {
+		this.items = {};
+
+		this.add = function (key, value, isEditable) {
+			this.items[key] = {
+				key: key,
+				value: value,
+				isEditable: isEditable
+			};
+		};
+
+		this.remove = function (key) {
+			delete this.items[key];
+		};
+	}
+
+
 	// Init the buttons
 	if (typeof document !== 'undefined') {
 		var ButtonFactory = PAYPAL.apps.ButtonFactory,
 			nodes = document.getElementsByTagName('script'),
-			node, data, button, business, i, len;
+			node, data, type, business, i, len;
 
 		for (i = 0, len = nodes.length; i < len; i++) {
 			node = nodes[i];
-			if (!node || !node.src) continue;
+
+			if (!node || !node.src) { continue; }
 
 			data = node && getDataSet(node);
-			button = data && data.button;
-			business = data.business = node.src.split('?merchant=')[1];
+			type = data && data.button && data.button.value;
+			business = node.src.split('?merchant=')[1];
 
-			if (button && business) {
-				ButtonFactory.create(data, button, node.parentNode);
+			if (business) {
+				ButtonFactory.create(business, data, type, node.parentNode);
 
 				// Clean up
 				node.parentNode.removeChild(node);
@@ -250,3 +300,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 
 }());
+
+
+// Export for CommonJS environments
+if (typeof module === 'object' && typeof module.exports === 'object') {
+	module.exports = PAYPAL;
+}

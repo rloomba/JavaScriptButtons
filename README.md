@@ -2,7 +2,7 @@
 
 Integrating with our HTML payment buttons are as easy as including a snippet of code. [Try it out and configure your own](http://paypal.github.com/JavaScriptButtons/).
 
-We have two flavors of buttons for you to use:
+We have a few flavors of buttons for you to use:
 
 ### Buy Now
 Buy Now buttons are for single item purchases.
@@ -51,9 +51,26 @@ All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_
 * `data-size` For button images: `small` and `large` work. For QR codes enter the pixel length of the longest side.
 * `data-id` The hosted ID of the button (if applicable).
 
+## Editable fields
+Creating editable fields is easy! Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.
 
-## Getting your Merchant ID
-Your merchant ID needs to be added to the URL of the referenced script. This ID can either be your Secure Merchant ID, which can be found by logging into your PayPal account and visiting your profile, or your email address.
+
+## Localization
+* Changing the default language of a button can be done by setting the variable `data-lc` with the correct locale code, e.g. es_ES.
+* Changing the default input labels of editable buttons can be done by overriding the default configuration, e.g. PAYPAL.apps.ButtonFactory.config.labels.
+
+
+## JavaScript API
+There's even a fancy JavaScript API if you'd like to pragmatically create your buttons.
+
+**PAYPAL.apps.ButtonFactory.config**
+This can be overridden to change the default behavior of the buttons.
+
+**PAYPAL.apps.ButtonFactory.create(data, type, parentNode)**  
+Creates and returns an HTML element that contains the button code. 
+> **data** - A JavaScript object containing the button variables  
+> **type** - The button type, e.g. "buynow", "cart", "qr"  
+> **parentNode** - An HTML element to add the newly created button to (Optional)  
 
 
 ## Download
@@ -67,16 +84,6 @@ The first file gives you support for PayPal's JavaScript buttons. The second fil
 To see the un-minified code you can take a peek at [paypal-button.js](https://github.com/paypal/JavaScriptButtons/blob/master/src/paypal-button.js).
 
 
-## JavaScript API
-There's even a fancy JavaScript API if you'd like to pragmatically create your buttons.
-
-**PAYPAL.apps.ButtonFactory.create(data, type, parentNode)**  
-Creates and returns an HTML element that contains the button code. 
-> **data** - A JavaScript object containing the button variables  
-> **type** - The button type, e.g. "buynow", "cart", "qr"  
-> **parentNode** - An HTML element to add the newly created button to (Optional)  
-
-
 ## Browser support 
 The JavaScript buttons have been tested and work in all modern browsers including:
 
@@ -84,6 +91,10 @@ The JavaScript buttons have been tested and work in all modern browsers includin
 * Safari
 * Firefox
 * Internet Explorer 7+.
+
+
+## Getting your Merchant ID
+Your merchant ID needs to be added to the URL of the referenced script. This ID can either be your Secure Merchant ID, which can be found by logging into your PayPal account and visiting your profile, or your email address.
 
 
 ## Contributing [![Build Status](https://travis-ci.org/paypal/JavaScriptButtons.png)](https://travis-ci.org/paypal/JavaScriptButtons)

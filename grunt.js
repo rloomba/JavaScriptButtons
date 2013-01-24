@@ -31,6 +31,6 @@ module.exports = function (grunt) {
 
 
 	// Default task.
-	grunt.registerTask('default', 'lint min');
+	grunt.registerTask('default', 'min');
 
 };
