@@ -125,7 +125,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			btn = document.createElement('input'),
 			hidden = document.createElement('input'),
 			items = data.items,
-			item, child, label, input, key;
+			item, child, label, input, key, size, locale;
 
 		btn.type = 'image';
 		hidden.type = 'hidden';
@@ -160,9 +160,12 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			form.appendChild(child);
 		}
+		
+		size = items.size && items.size.value;
+		locale = items.lc && items.lc.value;
 
 		form.appendChild(btn);
-		btn.src = getButtonImg(type, data.size, data.lc);
+		btn.src = getButtonImg(type, size, locale);
 
 		// If the Mini Cart is present then register the form
 		if (PAYPAL.apps.MiniCart && data.cmd === '_cart') {

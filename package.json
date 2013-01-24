@@ -6,19 +6,14 @@
 		"name": "Jeff Harrell",
 		"url": "https://github.com/jeffharrell/"
 	},
-	"testling": {
-		"browsers": ["ie6", "ie7", "ie8", "ie9", "firefox/15", "chrome/22", "opera/12", "safari/5.1"],
-		"harness" : "mocha",
-		"files": "test/browser.js"
-	},
 	"dependencies": {},
 	"devDependencies": {
 		"grunt": "*",
-		"mocha": "*",
+		"mocha": "~1.7.4",
 		"should": "*",
 		"jsdom": "*"
 	},
 	"scripts": {
-		"test": "mocha test/server.js"
+		"test": "mocha"
 	}
 }
