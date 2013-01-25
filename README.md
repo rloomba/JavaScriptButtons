@@ -1,4 +1,4 @@
-## HTML payment buttons
+## HTML payment buttons [![Build Status](https://travis-ci.org/paypal/JavaScriptButtons.png)](https://travis-ci.org/paypal/JavaScriptButtons)
 
 Integrating with our HTML payment buttons are as easy as including a snippet of code. [Try it out and configure your own](http://paypal.github.com/JavaScriptButtons/).
 
@@ -97,7 +97,7 @@ The JavaScript buttons have been tested and work in all modern browsers includin
 Your merchant ID needs to be added to the URL of the referenced script. This ID can either be your Secure Merchant ID, which can be found by logging into your PayPal account and visiting your profile, or your email address.
 
 
-## Contributing [![Build Status](https://travis-ci.org/paypal/JavaScriptButtons.png)](https://travis-ci.org/paypal/JavaScriptButtons)
+## Contributing 
 
 We love contributions! If you'd like to contribute please submit a pull request via Github. 
 
