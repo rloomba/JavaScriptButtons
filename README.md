@@ -1,6 +1,6 @@
-## HTML payment buttons [![Build Status](https://travis-ci.org/paypal/JavaScriptButtons.png)](https://travis-ci.org/paypal/JavaScriptButtons)
+## PayPal Payment Buttons [![Build Status](https://travis-ci.org/paypal/JavaScriptButtons.png)](https://travis-ci.org/paypal/JavaScriptButtons)
 
-Integrating with our HTML payment buttons are as easy as including a snippet of code. [Try it out and configure your own](http://paypal.github.com/JavaScriptButtons/).
+Unofficial PayPal HTML payment buttons that are as easy as including a snippet of code. [Try it out and configure your own](http://paypal.github.com/JavaScriptButtons/).
 
 We have a few flavors of buttons for you to use:
 
@@ -26,6 +26,18 @@ Add To Cart buttons lets users add multiple items to their PayPal cart.
     data-amount="1.00"
 ></script>
 ```
+
+### Hosted 
+Hosted buttons help tamper-proof your button's data. 
+
+```html
+<script src="paypal-button-minicart.min.js?merchant=YOUR_MERCHANT_ID"
+    data-button="buynow"
+    data-id="YOUR_BUTTON_ID"
+></script>
+```
+
+*Note: Hosted buttons IDs must be created on PayPal.com or via the Button Manager APIs using your credentials.*
 
 ### QR Codes
 QR codes which can be scanned with a smart phone can also be easily generated.
@@ -63,7 +75,7 @@ Creating editable fields is easy! Just add `-editable` to the name of your varia
 ## JavaScript API
 There's even a fancy JavaScript API if you'd like to pragmatically create your buttons.
 
-**PAYPAL.apps.ButtonFactory.config**
+**PAYPAL.apps.ButtonFactory.config**  
 This can be overridden to change the default behavior of the buttons.
 
 **PAYPAL.apps.ButtonFactory.create(data, type, parentNode)**  
