@@ -160,7 +160,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			form.appendChild(child);
 		}
-		
+
 		size = items.size && items.size.value;
 		locale = items.lc && items.lc.value;
 
@@ -198,7 +198,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			item, key;
 
 		// QR defaults
-		size = size || 250;
+		size = size.value || 250;
 
 		for (key in items) {
 			item = items[key];
