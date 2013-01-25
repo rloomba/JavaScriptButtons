@@ -78,8 +78,9 @@ There's even a fancy JavaScript API if you'd like to pragmatically create your b
 **PAYPAL.apps.ButtonFactory.config**  
 This can be overridden to change the default behavior of the buttons.
 
-**PAYPAL.apps.ButtonFactory.create(data, type, parentNode)**  
+**PAYPAL.apps.ButtonFactory.create(business, data, type, parentNode)**  
 Creates and returns an HTML element that contains the button code. 
+> **business** - A string containing either the business ID or the business email  
 > **data** - A JavaScript object containing the button variables  
 > **type** - The button type, e.g. "buynow", "cart", "qr"  
 > **parentNode** - An HTML element to add the newly created button to (Optional)  
