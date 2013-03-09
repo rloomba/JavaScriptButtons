@@ -202,7 +202,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		for (key in items) {
 			item = items[key];
-			url += item.key + '=' + encodeURIComponent(item.value) + '&amp;';
+			url += item.key + '=' + encodeURIComponent(item.value) + '&';
 		}
 
 		url = encodeURIComponent(url);
