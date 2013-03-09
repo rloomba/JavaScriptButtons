@@ -198,7 +198,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			item, key;
 
 		// QR defaults
-		size = size.value || 250;
+		size = size && size.value || 250;
 
 		for (key in items) {
 			item = items[key];
