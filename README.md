@@ -27,18 +27,6 @@ Add To Cart buttons lets users add multiple items to their PayPal cart.
 ></script>
 ```
 
-### Hosted 
-Hosted buttons help tamper-proof your button's data. 
-
-```html
-<script src="paypal-button-minicart.min.js?merchant=YOUR_MERCHANT_ID"
-    data-button="buynow"
-    data-id="YOUR_BUTTON_ID"
-></script>
-```
-
-*Note: Hosted buttons IDs must be created on PayPal.com or via the Button Manager APIs using your credentials.*
-
 ### QR Codes
 QR codes which can be scanned with a smart phone can also be easily generated.
 
@@ -61,7 +49,6 @@ All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_
 * `data-shipping` The cost of shipping this item.
 * `data-tax` Transaction-based tax override variable.
 * `data-size` For button images: `small` and `large` work. For QR codes enter the pixel length of the longest side.
-* `data-id` The hosted ID of the button (if applicable).
 
 ## Editable fields
 Creating editable fields is easy! Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.
