@@ -168,7 +168,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		btn.src = getButtonImg(type, size, locale);
 
 		// If the Mini Cart is present then register the form
-		if (PAYPAL.apps.MiniCart && data.cmd === '_cart') {
+		if (PAYPAL.apps.MiniCart && data.items.cmd.value === '_cart') {
 			var MiniCart = PAYPAL.apps.MiniCart;
 
 			if (!MiniCart.UI.itemList) {
