@@ -16,7 +16,7 @@ Buy Now buttons are for single item purchases.
 ```
 
 ### Add To Cart
-Add To Cart buttons lets users add multiple items to their PayPal cart.
+Add To Cart buttons let users add multiple items to their PayPal cart.
 
 ```html
 <script src="paypal-button-minicart.min.js?merchant=YOUR_MERCHANT_ID"
@@ -27,7 +27,7 @@ Add To Cart buttons lets users add multiple items to their PayPal cart.
 ```
 
 ### QR Codes
-QR codes which can be scanned with a smart phone can also be easily generated.
+QR codes can be easily scanned with a smart phone to check out.
 
 ```html
 <script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
@@ -38,7 +38,7 @@ QR codes which can be scanned with a smart phone can also be easily generated.
 ```
 
 ### Donations
-Donation buttons lets you accept donations from your users.
+Donation buttons let you accept donations from your users.
 
 ```html
 <script src="paypal-button-minicart.min.js?merchant=YOUR_MERCHANT_ID"
