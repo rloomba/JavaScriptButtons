@@ -8,7 +8,9 @@
     },
     "dependencies": {},
     "devDependencies": {
-        "grunt": "0.3",
+        "grunt": "*",
+        "grunt-contrib-jshint": "*",
+        "grunt-contrib-uglify": "*",
         "mocha": "~1.7.4",
         "should": "*",
         "jsdom": "*"
