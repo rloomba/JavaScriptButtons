@@ -48,6 +48,20 @@ Donation buttons let you accept donations from your users.
 ></script>
 ```
 
+### Subscriptions
+Subscribe buttons let you set up payment subscriptions.
+
+```html
+<script src="paypal-button-minicart.min.js?merchant=YOUR_MERCHANT_ID"
+    data-button="subscribe"
+    data-name="My product"
+    data-amount="1.00"
+    data-a3="1.00"
+    data-p3="1"
+    data-t3="M"
+></script>
+```
+
 
 ## Button variables
 All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables) are supported by prefixing their name with "data-". Here are the most commonly used:
