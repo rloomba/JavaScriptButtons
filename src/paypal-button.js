@@ -23,7 +23,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 		},
 		buttonImgs = {
 			buynow: '//www.paypalobjects.com/{locale}/i/btn/btn_buynow_{size}.gif',
-			cart: '//www.paypalobjects.com/{locale}/i/btn/btn_cart_{size}.gif'
+			cart: '//www.paypalobjects.com/{locale}/i/btn/btn_cart_{size}.gif',
+			donate: '//www.paypalobjects.com/{locale}/i/btn/btn_donate_{size}.gif'
 		};
 
 	if (!PAYPAL.apps.ButtonFactory) {
@@ -47,6 +48,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			buynow: 0,
 			cart: 0,
 			hosted: 0,
+			donate: 0,
 			qr: 0
 		};
 
@@ -80,7 +82,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 			} else if (type === 'cart') {
 				data.add('cmd', '_cart');
 				data.add('add', true);
-			// Plain text buttons
+			// Donation buttons
+			} else if (type === 'donate') {
+				data.add('cmd', '_donations');
+			// Buy Now buttons
 			} else {
 				data.add('cmd', '_xclick');
 			}

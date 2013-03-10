@@ -9,60 +9,63 @@ var fs = require('fs'),
 	document = jsdom(testFile, null, jsdomOptions),
 	window = document.createWindow();
 
+
 eval(fs.readFileSync('src/paypal-button.js').toString());
 
 
 // Test the object's integrity
-describe('PAYPAL.apps.ButtonFactory', function () {
+describe('JavaScript API', function () {
 	'use strict';
 
-	it('Should have a PAYPAL object', function () {
+	it('Should have a PAYPAL namespace', function () {
 		PAYPAL.should.be.a('object');
 	});
 
-	it('Should have a PAYPAL.apps object', function () {
+	it('Should have a PAYPAL.apps namespace', function () {
 		PAYPAL.apps.should.be.a('object');
 	});
 
-	it('Should have a PAYPAL.apps.ButtonFactory object', function () {
+	it('Should have a PAYPAL.apps.ButtonFactory namespace', function () {
 		PAYPAL.apps.ButtonFactory.should.be.a('object');
 	});
 
-});
+	it('Should have a configuration object', function () {
+		PAYPAL.apps.ButtonFactory.config.should.be.a('object');
+	});
 
-
-// Test the create method
-describe('PAYPAL.apps.ButtonFactory.create', function () {
-	'use strict';
-
-	it('Should be a function', function () {
+	it('Should have a create method', function () {
 		PAYPAL.apps.ButtonFactory.create.should.be.a('function');
 	});
 
-	it('Should return false if no parameters', function () {
+	it('Create return false if no parameters', function () {
 		var result = PAYPAL.apps.ButtonFactory.create();
 
 		result.should.equal(false);
 	});
+
 });
 
 
 // Test the buttons counter object
-describe('PAYPAL.apps.ButtonFactory.buttons', function () {
+describe('Test page button counter', function () {
 
 	'use strict';
 
 	var buttons = PAYPAL.apps.ButtonFactory.buttons;
 
-	it('Should have four buy now buttons', function () {
+	it('Should have six buy now buttons', function () {
 		buttons.buynow.should.equal(6);
 	});
 
-	it('Should have three cart buttons', function () {
+	it('Should have two cart buttons', function () {
 		buttons.cart.should.equal(2);
 	});
 
-	it('Should have three hosted buttons', function () {
+	it('Should have two donation buttons', function () {
+		buttons.donate.should.equal(2);
+	});
+
+	it('Should have two hosted buttons', function () {
 		buttons.hosted.should.equal(2);
 	});
 
@@ -71,6 +74,30 @@ describe('PAYPAL.apps.ButtonFactory.buttons', function () {
 	});
 });
 
+
+// Test editable fields
+describe('Editable buttons', function () {
+	'use strict';
+
+	var inputs = document.querySelectorAll('#buynow-editable input[type="text"]');
+
+	it('Should have two inputs', function () {
+		inputs.length.should.equal(2);
+	});
+
+	it('Should have a CSS class on the input', function () {
+		inputs[0].className.should.include('paypal-input');
+	});
+
+	it('Should have a CSS class on the label', function () {
+		inputs[0].parentNode.className.should.include('paypal-label');
+	});
+
+	it('Should have a CSS class on the container', function () {
+		inputs[0].parentNode.parentNode.className.should.include('paypal-group');
+	});
+
+});
 
 
 // Test multi-language support
