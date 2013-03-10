@@ -69,10 +69,6 @@ describe("Test page button counter", function () {
 		buttons.subscribe.should.equal(2);
 	});
 
-	it("Should have two hosted buttons", function () {
-		buttons.hosted.should.equal(2);
-	});
-
 	it("Should have one QR code", function () {
 		buttons.qr.should.equal(1);
 	});
@@ -138,5 +134,4 @@ describe("Multiple button image sizes", function () {
 
 	testSize("sm", "buynow");
 	testSize("sm", "cart");
-	testSize("sm", "hosted");
 });
