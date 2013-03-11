@@ -13,7 +13,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 	var app = {},
 		paypalURL = "https://www.paypal.com/cgi-bin/webscr",
 		qrCodeURL = "https://www.paypal.com/webapps/ppint/qrcode?data={url}&pattern={pattern}&height={size}",
-		scriptURL = "paypal-button.min.js",
 		bnCode = "JavaScriptButton_{type}",
 		prettyParams = {
 			id: "hosted_button_id",
@@ -197,10 +196,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 *
 	 * @param data {Object} An object of key/value data to set as button params
 	 * @param size {String} The size of QR code's longest side
-	 * @param locale {String} The locale
 	 * @return {HTMLElement}
 	 */
-	function buildQR(data, size, locale) {
+	function buildQR(data, size) {
 		var img = document.createElement("img"),
 			url = paypalURL + "?",
 			pattern = 13,
