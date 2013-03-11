@@ -41,7 +41,7 @@ QR codes can be easily scanned with a smart phone to check out.
 Donation buttons let you accept donations from your users.
 
 ```html
-<script src="paypal-button-minicart.min.js?merchant=YOUR_MERCHANT_ID"
+<script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="donate"
     data-name="My donation"
     data-amount="1.00"
@@ -52,7 +52,7 @@ Donation buttons let you accept donations from your users.
 Subscribe buttons let you set up payment subscriptions.
 
 ```html
-<script src="paypal-button-minicart.min.js?merchant=YOUR_MERCHANT_ID"
+<script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="subscribe"
     data-name="My product"
     data-amount="1.00"
