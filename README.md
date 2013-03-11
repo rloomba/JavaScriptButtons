@@ -55,7 +55,6 @@ Subscribe buttons let you set up payment subscriptions.
 <script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="subscribe"
     data-name="My product"
-    data-amount="1.00"
     data-a3="1.00"
     data-p3="1"
     data-t3="M"
