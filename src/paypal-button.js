@@ -18,7 +18,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 			id: "hosted_button_id",
 			name: "item_name",
 			number: "item_number",
-			lang: "lc"
+			lang: "lc",
+			recurrence: "p3",
+			period: "t3"
 		},
 		buttonImgs = {
 			buynow: "//www.paypalobjects.com/{locale}/i/btn/btn_buynow_{size}.gif",
@@ -89,6 +91,12 @@ PAYPAL.apps = PAYPAL.apps || {};
 			// Subscribe buttons
 			} else if (type === "subscribe") {
 				data.add("cmd", "_xclick-subscriptions");
+
+				// TODO: "amount cannot be used in prettyParams since it's overloaded
+				// Find a better way to do this
+				if (data.items.amount && !data.items.a3) {
+					data.add("a3", data.items.amount.value);
+				}
 			// Buy Now buttons
 			} else {
 				data.add("cmd", "_xclick");
