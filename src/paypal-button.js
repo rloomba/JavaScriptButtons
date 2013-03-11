@@ -1,4 +1,4 @@
-if (typeof PAYPAL === "undefined" || !PAYPAL) {
+if (typeof PAYPAL === 'undefined' || !PAYPAL) {
 	var PAYPAL = {};
 }
 
@@ -7,26 +7,26 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 (function () {
 
-	"use strict";
+	'use strict';
 
 
 	var app = {},
-		paypalURL = "https://www.paypal.com/cgi-bin/webscr",
-		qrCodeURL = "https://www.paypal.com/webapps/ppint/qrcode?data={url}&pattern={pattern}&height={size}",
-		bnCode = "JavaScriptButton_{type}",
+		paypalURL = 'https://www.paypal.com/cgi-bin/webscr',
+		qrCodeURL = 'https://www.paypal.com/webapps/ppint/qrcode?data={url}&pattern={pattern}&height={size}',
+		bnCode = 'JavaScriptButton_{type}',
 		prettyParams = {
-			id: "hosted_button_id",
-			name: "item_name",
-			number: "item_number",
-			lang: "lc",
-			recurrence: "p3",
-			period: "t3"
+			id: 'hosted_button_id',
+			name: 'item_name',
+			number: 'item_number',
+			lang: 'lc',
+			recurrence: 'p3',
+			period: 't3'
 		},
 		buttonImgs = {
-			buynow: "//www.paypalobjects.com/{locale}/i/btn/btn_buynow_{size}.gif",
-			cart: "//www.paypalobjects.com/{locale}/i/btn/btn_cart_{size}.gif",
-			donate: "//www.paypalobjects.com/{locale}/i/btn/btn_donate_{size}.gif",
-			subscribe: "//www.paypalobjects.com/{locale}/i/btn/btn_subscribe_{size}.gif"
+			buynow: '//www.paypalobjects.com/{locale}/i/btn/btn_buynow_{size}.gif',
+			cart: '//www.paypalobjects.com/{locale}/i/btn/btn_cart_{size}.gif',
+			donate: '//www.paypalobjects.com/{locale}/i/btn/btn_donate_{size}.gif',
+			subscribe: '//www.paypalobjects.com/{locale}/i/btn/btn_subscribe_{size}.gif'
 		};
 
 	if (!PAYPAL.apps.ButtonFactory) {
@@ -36,10 +36,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 		 */
 		app.config = {
 			labels: {
-				item_name: "Item",
-				item_number: "Number",
-				amount: "Amount",
-				quantity: "Quantity"
+				item_name: 'Item',
+				item_number: 'Number',
+				amount: 'Amount',
+				quantity: 'Quantity'
 			}
 		};
 
@@ -75,41 +75,41 @@ PAYPAL.apps = PAYPAL.apps || {};
 			}
 
 			// Defaults
-			type = type || "buynow";
+			type = type || 'buynow';
 
 			// Hosted buttons
 			if (data.items.hosted_button_id) {
-				type = "hosted";
-				data.add("cmd", "_s-xclick");
+				type = 'hosted';
+				data.add('cmd', '_s-xclick');
 			// Cart buttons
-			} else if (type === "cart") {
-				data.add("cmd", "_cart");
-				data.add("add", true);
+			} else if (type === 'cart') {
+				data.add('cmd', '_cart');
+				data.add('add', true);
 			// Donation buttons
-			} else if (type === "donate") {
-				data.add("cmd", "_donations");
+			} else if (type === 'donate') {
+				data.add('cmd', '_donations');
 			// Subscribe buttons
-			} else if (type === "subscribe") {
-				data.add("cmd", "_xclick-subscriptions");
+			} else if (type === 'subscribe') {
+				data.add('cmd', '_xclick-subscriptions');
 
-				// TODO: "amount cannot be used in prettyParams since it's overloaded
+				// TODO: "amount" cannot be used in prettyParams since it's overloaded
 				// Find a better way to do this
 				if (data.items.amount && !data.items.a3) {
-					data.add("a3", data.items.amount.value);
+					data.add('a3', data.items.amount.value);
 				}
 			// Buy Now buttons
 			} else {
-				data.add("cmd", "_xclick");
+				data.add('cmd', '_xclick');
 			}
 
 			// Add common data
-			data.add("business", business);
-			data.add("bn", bnCode.replace(/\{type\}/, type));
+			data.add('business', business);
+			data.add('bn', bnCode.replace(/\{type\}/, type));
 
 			// Build the UI components
-			if (type === "qr") {
+			if (type === 'qr') {
 				button = buildQR(data, data.items.size);
-				data.remove("size");
+				data.remove('size');
 			} else {
 				button = buildForm(data, type);
 			}
@@ -138,36 +138,36 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @return {HTMLElement}
 	 */
 	function buildForm(data, type) {
-		var form = document.createElement("form"),
-			btn = document.createElement("input"),
-			hidden = document.createElement("input"),
+		var form = document.createElement('form'),
+			btn = document.createElement('input'),
+			hidden = document.createElement('input'),
 			items = data.items,
 			item, child, label, input, key, size, locale;
 
-		btn.type = "image";
-		hidden.type = "hidden";
-		form.method = "post";
+		btn.type = 'image';
+		hidden.type = 'hidden';
+		form.method = 'post';
 		form.action = paypalURL;
-		form.className = "paypal-button";
-		form.target = "_top";
+		form.className = 'paypal-button';
+		form.target = '_top';
 
 		for (key in items) {
 			item = items[key];
 
 			if (item.isEditable) {
-				input = document.createElement("input");
-				input.type = "text";
-				input.className = "paypal-input";
+				input = document.createElement('input');
+				input.type = 'text';
+				input.className = 'paypal-input';
 				input.name = item.key;
 				input.value = item.value;
 
-				label = document.createElement("label");
-				label.className = "paypal-label";
-				label.appendChild(document.createTextNode(app.config.labels[item.key] + " " || ""));
+				label = document.createElement('label');
+				label.className = 'paypal-label';
+				label.appendChild(document.createTextNode(app.config.labels[item.key] + ' ' || ''));
 				label.appendChild(input);
 
-				child = document.createElement("p");
-				child.className = "paypal-group";
+				child = document.createElement('p');
+				child.className = 'paypal-group';
 				child.appendChild(label);
 			} else {
 				input = child = hidden.cloneNode(true);
@@ -185,7 +185,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		btn.src = getButtonImg(type, size, locale);
 
 		// If the Mini Cart is present then register the form
-		if (PAYPAL.apps.MiniCart && data.items.cmd.value === "_cart") {
+		if (PAYPAL.apps.MiniCart && data.items.cmd.value === '_cart') {
 			var MiniCart = PAYPAL.apps.MiniCart;
 
 			if (!MiniCart.UI.itemList) {
@@ -207,8 +207,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @return {HTMLElement}
 	 */
 	function buildQR(data, size) {
-		var img = document.createElement("img"),
-			url = paypalURL + "?",
+		var img = document.createElement('img'),
+			url = paypalURL + '?',
 			pattern = 13,
 			items = data.items,
 			item, key;
@@ -218,11 +218,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		for (key in items) {
 			item = items[key];
-			url += item.key + "=" + encodeURIComponent(item.value) + "&";
+			url += item.key + '=' + encodeURIComponent(item.value) + '&';
 		}
 
 		url = encodeURIComponent(url);
-		img.src = qrCodeURL.replace("{url}", url).replace("{pattern}", pattern).replace("{size}", size);
+		img.src = qrCodeURL.replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
 
 		return img;
 	}
@@ -240,8 +240,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 		var img = buttonImgs[type] || buttonImgs.buynow;
 
 		// Image defaults
-		locale = locale || "en_US";
-		size = (size === "small") ? "SM" : "LG";
+		locale = locale || 'en_US';
+		size = (size === 'small') ? 'SM' : 'LG';
 
 		return img.replace(/\{locale\}/, locale).replace(/\{size\}/, size);
 	}
@@ -294,9 +294,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 
 	// Init the buttons
-	if (typeof document !== "undefined") {
+	if (typeof document !== 'undefined') {
 		var ButtonFactory = PAYPAL.apps.ButtonFactory,
-			nodes = document.getElementsByTagName("script"),
+			nodes = document.getElementsByTagName('script'),
 			node, data, type, business, i, len;
 
 		for (i = 0, len = nodes.length; i < len; i++) {
@@ -306,7 +306,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			data = node && getDataSet(node);
 			type = data && data.button && data.button.value;
-			business = node.src.split("?merchant=")[1];
+			business = node.src.split('?merchant=')[1];
 
 			if (business) {
 				ButtonFactory.create(business, data, type, node.parentNode);
@@ -322,6 +322,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 
 // Export for CommonJS environments
-if (typeof module === "object" && typeof module.exports === "object") {
+if (typeof module === 'object' && typeof module.exports === 'object') {
 	module.exports = PAYPAL;
 }
