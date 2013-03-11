@@ -2,9 +2,20 @@
     "name": "PayPalJSButtons",
     "description": "JavaScript integration for PayPal's payment buttons",
     "version": "1.0.0",
+    "homepage": "http://paypal.github.com/JavaScriptButtons",
     "author": {
         "name": "Jeff Harrell",
         "url": "https://github.com/jeffharrell/"
+    },
+    "contributors": [
+        {
+            "name": "Mark Stuart",
+            "url": "https://github.com/mstuart/"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/paypal/JavaScriptButtons.git"
     },
     "dependencies": {},
     "devDependencies": {
