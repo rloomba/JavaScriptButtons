@@ -104,18 +104,18 @@ describe('Editable buttons', function () {
 describe('Multi-language button images', function () {
 	'use strict';
 
-	function testLanguage(locale, type) {
+	function testLanguage(locale, type, expected) {
 		it('Should have a ' + locale + ' version of the ' + type + ' button', function () {
-			var image = document.querySelector('#' + type + '-' + locale + ' input[type=image]'),
-				imagePath = image && image.src;
+			var button = document.querySelector('#' + type + '-' + locale + ' button[type=submit]'),
+				buttonText = button && button.textContent;
 
-			imagePath.should.include(locale);
+			buttonText.should.equal(expected);
 		});
 	}
 
-	testLanguage('es_ES', 'buynow');
-	testLanguage('fr_FR', 'buynow');
-	testLanguage('de_DE', 'buynow');
+	testLanguage('es_ES', 'buynow', 'Comprar ahora');
+	testLanguage('fr_FR', 'buynow', 'Acheter');
+	testLanguage('de_DE', 'buynow', 'Jetzt kaufen');
 });
 
 
@@ -123,15 +123,17 @@ describe('Multi-language button images', function () {
 describe('Multiple button image sizes', function () {
 	'use strict';
 
-	function testSize(size, type) {
+	function testSize(size, type, expected) {
 		it('Should have a ' + size + ' version of ' + type + ' button', function () {
-			var image = document.querySelector('#' + type + '-' + size + ' input[type=image]'),
-				imagePath = image && image.src;
+			var button = document.querySelector('#' + type + '-' + size + ' button[type=submit]'),
+				buttonClass = button && button.className;
 
-			imagePath.should.include('SM');
+			buttonClass.should.include(expected);
 		});
 	}
 
-	testSize('sm', 'buynow');
-	testSize('sm', 'cart');
+	testSize('sm', 'buynow', 'small');
+	testSize('sm', 'cart', 'small');
+	testSize('lg', 'buynow', 'large');
+	testSize('lg', 'cart', 'large');
 });

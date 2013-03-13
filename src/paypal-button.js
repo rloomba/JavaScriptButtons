@@ -15,7 +15,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 		qrCodeURL = 'https://www.paypal.com/webapps/ppint/qrcode?data={url}&pattern={pattern}&height={size}',
 		bnCode = 'JavaScriptButton_{type}',
 		prettyParams = {
-			id: 'hosted_button_id',
 			name: 'item_name',
 			number: 'item_number',
 			lang: 'lc',
@@ -49,7 +48,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 		app.buttons = {
 			buynow: 0,
 			cart: 0,
-			hosted: 0,
 			donate: 0,
 			qr: 0,
 			subscribe: 0
@@ -77,12 +75,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 			// Defaults
 			type = type || 'buynow';
 
-			// Hosted buttons
-			if (data.items.hosted_button_id) {
-				type = 'hosted';
-				data.add('cmd', '_s-xclick');
 			// Cart buttons
-			} else if (type === 'cart') {
+			if (type === 'cart') {
 				data.add('cmd', '_cart');
 				data.add('add', true);
 			// Donation buttons
@@ -186,7 +180,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		btn.type = 'submit';
 		btn.className = 'paypal-button ' + size;
-		btn.innerHTML = buttonText[locale][type];
+		btn.appendChild(document.createTextNode(buttonText[locale][type]));
 
 		form.appendChild(btn);
 
