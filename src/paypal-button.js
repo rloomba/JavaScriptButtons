@@ -22,11 +22,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 			recurrence: 'p3',
 			period: 't3'
 		},
-		buttonImgs = {
-			buynow: '//www.paypalobjects.com/{locale}/i/btn/btn_buynow_{size}.gif',
-			cart: '//www.paypalobjects.com/{locale}/i/btn/btn_cart_{size}.gif',
-			donate: '//www.paypalobjects.com/{locale}/i/btn/btn_donate_{size}.gif',
-			subscribe: '//www.paypalobjects.com/{locale}/i/btn/btn_subscribe_{size}.gif'
+		buttonText = {
+			de_DE: { buynow: 'Jetzt kaufen', cart: 'In den Warenkorb', donate: 'Spenden', subscribe: 'Abonnieren' },
+			en_US: { buynow: 'Buy Now', cart: 'Add to Cart', donate: 'Donate', subscribe: 'Subscribe' },
+			es_ES: { buynow: 'Comprar ahora', cart: 'Añadir al carro', donate: 'Donar', subscribe: 'Suscribirse' },
+			fr_FR: { buynow: 'Acheter', cart: 'Ajouter au panier', donate: 'Faire un don', subscribe: 'Souscrire' }
 		};
 
 	if (!PAYPAL.apps.ButtonFactory) {
@@ -114,6 +114,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 				button = buildForm(data, type);
 			}
 
+			// Inject CSS
+			injectCSS();
+
 			// Register it
 			this.buttons[type] += 1;
 
@@ -139,17 +142,17 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 */
 	function buildForm(data, type) {
 		var form = document.createElement('form'),
-			btn = document.createElement('input'),
+			btn = document.createElement('button'),
 			hidden = document.createElement('input'),
 			items = data.items,
 			item, child, label, input, key, size, locale;
 
-		btn.type = 'image';
-		hidden.type = 'hidden';
 		form.method = 'post';
 		form.action = paypalURL;
 		form.className = 'paypal-button';
 		form.target = '_top';
+
+		hidden.type = 'hidden';
 
 		for (key in items) {
 			item = items[key];
@@ -178,11 +181,14 @@ PAYPAL.apps = PAYPAL.apps || {};
 			form.appendChild(child);
 		}
 
-		size = items.size && items.size.value;
-		locale = items.lc && items.lc.value;
+		size = items.size && items.size.value || 'large';
+		locale = items.lc && items.lc.value || 'en_US';
+
+		btn.type = 'submit';
+		btn.className = 'paypal-button ' + size;
+		btn.innerHTML = buttonText[locale][type];
 
 		form.appendChild(btn);
-		btn.src = getButtonImg(type, size, locale);
 
 		// If the Mini Cart is present then register the form
 		if (PAYPAL.apps.MiniCart && data.items.cmd.value === '_cart') {
@@ -196,6 +202,40 @@ PAYPAL.apps = PAYPAL.apps || {};
 		}
 
 		return form;
+	}
+
+	/**
+	 * Injects button CSS in the <head>
+	 *
+	 * @return {void}
+	 */
+	function injectCSS() {
+		var css, styleEl, paypalButton, paypalInput;
+
+		if (document.getElementById('paypal-button')) {
+			return;
+		}
+
+		css = '';
+		styleEl = document.createElement('style');
+		paypalButton = '.paypal-button';
+		paypalInput = paypalButton + ' button[type=submit]';
+
+		css += paypalButton + ' { white-space: nowrap; }';
+		css += paypalInput + ' { white-space: nowrap; overflow: hidden; outline: none; text-decoration: none; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; max-width: 100%; position: relative; margin: 0; background-color: rgb(252,155,0);  background: -moz-linear-gradient(top, rgb(255,248,252) 0%, rgb(252,155,0) 66%, rgb(252,155,0) 66%, rgb(255,248,252) 100%); background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(255,248,252)), color-stop(66%,rgb(252,155,0)), color-stop(66%,rgb(252,155,0)), color-stop(100%,rgb(255,248,252))); background: -webkit-linear-gradient(top, rgb(255,248,252) 0%,rgb(252,155,0) 66%,rgb(252,155,0) 66%,rgb(255,248,252) 100%); background: -o-linear-gradient(top, rgb(255,248,252) 0%,rgb(252,155,0) 66%,rgb(252,155,0) 66%,rgb(255,248,252) 100%); background: -ms-linear-gradient(top, rgb(255,248,252) 0%,rgb(252,155,0) 66%,rgb(252,155,0) 66%,rgb(255,248,252) 100%); background: linear-gradient(to bottom, rgb(255,248,252) 0%,rgb(252,155,0) 66%,rgb(252,155,0) 66%,rgb(255,248,252) 100%);filter:progid:DXImageTransform.Microsoft.gradient( startColorstr="rgb(255,248,252)", endColorstr="rgb(252,155,0)",GradientType=0 );border: rgb(251,137,0) solid 1px; -moz-border-radius: 12px; -webkit-border-radius: 12px; border-radius: 12px; color: rgb(5, 37, 87); font-weight: bold; text-shadow: 0 1px 0 rgba(255,255,255,.5); -webkit-user-select: none; -moz-user-select: none; -o-user-select: none; user-select: none; cursor: pointer; max-width: 100%; overflow: hidden; font-style: italic; font-family: "Verdana"; }';
+		css += paypalInput + '.small { padding: 3px 15px; font-size: 11px; }';
+		css += paypalInput + '.large { padding: 4px 22px; font-size: 13px; }';
+
+		styleEl.type = 'text/css';
+		styleEl.id = 'paypal-button';
+
+		if (styleEl.styleSheet) {
+			styleEl.styleSheet.cssText = css;
+		} else {
+			styleEl.appendChild(document.createTextNode(css));
+		}
+
+		document.getElementsByTagName('head')[0].appendChild(styleEl);
 	}
 
 
@@ -225,25 +265,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 		img.src = qrCodeURL.replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
 
 		return img;
-	}
-
-
-	/**
-	 * Utility function to return the rendered button image URL
-	 *
-	 * @param type {String} The type of button to render
-	 * @param size {String} The size of button (small/large)
-	 * @param locale {String} The locale
-	 * @return {String}
-	 */
-	function getButtonImg(type, size, locale) {
-		var img = buttonImgs[type] || buttonImgs.buynow;
-
-		// Image defaults
-		locale = locale || 'en_US';
-		size = (size === 'small') ? 'SM' : 'LG';
-
-		return img.replace(/\{locale\}/, locale).replace(/\{size\}/, size);
 	}
 
 
