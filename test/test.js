@@ -81,8 +81,8 @@ describe('Editable buttons', function () {
 
 	var inputs = document.querySelectorAll('#buynow-editable input[type=text]');
 
-	it('Should have two inputs', function () {
-		inputs.length.should.equal(2);
+	it('Should have three inputs', function () {
+		inputs.length.should.equal(3);
 	});
 
 	it('Should have a CSS class on the input', function () {

@@ -22,10 +22,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 			period: 't3'
 		},
 		buttonText = {
-			de_DE: { buynow: 'Jetzt kaufen', cart: 'In den Warenkorb', donate: 'Spenden', subscribe: 'Abonnieren' },
-			en_US: { buynow: 'Buy Now', cart: 'Add to Cart', donate: 'Donate', subscribe: 'Subscribe' },
-			es_ES: { buynow: 'Comprar ahora', cart: 'Añadir al carro', donate: 'Donar', subscribe: 'Suscribirse' },
-			fr_FR: { buynow: 'Acheter', cart: 'Ajouter au panier', donate: 'Faire un don', subscribe: 'Souscrire' }
+			de_DE: { buynow: 'Jetzt kaufen', cart: 'In den Warenkorb', donate: 'Spenden', subscribe: 'Abonnieren', item_name: 'Artikel', number: 'Nummer', amount: 'Betrag', quantity: 'Menge' },
+			en_US: { buynow: 'Buy Now', cart: 'Add to Cart', donate: 'Donate', subscribe: 'Subscribe', item_name: 'Item', number: 'Number', amount: 'Amount', quantity: 'Quantity' },
+			es_ES: { buynow: 'Comprar ahora', cart: 'Añadir al carro', donate: 'Donar', subscribe: 'Suscribirse', item_name: 'Artículo', number: 'Número', amount: 'Importe', quantity: 'Cantidad' },
+			fr_FR: { buynow: 'Acheter', cart: 'Ajouter au panier', donate: 'Faire un don', subscribe: 'Souscrire', item_name: 'Objet', number: 'Numéro', amount: 'Montant', quantity: 'Quantité' }
 		};
 
 	if (!PAYPAL.apps.ButtonFactory) {
@@ -34,12 +34,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		 * Initial config for the app. These values can be overridden by the page.
 		 */
 		app.config = {
-			labels: {
-				item_name: 'Item',
-				item_number: 'Number',
-				amount: 'Amount',
-				quantity: 'Quantity'
-			}
+			labels: {}
 		};
 
 		/**
@@ -148,6 +143,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		hidden.type = 'hidden';
 
+		size = items.size && items.size.value || 'large';
+		locale = items.lc && items.lc.value || 'en_US';
+
 		for (key in items) {
 			item = items[key];
 
@@ -160,7 +158,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 				label = document.createElement('label');
 				label.className = 'paypal-label';
-				label.appendChild(document.createTextNode(app.config.labels[item.key] + ' ' || ''));
+				label.appendChild(document.createTextNode(app.config.labels[item.key] || buttonText[locale][item.key]));
 				label.appendChild(input);
 
 				child = document.createElement('p');
@@ -174,9 +172,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			form.appendChild(child);
 		}
-
-		size = items.size && items.size.value || 'large';
-		locale = items.lc && items.lc.value || 'en_US';
 
 		btn.type = 'submit';
 		btn.className = 'paypal-button ' + size;
