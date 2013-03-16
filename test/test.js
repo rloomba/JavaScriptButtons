@@ -114,8 +114,8 @@ describe('Multi-language button images', function () {
 	}
 
 	testLanguage('es_ES', 'buynow', 'Comprar ahora');
-	testLanguage('fr_FR', 'buynow', 'Acheter');
 	testLanguage('de_DE', 'buynow', 'Jetzt kaufen');
+	testLanguage('ja_JP', 'buynow', '今すぐ購入');
 });
 
 

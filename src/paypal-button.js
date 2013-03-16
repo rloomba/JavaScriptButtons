@@ -22,10 +22,32 @@ PAYPAL.apps = PAYPAL.apps || {};
 			period: 't3'
 		},
 		buttonText = {
+			da_DK: { buynow: 'Køb nu', cart: 'Læg i indkøbsvogn', donate: 'Doner', subscribe: 'Abonner', item_name: 'Vare', number: 'Nummer', amount: 'Pris', quantity: 'Antal' },
 			de_DE: { buynow: 'Jetzt kaufen', cart: 'In den Warenkorb', donate: 'Spenden', subscribe: 'Abonnieren', item_name: 'Artikel', number: 'Nummer', amount: 'Betrag', quantity: 'Menge' },
+			en_AU: { buynow: 'Buy Now', cart: 'Add to Cart', donate: 'Donate', subscribe: 'Subscribe', item_name: 'Item', number: 'Number', amount: 'Amount', quantity: 'Quantity' },
+			en_GB: { buynow: 'Buy Now', cart: 'Add to Cart', donate: 'Donate', subscribe: 'Subscribe', item_name: 'Item', number: 'Number', amount: 'Amount', quantity: 'Quantity' },
 			en_US: { buynow: 'Buy Now', cart: 'Add to Cart', donate: 'Donate', subscribe: 'Subscribe', item_name: 'Item', number: 'Number', amount: 'Amount', quantity: 'Quantity' },
 			es_ES: { buynow: 'Comprar ahora', cart: 'Añadir al carro', donate: 'Donar', subscribe: 'Suscribirse', item_name: 'Artículo', number: 'Número', amount: 'Importe', quantity: 'Cantidad' },
-			fr_FR: { buynow: 'Acheter', cart: 'Ajouter au panier', donate: 'Faire un don', subscribe: 'Souscrire', item_name: 'Objet', number: 'Numéro', amount: 'Montant', quantity: 'Quantité' }
+			es_XC: { buynow: 'Comprar ahora', cart: 'Añadir al carrito', donate: 'Donar', subscribe: 'Suscribirse', item_name: 'Artículo', number: 'Número', amount: 'Importe', quantity: 'Cantidad' },
+			fr_CA: { buynow: 'Acheter', cart: 'Ajouter au panier', donate: 'Faire un don', subscribe: 'Souscrire', item_name: 'Objet', number: 'Numéro', amount: 'Montant', quantity: 'Quantité' },
+			fr_FR: { buynow: 'Acheter', cart: 'Ajouter au panier', donate: 'Faire un don', subscribe: 'Souscrire', item_name: 'Objet', number: 'Numéro', amount: 'Montant', quantity: 'Quantité' },
+			fr_XC: { buynow: 'Acheter', cart: 'Ajouter au panier', donate: 'Faire un don', subscribe: 'Souscrire', item_name: 'Objet', number: 'Numéro', amount: 'Montant', quantity: 'Quantité' },
+			he_IL: { buynow: 'וישכע הנק', cart: 'תוינקה לסל ףסוה', donate: 'םורת', subscribe: 'יונמכ ףרטצה', item_name: 'טירפ', number: 'רפסמ', amount: 'םוכס', quantity: 'מותכ' },
+			id_ID: { buynow: 'Beli Sekarang', cart: 'Tambah ke Keranjang', donate: 'Donasikan', subscribe: 'Berlangganan', item_name: 'Barang', number: 'Nomor', amount: 'Harga', quantity: 'Kuantitas' },
+			it_IT: { buynow: 'Paga adesso', cart: 'Aggiungi al carrello', donate: 'Donazione', subscribe: 'Iscriviti', item_name: 'Oggetto', number: 'Numero', amount: 'Importo', quantity: 'Quantità' },
+			ja_JP: { buynow: '今すぐ購入', cart: 'カートに追加', donate: '寄付', subscribe: '購読', item_name: '商品', number: '番号', amount: '価格', quantity: '数量' },
+			nl_NL: { buynow: 'Nu kopen', cart: 'Aan winkelwagentje toevoegen', donate: 'Doneren', subscribe: 'Abonneren', item_name: 'Item', number: 'Nummer', amount: 'Bedrag', quantity: 'Hoeveelheid' },
+			no_NO: { buynow: 'Kjøp nå', cart: 'Legg til i kurv', donate: 'Doner', subscribe: 'Abonner', item_name: 'Vare', number: 'Nummer', amount: 'Beløp', quantity: 'Antall' },
+			pl_PL: { buynow: 'Kup teraz', cart: 'Dodaj do koszyka', donate: 'Przekaż darowiznę', subscribe: 'Subskrybuj', item_name: 'Przedmiot', number: 'Numer', amount: 'Kwota', quantity: 'Ilość' },
+			pt_BR: { buynow: 'Comprar agora', cart: 'Adicionar ao carrinho', donate: 'Doar', subscribe: 'Assinar', item_name: 'Produto', number: 'Número', amount: 'Valor', quantity: 'Quantidade' },
+			ru_RU: { buynow: 'Купить сейчас', cart: 'Добавить в корзину', donate: 'Пожертвовать', subscribe: 'Подписаться', item_name: 'Товар', number: 'Номер', amount: 'Сумма', quantity: 'Количество' },
+			sv_SE: { buynow: 'Köp nu', cart: 'Lägg till i kundvagn', donate: 'Donera', subscribe: 'Abonnera', item_name: 'Objekt', number: 'Nummer', amount: 'Belopp', quantity: 'Antal' },
+			th_TH: { buynow: 'ซื้อทันที', cart: 'เพิ่มลงตะกร้า', donate: 'บริจาค', subscribe: 'บอกรับสมาชิก', item_name: 'ชื่อสินค้า', number: 'รหัสสินค้า', amount: 'ราคา', quantity: 'จำนวน' },
+			tr_TR: { buynow: 'Hemen Alın', cart: 'Sepete Ekleyin', donate: 'Bağış Yapın', subscribe: 'Abone Olun', item_name: 'Ürün', number: 'Numara', amount: 'Tutar', quantity: 'Miktar' },
+			zh_CN: { buynow: '立即购买', cart: '添加到购物车', donate: '捐赠', subscribe: '租用', item_name: '物品', number: '编号', amount: '金额', quantity: '数量' },
+			zh_HK: { buynow: '立即買', cart: '加入購物車', donate: '捐款', subscribe: '訂用', item_name: '項目', number: '號碼', amount: '金額', quantity: '數量' },
+			zh_TW: { buynow: '立即購', cart: '加到購物車', donate: '捐款', subscribe: '訂閱', item_name: '商品', number: '商品編號', amount: '單價', quantity: '數量' },
+			zh_XC: { buynow: '立即购买', cart: '添加到购物车', donate: '捐赠', subscribe: '租用', item_name: '物品', number: '编号', amount: '金额', quantity: '数量' }
 		};
 
 	if (!PAYPAL.apps.ButtonFactory) {
@@ -134,7 +156,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			btn = document.createElement('button'),
 			hidden = document.createElement('input'),
 			items = data.items,
-			item, child, label, input, key, size, locale;
+			item, child, label, input, key, size, locale, localeText;
 
 		form.method = 'post';
 		form.action = paypalURL;
@@ -145,6 +167,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		size = items.size && items.size.value || 'large';
 		locale = items.lc && items.lc.value || 'en_US';
+		localeText = buttonText[locale] || buttonText.en_US;
 
 		for (key in items) {
 			item = items[key];
@@ -175,7 +198,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		btn.type = 'submit';
 		btn.className = 'paypal-button ' + size;
-		btn.appendChild(document.createTextNode(buttonText[locale][type]));
+		btn.appendChild(document.createTextNode(localeText[type]));
 
 		form.appendChild(btn);
 
@@ -214,8 +237,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 		css += paypalInput + ' { white-space: nowrap; overflow: hidden; border-radius: 13px; font-family: "Arial", bold, italic; font-weight: bold; font-style: italic; border: 1px solid #ffa823; color: #0E3168; background: transparent; position: relative; text-shadow: 0 1px 0 rgba(255,255,255,.5); cursor: pointer; }';
 		css += paypalInput + ':before { content: " "; position: absolute; width: 100%; height: 100%; border-radius: 11px; top: 0; left: 0; background: #ffa823; background: -webkit-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -moz-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -ms-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); z-index: -2; }';
 		css += paypalInput + ':after { content: " "; position: absolute; width: 98%; height: 60%; border-radius: 40px 40px 38px 38px; top: 0; left: 0; background: -webkit-linear-gradient(top, #fefefe 0%, #fed994 100%); background: -moz-linear-gradient(top, #fefefe 0%, #fed994 100%); background: -ms-linear-gradient(top, #fefefe 0%, #fed994 100%); background: linear-gradient(top, #fefefe 0%, #fed994 100%); z-index: -1; -webkit-transform: translateX(1%);-moz-transform: translateX(1%); -ms-transform: translateX(1%); transform: translateX(1%); }';
-		css += paypalInput + '.small { padding: 3px 15px; font-size: 12px; }';
-		css += paypalInput + '.large { padding: 4px 19px; font-size: 14px; }';
+		css += paypalInput + '.small { padding: 3px 15px; font-size: 12px; line-height: 14px; }';
+		css += paypalInput + '.large { padding: 4px 19px; font-size: 14px; line-height: 16px; }';
 
 		styleEl.type = 'text/css';
 		styleEl.id = 'paypal-button';
