@@ -5,12 +5,14 @@
  * @author Jeff Harrell <https://github.com/jeffharrell/>
  */
 /*!
- * The PayPal Mini Cart
- * Visit http://www.minicartjs.com/ for details
- * Use subject to license agreement as set forth at the link below
+ * MiniCart
  *
- * @author Jeff Harrell
- * @license https://github.com/jeffharrell/MiniCart/blob/master/LICENSE eBay Open Source License Agreement
+ * Improve your PayPal integration by creating an overlay which appears as a user adds products to their cart.
+ *
+ * @version 2.5.0 - 2012-12-02, 1:04:43 PM
+ * @author Jeff Harrell <https://github.com/jeffharrell/>
+ * @url http://www.minicartjs.com/
+ * @license <eBay Open Source License Agreement <https://github.com/jeffharrell/MiniCart/blob/master/LICENSE>>
  */
 if (typeof PAYPAL === 'undefined' || !PAYPAL) {
 	var PAYPAL = {};
@@ -50,6 +52,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 		 * The base path of your website to set the cookie to
 		 */
 		cookiePath: '/',
+
+		/**
+		 * The number of days to keep the cart data
+		 */
+		cartDuration: 30,
 
 		/**
 		 * Strings used for display text
@@ -167,7 +174,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 			afterReset: null
 		}
 	};
-
 
 
 	if (!PAYPAL.apps.MiniCart) {
@@ -531,13 +537,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 			/**
 			 * Resets the card and renders the products
 			 */
-			var _redrawCartItems = function () {
+			var _redrawCartItems = function (silent) {
 				minicart.products = [];
 				minicart.UI.itemList.innerHTML = '';
 				minicart.UI.subtotalAmount.innerHTML = '';
 
 				_parseStorage();
-				minicart.updateSubtotal();
+				minicart.updateSubtotal(silent);
 			};
 
 
@@ -680,7 +686,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				minicart.products[offset].product.item_number = '';
 
 				minicart.updateSubtotal();
-				$.storage.save(minicart.products);
+				$.storage.save(minicart.products, config.cartDuration);
 			};
 
 
@@ -724,10 +730,14 @@ PAYPAL.apps = PAYPAL.apps || {};
 			 * @param userConfig {object} User settings which override the default configuration
 			 */
 			minicart.render = function (userConfig) {
-				var events = config.events,
-					onRender = events.onRender,
-					afterRender = events.afterRender,
-					hash, cmd;
+				var events, onRender, afterRender, hash, cmd;
+
+				// Overwrite default configuration with user settings
+				_parseUserConfig(userConfig);
+
+				events = config.events;
+				onRender = events.onRender;
+				afterRender = events.afterRender;
 
 				if (typeof onRender === 'function') {
 					if (onRender.call(minicart) === false) {
@@ -736,9 +746,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 				}
 
 				if (!isRendered) {
-					// Overwrite default configuration with user settings
-					_parseUserConfig(userConfig);
-
 					// Render the cart UI
 					_addCSS();
 					_buildDOM();
@@ -763,7 +770,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				// Process any stored data and render it
 				// TODO: _parseStorage shouldn't be so tightly coupled here and one
 				// should be able to redraw without re-parsing the storage
-				_redrawCartItems();
+				_redrawCartItems(true);
 
 				// Trigger the cart to peek on first load if any products were loaded
 				if (!isRendered) {
@@ -809,7 +816,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 				return true;
 			};
 
-
 			/**
 			 * Adds a product to the cart
 			 *
@@ -848,7 +854,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				minicart.updateSubtotal();
 				minicart.show(null);
 
-				$.storage.save(minicart.products);
+				$.storage.save(minicart.products, config.cartDuration);
 
 				if (typeof afterAddToCart === 'function') {
 					afterAddToCart.call(minicart, data);
@@ -899,7 +905,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			/**
 			 * Updates the UI with the current subtotal and currency code
 			 */
-			minicart.updateSubtotal = function () {
+			minicart.updateSubtotal = function (silent) {
 				var ui = minicart.UI,
 					cartEl = ui.cart.elements,
 					subtotalEl = ui.subtotalAmount,
@@ -926,25 +932,27 @@ PAYPAL.apps = PAYPAL.apps || {};
 				subtotalEl.innerHTML = $.util.formatCurrency(subtotal, currency_code);
 
 				// Yellow fade on update
-				(function doFade() {
-					hex = level.toString(16);
-					level++;
+				if (!silent) {
+					(function doFade() {
+						hex = level.toString(16);
+						level++;
 
-					subtotalEl.style.backgroundColor = '#ff' + hex;
+						subtotalEl.style.backgroundColor = '#ff' + hex;
 
-					if (level >= 15) {
-						subtotalEl.style.backgroundColor = 'transparent';
+						if (level >= 15) {
+							subtotalEl.style.backgroundColor = 'transparent';
 
-						// hide the cart if there's no total
-						if (subtotal === '0.00') {
-							minicart.hide(null, true);
+							// hide the cart if there's no total
+							if (subtotal === '0.00') {
+								minicart.reset();
+							}
+
+							return;
 						}
 
-						return;
-					}
-
-					setTimeout(doFade, 30);
-				})();
+						setTimeout(doFade, 30);
+					})();
+				}
 			};
 
 
@@ -1139,11 +1147,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 				// Discount
 				discount = this.getDiscount();
 
-				this.discountInput.type = 'hidden';
-				this.discountInput.name = 'discount_amount_' + position;
-				this.discountInput.value = discount;
+				if (discount) {
+					this.discountInput.type = 'hidden';
+					this.discountInput.name = 'discount_amount_' + position;
+					this.discountInput.value = discount;
 
-				this.metaNode.appendChild(this.discountNode);
+					this.metaNode.appendChild(this.discountNode);
+				}
 
 				// Price
 				price = this.getPrice();
@@ -1165,7 +1175,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 				// Build out the DOM
 				this.liNode.appendChild(this.nameNode);
 				this.liNode.appendChild(this.quantityInput);
-				this.liNode.appendChild(this.discountInput);
+
+				if (discount) {
+					this.liNode.appendChild(this.discountInput);
+				}
+
 				this.liNode.appendChild(this.removeInput);
 				this.liNode.appendChild(this.priceNode);
 
@@ -1261,6 +1275,15 @@ PAYPAL.apps = PAYPAL.apps || {};
 					if ((discount = this.getDiscount())) {
 						this.discountInput.value = discount;
 
+						/**
+						 * Append the discount node if it doesn't already exist
+						 *
+						 * @author Ethan Schroeder <ethan.schroeder@gmail.com>
+						 */
+						if (!this.discountNode.innerHTML) {
+							this.metaNode.appendChild(this.discountNode);
+						}
+
 						this.discountNode.innerHTML  = '<br />';
 						this.discountNode.innerHTML += config.strings.discount || 'Discount: ';
 						this.discountNode.innerHTML += $.util.formatCurrency(discount, this.settings.currency_code);
@@ -1322,13 +1345,29 @@ PAYPAL.apps = PAYPAL.apps || {};
 					 * @return {object}
 					 */
 					load: function () {
-						var data = localStorage.getItem(name);
+						var data = localStorage.getItem(name),
+							todayDate, expiresDate;
 
 						if (data) {
 							data = JSON.parse(decodeURIComponent(data));
 						}
 
-						return data;
+						if (data && data.expires) {
+							todayDate = new Date();
+							expiresDate = new Date(data.expires);
+
+							if (todayDate > expiresDate) {
+								$.storage.remove();
+								return;
+							}
+						}
+
+						// A little bit of backwards compatibility for the moment
+						if (data && data.value) {
+							return data.value;
+						} else {
+							return data;
+						}
 					},
 
 
@@ -1336,10 +1375,12 @@ PAYPAL.apps = PAYPAL.apps || {};
 					 * Saves the data
 					 *
 					 * @param items {object} The list of items to save
+					 * @param duration {Number} The number of days to keep the data
 					 */
-					save: function (items) {
-						var data = [],
-							item, len, i;
+					save: function (items, duration) {
+						var date = new Date(),
+							data = [],
+							wrappedData, item, len, i;
 
 						if (items) {
 							for (i = 0, len = items.length; i < len; i++) {
@@ -1350,8 +1391,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 								});
 							}
 
-							data = encodeURIComponent(JSON.stringify(data));
-							localStorage.setItem(name, data);
+							date.setTime(date.getTime() + duration * 24 * 60 * 60 * 1000);
+							wrappedData = {
+								value: data,
+								expires: date.toGMTString()
+							};
+
+							localStorage.setItem(name, encodeURIComponent(JSON.stringify(wrappedData)));
 						}
 					},
 
@@ -1402,6 +1448,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 					 * Saves the data
 					 *
 					 * @param items {object} The list of items to save
+					 * @param duration {Number} The number of days to keep the data
 					 */
 					save: function (items, duration) {
 						var date = new Date(),
@@ -1417,9 +1464,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 								});
 							}
 
-							duration = duration || 30;
 							date.setTime(date.getTime() + duration * 24 * 60 * 60 * 1000);
-
 							document.cookie = config.name + '=' + encodeURIComponent(JSON.stringify(data)) + '; expires=' + date.toGMTString() + '; path=' + config.cookiePath;
 						}
 					},
@@ -1687,223 +1732,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 				return before + amount + after;
 			}
 		};
+
 	}
-
-
-
-	/**
-	 * json2.js
-	 * See http://www.JSON.org/js.html
-	 */
-	var JSON;
-	if (!JSON) {
-		JSON = {};
-	}
-
-	(function () {
-		 'use strict';
-
-		 function f(n) {
-			 return n < 10 ? '0' + n : n;
-		 }
-
-		 if (typeof Date.prototype.toJSON !== 'function') {
-
-			 Date.prototype.toJSON = function (key) {
-
-				 return isFinite(this.valueOf())
-					 ? this.getUTCFullYear()	 + '-' +
-						 f(this.getUTCMonth() + 1) + '-' +
-						 f(this.getUTCDate())	   + 'T' +
-						 f(this.getUTCHours())	   + ':' +
-						 f(this.getUTCMinutes())   + ':' +
-						 f(this.getUTCSeconds())   + 'Z'
-					 : null;
-			 };
-
-			 String.prototype.toJSON	  =
-				 Number.prototype.toJSON  =
-				 Boolean.prototype.toJSON = function (key) {
-					 return this.valueOf();
-				 };
-		 }
-
-		 var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
-			 escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
-			 gap,
-			 indent,
-			 meta = {
-				 '\b': '\\b',
-				 '\t': '\\t',
-				 '\n': '\\n',
-				 '\f': '\\f',
-				 '\r': '\\r',
-				 '"' : '\\"',
-				 '\\': '\\\\'
-			 },
-			 rep;
-
-
-		 function quote(string) {
-			 escapable.lastIndex = 0;
-			 return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
-				 var c = meta[a];
-				 return typeof c === 'string'
-					 ? c
-					 : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
-			 }) + '"' : '"' + string + '"';
-		 }
-
-
-		 function str(key, holder) {
-			 var i,
-				 k,
-				 v,
-				 length,
-				 mind = gap,
-				 partial,
-				 value = holder[key];
-
-			 if (value && typeof value === 'object' &&
-					 typeof value.toJSON === 'function') {
-				 value = value.toJSON(key);
-			 }
-
-			 if (typeof rep === 'function') {
-				 value = rep.call(holder, key, value);
-			 }
-
-			 switch (typeof value) {
-			 case 'string':
-				 return quote(value);
-
-			 case 'number':
-				 return isFinite(value) ? String(value) : 'null';
-
-			 case 'boolean':
-			 case 'null':
-				 return String(value);
-			 case 'object':
-				 if (!value) {
-					 return 'null';
-				 }
-				 gap += indent;
-				 partial = [];
-
-				 if (Object.prototype.toString.apply(value) === '[object Array]') {
-					 length = value.length;
-					 for (i = 0; i < length; i += 1) {
-						 partial[i] = str(i, value) || 'null';
-					 }
-					 v = partial.length === 0
-						 ? '[]'
-						 : gap
-						 ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']'
-						 : '[' + partial.join(',') + ']';
-					 gap = mind;
-					 return v;
-				 }
-				 if (rep && typeof rep === 'object') {
-					 length = rep.length;
-					 for (i = 0; i < length; i += 1) {
-						 if (typeof rep[i] === 'string') {
-							 k = rep[i];
-							 v = str(k, value);
-							 if (v) {
-								 partial.push(quote(k) + (gap ? ': ' : ':') + v);
-							 }
-						 }
-					 }
-				 } else {
-					 for (k in value) {
-						 if (Object.prototype.hasOwnProperty.call(value, k)) {
-							 v = str(k, value);
-							 if (v) {
-								 partial.push(quote(k) + (gap ? ': ' : ':') + v);
-							 }
-						 }
-					 }
-				 }
-				 v = partial.length === 0
-					 ? '{}'
-					 : gap
-					 ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}'
-					 : '{' + partial.join(',') + '}';
-				 gap = mind;
-				 return v;
-			 }
-		 }
-		 if (typeof JSON.stringify !== 'function') {
-			 JSON.stringify = function (value, replacer, space) {
-				 var i;
-				 gap = '';
-				 indent = '';
-
-				 if (typeof space === 'number') {
-					 for (i = 0; i < space; i += 1) {
-						 indent += ' ';
-					 }
-				 } else if (typeof space === 'string') {
-					 indent = space;
-				 }
-
-				 rep = replacer;
-				 if (replacer && typeof replacer !== 'function' &&
-						 (typeof replacer !== 'object' ||
-						 typeof replacer.length !== 'number')) {
-					 throw new Error('JSON.stringify');
-				 }
-				 return str('', {'': value});
-			 };
-		 }
-
-		 if (typeof JSON.parse !== 'function') {
-			 JSON.parse = function (text, reviver) {
-				 var j;
-
-				 function walk(holder, key) {
-					 var k, v, value = holder[key];
-					 if (value && typeof value === 'object') {
-						 for (k in value) {
-							 if (Object.prototype.hasOwnProperty.call(value, k)) {
-								 v = walk(value, k);
-								 if (v !== undefined) {
-									 value[k] = v;
-								 } else {
-									 delete value[k];
-								 }
-							 }
-						 }
-					 }
-					 return reviver.call(holder, key, value);
-				 }
-
-				 text = String(text);
-				 cx.lastIndex = 0;
-				 if (cx.test(text)) {
-					 text = text.replace(cx, function (a) {
-						 return '\\u' +
-							 ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
-					 });
-				 }
-
-				 if (/^[\],:{}\s]*$/
-						 .test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
-							 .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
-							 .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-
-					 j = eval('(' + text + ')');
-
-					 return typeof reviver === 'function'
-						 ? walk({'': j}, '')
-						 : j;
-				 }
-
-				 throw new SyntaxError('JSON.parse');
-			 };
-		 }
-	}());
-
 
 })();
 
