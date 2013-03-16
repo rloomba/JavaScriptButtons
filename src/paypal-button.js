@@ -181,7 +181,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 				label = document.createElement('label');
 				label.className = 'paypal-label';
-				label.appendChild(document.createTextNode(app.config.labels[item.key] || buttonText[locale][item.key]));
+				label.appendChild(document.createTextNode(app.config.labels[item.key] || localeText[item.key]));
 				label.appendChild(input);
 
 				child = document.createElement('p');
