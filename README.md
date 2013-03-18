@@ -68,10 +68,13 @@ All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_
 * `data-name` Description of the item.
 * `data-number` The number of the item.
 * `data-amount` The price of the item.
+* `data-currency` The currency of the item (note: these cannot be mixed).
 * `data-quantity` Quantity of items to purchase.
 * `data-shipping` The cost of shipping this item.
 * `data-tax` Transaction-based tax override variable.
 * `data-size` For button images: `small` and `large` work. For QR codes enter the pixel length of the longest side.
+* `data-locale` The desired locale of the PayPal site.
+
 
 ## Editable fields
 Creating editable fields is easy! Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.

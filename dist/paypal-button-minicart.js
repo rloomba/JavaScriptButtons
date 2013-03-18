@@ -1756,7 +1756,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 		prettyParams = {
 			name: 'item_name',
 			number: 'item_number',
-			lang: 'lc',
+			locale: 'lc',
+			currency: 'currency_code',
 			recurrence: 'p3',
 			period: 't3'
 		},
