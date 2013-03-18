@@ -1,7 +1,7 @@
 /*!
  * PayPalJSButtons
  * JavaScript integration for PayPal's payment buttons
- * @version 1.0.0 - 2013-03-15
+ * @version 1.0.0 - 2013-03-17
  * @author Jeff Harrell <https://github.com/jeffharrell/>
  */
 if (typeof PAYPAL === 'undefined' || !PAYPAL) {
@@ -260,7 +260,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			for (i = 0, len = attrs.length; i < len; i++) {
 				attr = attrs[i];
 
-				if ((matches = /^data-([a-z0-9]+)(-editable)?/i.exec(attr.name))) {
+				if ((matches = /^data-([a-z0-9_]+)(-editable)?/i.exec(attr.name))) {
 					dataset[matches[1]] = {
 						value: attr.value,
 						isEditable: !!matches[2]
