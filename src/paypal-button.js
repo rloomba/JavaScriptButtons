@@ -17,9 +17,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 		prettyParams = {
 			name: 'item_name',
 			number: 'item_number',
-			lang: 'lc',
+			locale: 'lc',
+			currency: 'currency_code',
 			recurrence: 'p3',
-			period: 't3'
+			period: 't3',
+			callback: 'notify_url'
 		},
 		buttonText = {
 			da_DK: { buynow: 'Køb nu', cart: 'Læg i indkøbsvogn', donate: 'Doner', subscribe: 'Abonner', item_name: 'Vare', number: 'Nummer', amount: 'Pris', quantity: 'Antal' },
@@ -295,7 +297,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			for (i = 0, len = attrs.length; i < len; i++) {
 				attr = attrs[i];
 
-				if ((matches = /^data-([a-z0-9]+)(-editable)?/i.exec(attr.name))) {
+				if ((matches = /^data-([a-z0-9_]+)(-editable)?/i.exec(attr.name))) {
 					dataset[matches[1]] = {
 						value: attr.value,
 						isEditable: !!matches[2]

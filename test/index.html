@@ -6,21 +6,20 @@
 	<title></title>
 </head>
 <body>
-	<script src="../lib/MiniCart/minicart.js"></script>
-
 	<div id="buynow-sm">
 		<h2>Buy Now (Small)</h2>
-		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
+		<script src="../dist/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="buynow"
 		    data-name="Buy now!"
 		    data-amount="1.00"
 		    data-size="small"
+        data-callback="http://example.com/callback"
 		></script>
 	</div>
 
 	<div id="buynow-lg">
 		<h2>Buy Now (Large)</h2>
-		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
+		<script src="../dist/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="buynow"
 		    data-name="Buy now!"
 		    data-amount="1.00"
@@ -33,7 +32,8 @@
 		    data-button="buynow"
 		    data-name="Buy now!"
 		    data-amount="1.00"
-		    data-lang="es_ES"
+		    data-locale="es_ES"
+		    data-currency_code="EUR"
 		></script>
 	</div>
 
@@ -53,7 +53,8 @@
 		    data-button="buynow"
 		    data-name="Buy now!"
 		    data-amount="1.00"
-		    data-lang="de_DE"
+		    data-locale="de_DE"
+		    data-currency_code="EUR"
 		></script>
 	</div>
 
@@ -64,7 +65,7 @@
 		    data-name-editable="Buy now!"
 		    data-amount-editable="1.00"
 		    data-quantity-editable="1"
-		    data-lang="en_US"
+		    data-locale="en_US"
 		></script>
 	</div>
 

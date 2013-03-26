@@ -68,14 +68,20 @@ All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_
 * `data-name` Description of the item.
 * `data-number` The number of the item.
 * `data-amount` The price of the item.
+* `data-currency` The currency of the item (note: these cannot be mixed).
 * `data-quantity` Quantity of items to purchase.
 * `data-shipping` The cost of shipping this item.
 * `data-tax` Transaction-based tax override variable.
 * `data-size` For button images: `small` and `large` work. For QR codes enter the pixel length of the longest side.
+* `data-locale` The desired locale of the PayPal site.
+* `data-callback` The IPN notify URL to be called on completion of the transaction.
+
 
 ## Editable fields
 Creating editable fields is easy! Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.
 
+## Callback notification
+On completion of a transaction you can get a payment notification ([IPN](https://www.x.com/developers/paypal/documentation-tools/ipn/integration-guide/IPNIntro)) on a callback URL you specify using the `data-callback` attribute. An [IPN simulator](https://developer.paypal.com/webapps/developer/applications/ipn_simulator) is available on the sandbox.
 
 ## Localization
 * Changing the default language of a button can be done by setting the variable `data-lc` with the correct locale code, e.g. es_ES.
