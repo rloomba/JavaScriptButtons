@@ -26,7 +26,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 			locale: 'lc',
 			currency: 'currency_code',
 			recurrence: 'p3',
-			period: 't3'
+			period: 't3',
+			callback: 'notify_url'
 		},
 		buttonImgs = {
 			buynow: '//www.paypalobjects.com/{locale}/i/btn/btn_buynow_{size}.gif',
