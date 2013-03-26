@@ -1,7 +1,7 @@
 /*!
  * PayPalJSButtons
  * JavaScript integration for PayPal's payment buttons
- * @version 1.0.0 - 2013-03-17
+ * @version 1.0.1 - 2013-03-26
  * @author Jeff Harrell <https://github.com/jeffharrell/>
  */
 if (typeof PAYPAL === 'undefined' || !PAYPAL) {
@@ -26,7 +26,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 			locale: 'lc',
 			currency: 'currency_code',
 			recurrence: 'p3',
-			period: 't3'
+			period: 't3',
+			callback: 'notify_url'
 		},
 		buttonImgs = {
 			buynow: '//www.paypalobjects.com/{locale}/i/btn/btn_buynow_{size}.gif',
