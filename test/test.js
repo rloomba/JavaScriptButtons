@@ -1,20 +1,21 @@
 /*jshint node:true, evil:true */
-/*global describe:true, it:true, PAYPAL:true, document:true, window:true */
+/*global describe:true, it:true, PAYPAL:true, document:true, window:true, before:true */
 
-var fs = require('fs'),
-	should = require('should'),
-	jsdom = require('jsdom').jsdom,
-	jsdomOptions = { features: { QuerySelector: true }},
-	testFile = fs.readFileSync('./test/index.html').toString(),
-	document = jsdom(testFile, null, jsdomOptions),
-	window = document.createWindow();
+if (typeof window === 'undefined') {
+	var fs = require('fs'),
+		should = require('should'),
+		jsdom = require('jsdom').jsdom,
+		jsdomOptions = { features: { QuerySelector: true }},
+		testFile = fs.readFileSync('./test/index.html').toString(),
+		document = jsdom(testFile, null, jsdomOptions),
+		window = document.createWindow();
 
-
-eval(fs.readFileSync('src/paypal-button.js').toString());
-
+	eval(fs.readFileSync('src/paypal-button.js').toString());
+}
 
 // Test the object's integrity
 describe('JavaScript API', function () {
+
 	'use strict';
 
 	it('Should have a PAYPAL namespace', function () {
@@ -51,7 +52,11 @@ describe('Test page button counter', function () {
 
 	'use strict';
 
-	var buttons = PAYPAL.apps.ButtonFactory.buttons;
+	var buttons;
+
+	before(function () {
+		buttons = PAYPAL.apps.ButtonFactory.buttons;
+	});
 
 	it('Should have six buy now buttons', function () {
 		buttons.buynow.should.equal(6);
@@ -77,9 +82,14 @@ describe('Test page button counter', function () {
 
 // Test editable fields
 describe('Editable buttons', function () {
+
 	'use strict';
 
-	var inputs = document.querySelectorAll('#buynow-editable input[type=text]');
+	var inputs;
+
+	before(function () {
+		inputs = document.querySelectorAll('#buynow-editable input[type=text]');
+	});
 
 	it('Should have three inputs', function () {
 		inputs.length.should.equal(3);
@@ -102,6 +112,7 @@ describe('Editable buttons', function () {
 
 // Test multi-language support
 describe('Multi-language button images', function () {
+
 	'use strict';
 
 	function testLanguage(locale, type, expected) {
@@ -121,6 +132,7 @@ describe('Multi-language button images', function () {
 
 // Test multiple button image sizes
 describe('Multiple button image sizes', function () {
+
 	'use strict';
 
 	function testSize(size, type, expected) {
