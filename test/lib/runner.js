@@ -3,12 +3,9 @@
 
 	'use strict';
 
-	if (typeof window !== 'undefined' && navigator && document) {
+	if (typeof window !== 'undefined') {
 
 		require.config({
-			paths: {
-				'mocha': './mocha'
-			},
 			shim: {
 				'mocha': {
 					init: function () {
@@ -27,7 +24,7 @@
 
 			mocha.setup('bdd');
 
-			require(['test'], function () {
+			require(['../spec/test'], function () {
 				mocha.run();
 			});
 		});
