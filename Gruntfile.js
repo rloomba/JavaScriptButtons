@@ -5,9 +5,12 @@ module.exports = function (grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
+		meta: {
+			banner: "/*!\n * <%= pkg.name %>\n * <%= pkg.description %>\n * @version <%= pkg.version %> - <%= grunt.template.today(\'yyyy-mm-dd\') %>\n * @author <%= pkg.author.name %> <<%= pkg.author.url %>>\n */\n"
+		},
 		jshint: {
 			all: {
-				src: [ "src/*.js", "test/*.js" ],
+				src: ["src/*.js", "test/*.js"],
 				options: {
 					jshintrc: ".jshintrc"
 				}
@@ -15,33 +18,33 @@ module.exports = function (grunt) {
 		},
 		concat: {
 			dist: {
-				src: [ "<banner:meta.banner>", "src/paypal-button.js" ],
+				src: ["<banner:meta.banner>", "src/paypal-button.js"],
 				dest: "dist/paypal-button.js",
 				options: {
-					banner: "/*!\n * <%= pkg.name %>\n * <%= pkg.description %>\n * @version <%= pkg.version %> - <%= grunt.template.today(\'yyyy-mm-dd\') %>\n * @author <%= pkg.author.name %> <<%= pkg.author.url %>>\n */\n"
+					banner: "<%= meta.banner %>"
 				}
 			},
 			bundled: {
-				src: [ "<banner:meta.banner>", "lib/MiniCart/src/minicart.js", "src/paypal-button.js" ],
+				src: ["<%= meta.banner %>", "lib/MiniCart/src/minicart.js", "src/paypal-button.js"],
 				dest: "dist/paypal-button-minicart.js",
 				options: {
-					banner: "/*!\n * <%= pkg.name %>\n * <%= pkg.description %>\n * @version <%= pkg.version %> - <%= grunt.template.today(\'yyyy-mm-dd\') %>\n * @author <%= pkg.author.name %> <<%= pkg.author.url %>>\n */\n"
+					banner: "<%= meta.banner %>"
 				}
 			}
 		},
 		uglify: {
 			dist: {
-				src: [ "<banner:meta.banner>", "src/paypal-button.js" ],
+				src: [ "<%= meta.banner %>", "src/paypal-button.js" ],
 				dest: "dist/paypal-button.min.js",
 				options: {
-					banner: "/*!\n * <%= pkg.name %>\n * <%= pkg.description %>\n * @version <%= pkg.version %> - <%= grunt.template.today(\'yyyy-mm-dd\') %>\n * @author <%= pkg.author.name %> <<%= pkg.author.url %>>\n */\n"
+					banner: "<%= meta.banner %>"
 				}
 			},
 			bundled: {
-				src: [ "<banner:meta.banner>", "lib/MiniCart/src/minicart.js", "src/paypal-button.js" ],
+				src: [ "<%= meta.banner %>", "lib/MiniCart/src/minicart.js", "src/paypal-button.js" ],
 				dest: "dist/paypal-button-minicart.min.js",
 				options: {
-					banner: "/*!\n * <%= pkg.name %>\n * <%= pkg.description %>\n * @version <%= pkg.version %> - <%= grunt.template.today(\'yyyy-mm-dd\') %>\n * @author <%= pkg.author.name %> <<%= pkg.author.url %>>\n */\n"
+					banner: "<%= meta.banner %>"
 				}
 			}
 		}
