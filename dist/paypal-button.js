@@ -1,7 +1,7 @@
 /*!
  * PayPalJSButtons
  * JavaScript integration for PayPal's payment buttons
- * @version 1.0.1 - 2013-03-26
+ * @version 1.0.1 - 2013-03-30
  * @author Jeff Harrell <https://github.com/jeffharrell/>
  */
 if (typeof PAYPAL === 'undefined' || !PAYPAL) {
@@ -29,7 +29,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			period: 't3',
 			callback: 'notify_url'
 		},
-		buttonText = {
+		locales = {
 			da_DK: { buynow: 'Køb nu', cart: 'Læg i indkøbsvogn', donate: 'Doner', subscribe: 'Abonner', item_name: 'Vare', number: 'Nummer', amount: 'Pris', quantity: 'Antal' },
 			de_DE: { buynow: 'Jetzt kaufen', cart: 'In den Warenkorb', donate: 'Spenden', subscribe: 'Abonnieren', item_name: 'Artikel', number: 'Nummer', amount: 'Betrag', quantity: 'Menge' },
 			en_AU: { buynow: 'Buy Now', cart: 'Add to Cart', donate: 'Donate', subscribe: 'Subscribe', item_name: 'Item', number: 'Number', amount: 'Amount', quantity: 'Quantity' },
@@ -175,7 +175,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		size = items.size && items.size.value || 'large';
 		locale = items.lc && items.lc.value || 'en_US';
-		localeText = buttonText[locale] || buttonText.en_US;
+		localeText = locales[locale] || locales.en_US;
 
 		for (key in items) {
 			item = items[key];
