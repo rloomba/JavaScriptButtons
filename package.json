@@ -22,10 +22,11 @@
     "grunt": "*",
     "grunt-contrib-jshint": "*",
     "grunt-contrib-uglify": "*",
+    "grunt-contrib-concat": "~0.1.3",
+    "grunt-update-submodules": "*",
     "mocha": "~1.7.4",
     "should": "*",
-    "jsdom": "*",
-    "grunt-contrib-concat": "~0.1.3"
+    "jsdom": "*"
   },
   "scripts": {
     "test": "mocha"
