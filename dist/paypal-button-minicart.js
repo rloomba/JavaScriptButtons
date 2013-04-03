@@ -1,7 +1,7 @@
 /*!
  * PayPalJSButtons
  * JavaScript integration for PayPal's payment buttons
- * @version 1.0.1 - 2013-03-30
+ * @version 1.0.1 - 2013-04-03
  * @author Jeff Harrell <https://github.com/jeffharrell/>
  */
 /*!
@@ -1937,7 +1937,12 @@ PAYPAL.apps = PAYPAL.apps || {};
 			form.appendChild(child);
 		}
 
-		btn.type = 'submit';
+		// Safari won't let you set read-only attributes on buttons.
+		try {
+			btn.type = 'submit';
+		} catch (e) {
+			btn.setAttribute('type', 'submit');
+		}
 		btn.className = 'paypal-button ' + size;
 		btn.appendChild(document.createTextNode(localeText[type]));
 
@@ -1972,7 +1977,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		css = '';
 		styleEl = document.createElement('style');
 		paypalButton = '.paypal-button';
-		paypalInput = paypalButton + ' button[type=submit]';
+		paypalInput = paypalButton + ' button';
 
 		css += paypalButton + ' { white-space: nowrap; }';
 		css += paypalInput + ' { white-space: nowrap; overflow: hidden; border-radius: 13px; font-family: "Arial", bold, italic; font-weight: bold; font-style: italic; border: 1px solid #ffa823; color: #0E3168; background: #ffa823; position: relative; text-shadow: 0 1px 0 rgba(255,255,255,.5); cursor: pointer; z-index: 0; }';
