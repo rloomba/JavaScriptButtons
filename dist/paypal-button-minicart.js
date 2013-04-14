@@ -1,7 +1,7 @@
 /*!
  * PayPalJSButtons
  * JavaScript integration for PayPal's payment buttons
- * @version 1.0.1 - 2013-04-03
+ * @version 1.0.1 - 2013-04-13
  * @author Jeff Harrell <https://github.com/jeffharrell/>
  */
 /*!
@@ -1750,8 +1750,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 
 	var app = {},
-		paypalURL = 'https://www.paypal.com/cgi-bin/webscr',
-		qrCodeURL = 'https://www.paypal.com/webapps/ppint/qrcode?data={url}&pattern={pattern}&height={size}',
+		paypalURL = 'https://{env}.paypal.com/cgi-bin/webscr',
+		qrCodeURL = 'https://{env}.paypal.com/webapps/ppint/qrcode?data={url}&pattern={pattern}&height={size}',
 		bnCode = 'JavaScriptButton_{type}',
 		prettyParams = {
 			name: 'item_name',
@@ -1821,7 +1821,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		 * @return {HTMLElement}
 		 */
 		app.create = function (business, raw, type, parent) {
-			var data = new DataStore(), button, key;
+			var data = new DataStore(), button, key, env;
 
 			if (!business) { return false; }
 
@@ -1832,6 +1832,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			// Defaults
 			type = type || 'buynow';
+			env = data.items.env && data.items.env.value || 'www';
 
 			// Cart buttons
 			if (type === 'cart') {
@@ -1857,6 +1858,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			// Add common data
 			data.add('business', business);
 			data.add('bn', bnCode.replace(/\{type\}/, type));
+			data.add('env',  env);
 
 			// Build the UI components
 			if (type === 'qr') {
@@ -1886,6 +1888,43 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 
 	/**
+	 * Injects button CSS in the <head>
+	 *
+	 * @return {void}
+	 */
+	function injectCSS() {
+		var css, styleEl, paypalButton, paypalInput;
+
+		if (document.getElementById('paypal-button')) {
+			return;
+		}
+
+		css = '';
+		styleEl = document.createElement('style');
+		paypalButton = '.paypal-button';
+		paypalInput = paypalButton + ' button';
+
+		css += paypalButton + ' { white-space: nowrap; }';
+		css += paypalInput + ' { white-space: nowrap; overflow: hidden; border-radius: 13px; font-family: "Arial", bold, italic; font-weight: bold; font-style: italic; border: 1px solid #ffa823; color: #0E3168; background: #ffa823; position: relative; text-shadow: 0 1px 0 rgba(255,255,255,.5); cursor: pointer; z-index: 0; }';
+		css += paypalInput + ':before { content: " "; position: absolute; width: 100%; height: 100%; border-radius: 11px; top: 0; left: 0; background: #ffa823; background: -webkit-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -moz-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -ms-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); z-index: -2; }';
+		css += paypalInput + ':after { content: " "; position: absolute; width: 98%; height: 60%; border-radius: 40px 40px 38px 38px; top: 0; left: 0; background: -webkit-linear-gradient(top, #fefefe 0%, #fed994 100%); background: -moz-linear-gradient(top, #fefefe 0%, #fed994 100%); background: -ms-linear-gradient(top, #fefefe 0%, #fed994 100%); background: linear-gradient(top, #fefefe 0%, #fed994 100%); z-index: -1; -webkit-transform: translateX(1%);-moz-transform: translateX(1%); -ms-transform: translateX(1%); transform: translateX(1%); }';
+		css += paypalInput + '.small { padding: 3px 15px; font-size: 12px; }';
+		css += paypalInput + '.large { padding: 4px 19px; font-size: 14px; }';
+
+		styleEl.type = 'text/css';
+		styleEl.id = 'paypal-button';
+
+		if (styleEl.styleSheet) {
+			styleEl.styleSheet.cssText = css;
+		} else {
+			styleEl.appendChild(document.createTextNode(css));
+		}
+
+		document.getElementsByTagName('head')[0].appendChild(styleEl);
+	}
+
+
+	/**
 	 * Builds the form DOM structure for a button
 	 *
 	 * @param data {Object} An object of key/value data to set as button params
@@ -1900,7 +1939,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			item, child, label, input, key, size, locale, localeText;
 
 		form.method = 'post';
-		form.action = paypalURL;
+		form.action = paypalURL.replace('{env}', data.items.env.value);
 		form.className = 'paypal-button';
 		form.target = '_top';
 
@@ -1962,42 +2001,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 		return form;
 	}
 
-	/**
-	 * Injects button CSS in the <head>
-	 *
-	 * @return {void}
-	 */
-	function injectCSS() {
-		var css, styleEl, paypalButton, paypalInput;
-
-		if (document.getElementById('paypal-button')) {
-			return;
-		}
-
-		css = '';
-		styleEl = document.createElement('style');
-		paypalButton = '.paypal-button';
-		paypalInput = paypalButton + ' button';
-
-		css += paypalButton + ' { white-space: nowrap; }';
-		css += paypalInput + ' { white-space: nowrap; overflow: hidden; border-radius: 13px; font-family: "Arial", bold, italic; font-weight: bold; font-style: italic; border: 1px solid #ffa823; color: #0E3168; background: #ffa823; position: relative; text-shadow: 0 1px 0 rgba(255,255,255,.5); cursor: pointer; z-index: 0; }';
-		css += paypalInput + ':before { content: " "; position: absolute; width: 100%; height: 100%; border-radius: 11px; top: 0; left: 0; background: #ffa823; background: -webkit-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -moz-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -ms-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); z-index: -2; }';
-		css += paypalInput + ':after { content: " "; position: absolute; width: 98%; height: 60%; border-radius: 40px 40px 38px 38px; top: 0; left: 0; background: -webkit-linear-gradient(top, #fefefe 0%, #fed994 100%); background: -moz-linear-gradient(top, #fefefe 0%, #fed994 100%); background: -ms-linear-gradient(top, #fefefe 0%, #fed994 100%); background: linear-gradient(top, #fefefe 0%, #fed994 100%); z-index: -1; -webkit-transform: translateX(1%);-moz-transform: translateX(1%); -ms-transform: translateX(1%); transform: translateX(1%); }';
-		css += paypalInput + '.small { padding: 3px 15px; font-size: 12px; }';
-		css += paypalInput + '.large { padding: 4px 19px; font-size: 14px; }';
-
-		styleEl.type = 'text/css';
-		styleEl.id = 'paypal-button';
-
-		if (styleEl.styleSheet) {
-			styleEl.styleSheet.cssText = css;
-		} else {
-			styleEl.appendChild(document.createTextNode(css));
-		}
-
-		document.getElementsByTagName('head')[0].appendChild(styleEl);
-	}
-
 
 	/**
 	 * Builds the image for a QR code
@@ -2022,7 +2025,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		}
 
 		url = encodeURIComponent(url);
-		img.src = qrCodeURL.replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
+		img.src = qrCodeURL.replace('{env}', data.items.env.value).replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
 
 		return img;
 	}

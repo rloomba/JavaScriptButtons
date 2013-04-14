@@ -58,8 +58,8 @@ describe('Test page button counter', function () {
 		buttons = PAYPAL.apps.ButtonFactory.buttons;
 	});
 
-	it('Should have six buy now buttons', function () {
-		buttons.buynow.should.equal(6);
+	it('Should have seven buy now buttons', function () {
+		buttons.buynow.should.equal(7);
 	});
 
 	it('Should have two cart buttons', function () {
@@ -77,6 +77,28 @@ describe('Test page button counter', function () {
 	it('Should have one QR code', function () {
 		buttons.qr.should.equal(1);
 	});
+});
+
+// Test environments
+describe('Environments', function () {
+
+	'use strict';
+
+	var sandbox, www;
+
+	before(function () {
+		sandbox = document.querySelector('#sandbox form');
+		www = document.querySelector('#buynow-sm form');
+	});
+
+	it('Should be a sandbox button', function () {
+		sandbox.action.should.contain('//sandbox.');
+	});
+
+	it('Should be a www button', function () {
+		www.action.should.contain('//www.');
+	});
+
 });
 
 

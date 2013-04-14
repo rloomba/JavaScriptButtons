@@ -82,7 +82,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		 * @return {HTMLElement}
 		 */
 		app.create = function (business, raw, type, parent) {
-			var data = new DataStore(), button, key;
+			var data = new DataStore(), button, key, env;
 
 			if (!business) { return false; }
 
@@ -93,6 +93,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			// Defaults
 			type = type || 'buynow';
+			env = data.items.env && data.items.env.value || 'www';
 
 			// Cart buttons
 			if (type === 'cart') {
@@ -118,7 +119,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			// Add common data
 			data.add('business', business);
 			data.add('bn', bnCode.replace(/\{type\}/, type));
-			data.add('env',  data.items.env || 'www');
+			data.add('env',  env);
 
 			// Build the UI components
 			if (type === 'qr') {
@@ -199,7 +200,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			item, child, label, input, key, size, locale, localeText;
 
 		form.method = 'post';
-		form.action = paypalURL.replace('{env}', data.items.env);
+		form.action = paypalURL.replace('{env}', data.items.env.value);
 		form.className = 'paypal-button';
 		form.target = '_top';
 
@@ -285,7 +286,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		}
 
 		url = encodeURIComponent(url);
-		img.src = qrCodeURL.replace('{env}', data.items.env).replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
+		img.src = qrCodeURL.replace('{env}', data.items.env.value).replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
 
 		return img;
 	}

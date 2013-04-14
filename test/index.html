@@ -8,9 +8,20 @@
 </head>
 <body>
 	<div id="mocha"></div>
-	
+
 	<script src="lib/require.js" data-main="lib/runner"></script>
-	
+
+	<div id="sandbox">
+		<h2>Buy Now (Sandbox)</h2>
+		<script src="../dist/paypal-button.js?merchant=6XF3MPZBZV6HU"
+		    data-button="buynow"
+		    data-name="Buy now!"
+		    data-amount="1.00"
+		    data-size="small"
+        	data-env="sandbox"
+		></script>
+	</div>
+
 	<div id="buynow-sm">
 		<h2>Buy Now (Small)</h2>
 		<script src="../dist/paypal-button.js?merchant=6XF3MPZBZV6HU"
