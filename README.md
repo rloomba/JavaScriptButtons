@@ -75,6 +75,7 @@ All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_
 * `data-size` For button images: `small` and `large` work. For QR codes enter the pixel length of the longest side.
 * `data-locale` The desired locale of the PayPal site.
 * `data-callback` The IPN notify URL to be called on completion of the transaction.
+* `data-env` The PayPal environment to checkout in, e.g. `sandbox` (defaults to 'www')
 
 
 ## Editable fields
