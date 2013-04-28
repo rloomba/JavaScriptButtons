@@ -93,7 +93,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			// Defaults
 			type = type || 'buynow';
-			env = data.items.env && data.items.env.value || 'www';
+			env = "www";
+			if (data.items.env && data.items.env.value) {
+				env += "." + data.items.env.value;
+			}
 
 			// Cart buttons
 			if (type === 'cart') {
