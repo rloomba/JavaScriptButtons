@@ -92,11 +92,11 @@ describe('Environments', function () {
 	});
 
 	it('Should be a sandbox button', function () {
-		sandbox.action.should.include('//sandbox.');
+		sandbox.action.should.include('//www.sandbox.paypal');
 	});
 
 	it('Should be a www button', function () {
-		www.action.should.include('//www.');
+		www.action.should.include('//www.paypal');
 	});
 
 });
