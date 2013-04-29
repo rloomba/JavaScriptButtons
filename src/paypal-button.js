@@ -289,7 +289,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		url = encodeURIComponent(url);
 		img.src = qrCodeURL.replace('{env}', data.items.env.value).replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
-		console.log(img.src);
 		return img;
 	}
 

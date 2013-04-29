@@ -1,7 +1,7 @@
 /*!
  * PayPalJSButtons
  * JavaScript integration for PayPal's payment buttons
- * @version 1.0.1 - 2013-04-28
+ * @version 1.0.1 - 2013-04-29
  * @author Jeff Harrell <https://github.com/jeffharrell/>
  */
 if (typeof PAYPAL === 'undefined' || !PAYPAL) {
@@ -295,7 +295,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		url = encodeURIComponent(url);
 		img.src = qrCodeURL.replace('{env}', data.items.env.value).replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
-		console.log(img.src);
 		return img;
 	}
 
