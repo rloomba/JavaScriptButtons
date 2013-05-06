@@ -274,8 +274,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @return {HTMLElement}
 	 */
 	function buildQR(data, size) {
+		var baseUrl = paypalURL.replace('{env}', data.items.env.value);
+
 		var img = document.createElement('img'),
-			url = paypalURL + '?',
+			url = baseUrl + '?',
 			pattern = 13,
 			items = data.items,
 			item, key;
@@ -290,7 +292,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		url = encodeURIComponent(url);
 		img.src = qrCodeURL.replace('{env}', data.items.env.value).replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
-
 		return img;
 	}
 
