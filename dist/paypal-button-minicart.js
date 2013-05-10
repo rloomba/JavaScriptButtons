@@ -1,7 +1,7 @@
 /*!
  * PayPalJSButtons
  * JavaScript integration for PayPal's payment buttons
- * @version 1.0.1 - 2013-04-29
+ * @version 1.0.1 - 2013-05-07
  * @author Jeff Harrell <https://github.com/jeffharrell/>
  */
 /*!
@@ -1832,7 +1832,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			// Defaults
 			type = type || 'buynow';
-			env = data.items.env && data.items.env.value || 'www';
+			env = "www";
+			if (data.items.env && data.items.env.value) {
+				env += "." + data.items.env.value;
+			}
 
 			// Cart buttons
 			if (type === 'cart') {
