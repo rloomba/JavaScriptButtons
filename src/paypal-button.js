@@ -5,7 +5,7 @@ if (typeof PAYPAL === 'undefined' || !PAYPAL) {
 PAYPAL.apps = PAYPAL.apps || {};
 
 
-(function () {
+(function (document) {
 
 	'use strict';
 
@@ -367,7 +367,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 	}
 
 
-}());
+}(document));
 
 
 // Export for CommonJS environments

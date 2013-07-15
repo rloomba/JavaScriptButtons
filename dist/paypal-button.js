@@ -1,7 +1,7 @@
 /*!
  * PayPalJSButtons
  * JavaScript integration for PayPal's payment buttons
- * @version 1.0.1 - 2013-06-05
+ * @version 1.0.1 - 2013-07-15
  * @author Jeff Harrell <https://github.com/jeffharrell/>
  */
 if (typeof PAYPAL === 'undefined' || !PAYPAL) {
@@ -11,7 +11,7 @@ if (typeof PAYPAL === 'undefined' || !PAYPAL) {
 PAYPAL.apps = PAYPAL.apps || {};
 
 
-(function () {
+(function (document) {
 
 	'use strict';
 
@@ -373,7 +373,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 	}
 
 
-}());
+}(document));
 
 
 // Export for CommonJS environments
