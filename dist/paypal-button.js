@@ -10,11 +10,9 @@ if (typeof PAYPAL === 'undefined' || !PAYPAL) {
 
 PAYPAL.apps = PAYPAL.apps || {};
 
-
 (function (document) {
 
 	'use strict';
-
 
 	var app = {},
 		paypalURL = 'https://{env}.paypal.com/cgi-bin/webscr',
@@ -100,6 +98,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			// Defaults
 			type = type || 'buynow';
 			env = "www";
+
 			if (data.items.env && data.items.env.value) {
 				env += "." + data.items.env.value;
 			}
@@ -206,7 +205,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			btn = document.createElement('button'),
 			hidden = document.createElement('input'),
 			items = data.items,
-			item, child, label, input, key, size, locale, localeText;
+			item, child, label, input, key, size, locale, localeText, MiniCart;
 
 		form.method = 'post';
 		form.action = paypalURL.replace('{env}', data.items.env.value);
@@ -258,8 +257,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		form.appendChild(btn);
 
 		// If the Mini Cart is present then register the form
-		if (PAYPAL.apps.MiniCart && data.items.cmd.value === '_cart') {
-			var MiniCart = PAYPAL.apps.MiniCart;
+		if ((MiniCart = PAYPAL.apps.MiniCart) && data.items.cmd.value === '_cart') {
 
 			if (!MiniCart.UI.itemList) {
 				MiniCart.render();
@@ -280,9 +278,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @return {HTMLElement}
 	 */
 	function buildQR(data, size) {
-		var baseUrl = paypalURL.replace('{env}', data.items.env.value);
-
-		var img = document.createElement('img'),
+		var baseUrl = paypalURL.replace('{env}', data.items.env.value),
+			img = document.createElement('img'),
 			url = baseUrl + '?',
 			pattern = 13,
 			items = data.items,
@@ -297,7 +294,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 		}
 
 		url = encodeURIComponent(url);
+
 		img.src = qrCodeURL.replace('{env}', data.items.env.value).replace('{url}', url).replace('{pattern}', pattern).replace('{size}', size);
+
 		return img;
 	}
 
@@ -315,7 +314,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			for (i = 0, len = attrs.length; i < len; i++) {
 				attr = attrs[i];
 
-				if ((matches = /^data-([a-z0-9_]+)(-editable)?/i.exec(attr.name))) {
+				if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-editable)?/i))) {
 					dataset[matches[1]] = {
 						value: attr.value,
 						isEditable: !!matches[2]
