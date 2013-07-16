@@ -1,5 +1,5 @@
 /*jshint node:true, evil:true */
-/*global describe:true, it:true, PAYPAL:true, document:true, window:true, before:true */
+/*global describe:true, it:true, PAYPAL:true, document:true, window:true, before:true, beforeEach:true */
 
 if (typeof window === 'undefined') {
 	var fs = require('fs'),
@@ -18,28 +18,34 @@ describe('JavaScript API', function () {
 
 	'use strict';
 
+	var namespace;
+
+	before(function () {
+		namespace = PAYPAL;
+	});
+
 	it('Should have a PAYPAL namespace', function () {
-		PAYPAL.should.be.a('object');
+		namespace.should.be.a('object');
 	});
 
 	it('Should have a PAYPAL.apps namespace', function () {
-		PAYPAL.apps.should.be.a('object');
+		namespace.apps.should.be.a('object');
 	});
 
 	it('Should have a PAYPAL.apps.ButtonFactory namespace', function () {
-		PAYPAL.apps.ButtonFactory.should.be.a('object');
+		namespace.apps.ButtonFactory.should.be.a('object');
 	});
 
 	it('Should have a configuration object', function () {
-		PAYPAL.apps.ButtonFactory.config.should.be.a('object');
+		namespace.apps.ButtonFactory.config.should.be.a('object');
 	});
 
 	it('Should have a create method', function () {
-		PAYPAL.apps.ButtonFactory.create.should.be.a('function');
+		namespace.apps.ButtonFactory.create.should.be.a('function');
 	});
 
 	it('Create return false if no parameters', function () {
-		var result = PAYPAL.apps.ButtonFactory.create();
+		var result = namespace.apps.ButtonFactory.create();
 
 		result.should.equal(false);
 	});
