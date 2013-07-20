@@ -16,22 +16,6 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		concat: {
-			dist: {
-				src: ["<banner:meta.banner>", "src/paypal-button.js"],
-				dest: "dist/paypal-button.js",
-				options: {
-					banner: "<%= meta.banner %>"
-				}
-			},
-			bundled: {
-				src: ["<%= meta.banner %>", "lib/MiniCart/src/minicart.js", "src/paypal-button.js"],
-				dest: "dist/paypal-button-minicart.js",
-				options: {
-					banner: "<%= meta.banner %>"
-				}
-			}
-		},
 		uglify: {
 			dist: {
 				src: [ "<%= meta.banner %>", "src/paypal-button.js" ],
@@ -53,10 +37,9 @@ module.exports = function (grunt) {
 	// Load grunt tasks from npm packages
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
-	grunt.loadNpmTasks("grunt-contrib-concat");
 	grunt.loadNpmTasks('grunt-update-submodules');
 
 	// Default task.
-	grunt.registerTask("default", ["jshint", "update_submodules", "concat", "uglify"]);
+	grunt.registerTask("default", ["jshint", "update_submodules", "uglify"]);
 
 };
