@@ -86,7 +86,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			// Normalize the data's keys and add to a data store
 			for (key in raw) {
-				data.add(prettyParams[key] || key, raw[key].value, raw[key].isEditable);
+				data.add(prettyParams[key] || key, raw[key], raw[key].isEditable);
 			}
 
 			// Defaults
