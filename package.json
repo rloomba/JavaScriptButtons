@@ -19,14 +19,14 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "grunt": "*",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-update-submodules": "*",
-    "chai": "*",
+    "grunt": "0.4.2",
+    "grunt-contrib-jshint": "0.8.0",
+    "grunt-contrib-uglify": "0.2.7",
+    "grunt-update-submodules": "0.2.1",
+    "chai": "1.8.1",
     "mocha": "~1.7.4",
-    "should": "*",
-    "jsdom": "*"
+    "should": "2.1.1",
+    "jsdom": "0.8.10"
   },
   "scripts": {
     "test": "mocha test/spec/test.js"
