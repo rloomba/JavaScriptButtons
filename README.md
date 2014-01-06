@@ -63,7 +63,7 @@ Subscribe buttons let you set up payment subscriptions.
 
 
 ## Button variables
-All of PayPal's [HTML button variables](https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables) are supported by prefixing their name with "data-". Here are the most commonly used:
+All of PayPal's [HTML button variables](https://developer.paypal.com/webapps/developer/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/) are supported by prefixing their name with "data-". Here are the most commonly used:
 
 * `data-name` Description of the item.
 * `data-number` The number of the item.
