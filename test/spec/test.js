@@ -25,23 +25,23 @@ describe('JavaScript API', function () {
 	});
 
 	it('Should have a PAYPAL namespace', function () {
-		namespace.should.be.a('object');
+		namespace.should.be.an.Object;
 	});
 
 	it('Should have a PAYPAL.apps namespace', function () {
-		namespace.apps.should.be.a('object');
+		namespace.apps.should.be.an.Object;
 	});
 
 	it('Should have a PAYPAL.apps.ButtonFactory namespace', function () {
-		namespace.apps.ButtonFactory.should.be.a('object');
+		namespace.apps.ButtonFactory.should.be.an.Object;
 	});
 
 	it('Should have a configuration object', function () {
-		namespace.apps.ButtonFactory.config.should.be.a('object');
+		namespace.apps.ButtonFactory.config.should.be.an.Object;
 	});
 
 	it('Should have a create method', function () {
-		namespace.apps.ButtonFactory.create.should.be.a('function');
+		namespace.apps.ButtonFactory.create.should.be.a.Function;
 	});
 
 	it('Create return false if no parameters', function () {
