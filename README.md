@@ -106,8 +106,8 @@ Creates and returns an HTML element that contains the button code.
 ## Download
 To download the production-ready JavaScript you'll need to save one of these files:
 
-* [JavaScript Buttons](https://github.com/paypal/JavaScriptButtons/blob/master/dist/paypal-button.min.js)
-* [JavaScript Buttons + MiniCart](https://github.com/paypal/JavaScriptButtons/blob/master/dist/paypal-button-minicart.min.js)
+* [JavaScript Buttons](http://www.paypalobjects.com/js/external/paypal-button.min.js)
+* [JavaScript Buttons + MiniCart](http://www.paypalobjects.com/js/external/paypal-button-minicart.min.js)
 
 The first file gives you support for PayPal's JavaScript buttons. The second file has the same code from the first, but also contains functionality for the [PayPal Mini Cart](https://github.com/jeffharrell/MiniCart).
 
