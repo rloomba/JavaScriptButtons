@@ -199,7 +199,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			btn = document.createElement('button'),
 			hidden = document.createElement('input'),
 			items = data.items,
-			item, child, label, input, key, size, locale, localeText, MiniCart;
+			item, child, label, input, key, size, locale, localeText, MiniCart, btnText;
 
 		form.method = 'post';
 		form.action = paypalURL.replace('{env}', data.items.env.value);
@@ -211,7 +211,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 		size = items.size && items.size.value || 'large';
 		locale = items.lc && items.lc.value || 'en_US';
 		localeText = locales[locale] || locales.en_US;
-
+		
+		btnText = localeText[type];
+		if(data.items.text){
+			btnText = data.items.text.value;
+			data.remove('text');
+		}
+		
 		for (key in items) {
 			item = items[key];
 
@@ -246,7 +252,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			btn.setAttribute('type', 'submit');
 		}
 		btn.className = 'paypal-button ' + size;
-		btn.appendChild(document.createTextNode(localeText[type]));
+		btn.appendChild(document.createTextNode(btnText));
 
 		form.appendChild(btn);
 
