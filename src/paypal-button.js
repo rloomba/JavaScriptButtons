@@ -211,9 +211,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 		size = items.size && items.size.value || 'large';
 		locale = items.lc && items.lc.value || 'en_US';
 		localeText = locales[locale] || locales.en_US;
-		
 		btnText = localeText[type];
-		if(data.items.text){
+
+		if (data.items.text) {
 			btnText = data.items.text.value;
 			data.remove('text');
 		}
