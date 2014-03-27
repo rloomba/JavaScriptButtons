@@ -79,14 +79,14 @@ PAYPAL.apps = PAYPAL.apps || {};
 		 * @param parent {HTMLElement} The element to add the button to (Optional)
 		 * @return {HTMLElement}
 		 */
-		app.create = function (business, raw, type, parent) {
+		app.create = function (business, raw, type, parent, buttonId) {
 			var data = new DataStore(), button, key, env;
 
 			if (!business) { return false; }
 
 			// Normalize the data's keys and add to a data store
 			for (key in raw) {
-				data.add(prettyParams[key] || key, raw[key].value || raw[key], raw[key].isEditable);
+				data.add(prettyParams[key] || key, raw[key].value || raw[key], raw[key].isEditable, raw[key].hasOptions, raw[key].displayOrder);
 			}
 
 			// Defaults
@@ -97,8 +97,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 				env += "." + data.items.env.value;
 			}
 
+			if (buttonId) {
+				data.add('cmd', '_s-xclick');
+			}
 			// Cart buttons
-			if (type === 'cart') {
+			else if (type === 'cart') {
 				data.add('cmd', '_cart');
 				data.add('add', true);
 			// Donation buttons
@@ -127,6 +130,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 			if (type === 'qr') {
 				button = buildQR(data, data.items.size);
 				data.remove('size');
+			} else if (buttonId) {
+				button = buildForm(data, type);
+				button.insertBefore(parent.firstChild, button.firstChild);				
 			} else {
 				button = buildForm(data, type);
 			}
@@ -217,11 +223,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 			btnText = data.items.text.value;
 			data.remove('text');
 		}
-		
+
+		var optionFields = [];
 		for (key in items) {
 			item = items[key];
-
-			if (item.isEditable) {
+			if (item.hasOptions) {
+				optionFields.push(item);
+			} else if (item.isEditable) {
 				input = document.createElement('input');
 				input.type = 'text';
 				input.className = 'paypal-input';
@@ -236,13 +244,73 @@ PAYPAL.apps = PAYPAL.apps || {};
 				child = document.createElement('p');
 				child.className = 'paypal-group';
 				child.appendChild(label);
+				form.appendChild(child);
 			} else {
 				input = child = hidden.cloneNode(true);
 				input.name = item.key;
 				input.value = item.value;
+				form.appendChild(child);
 			}
+		}
+		optionFields = sortOptionFields(optionFields);
+		for (key in optionFields) {
+			var item = optionFields[key];
+			if(optionFields[key].hasOptions) {
+				//Create Options Fields
+				var fieldDetails = JSON.parse(item.value);
+				if (fieldDetails.value instanceof Array) {
+					input = hidden.cloneNode(true);
+					input.name = "on"+item.displayOrder;//on - Option Name
+					input.value = fieldDetails.label;
+				
+					var selector = document.createElement('select');
+					selector.name = "os"+item.displayOrder;//os - Option Select
 
-			form.appendChild(child);
+					var option;
+					for (var fieldDetail in fieldDetails.value) {
+						var fieldValue = fieldDetails.value[fieldDetail];
+						if( typeof fieldValue === 'string' ) {
+							option = document.createElement('option');
+							option.value = fieldValue;
+							option.appendChild(document.createTextNode(fieldValue));
+							selector.appendChild(option);
+						} else {
+							for(var field in fieldValue){
+								option = document.createElement('option');
+								option.value = field;
+								option.appendChild(document.createTextNode(fieldValue[field]));
+								selector.appendChild(option);
+							}
+						}
+					}
+					label = document.createElement('label');
+					label.className = 'paypal-label';
+					label.appendChild(document.createTextNode(fieldDetails.label || item.key));
+					label.appendChild(selector);
+					label.appendChild(input); //Hidden field
+				} else {
+					label = document.createElement('label');
+					label.className = 'paypal-label';
+					label.appendChild(document.createTextNode(fieldDetails.label || fieldDetails.key));
+					
+					input = hidden.cloneNode(true);
+					input.name = "on"+item.displayOrder;//on - Option Name
+					input.value = fieldDetails.label;
+					label.appendChild(input); //Hidden field
+					
+					input = document.createElement('input');
+					input.type = 'text';
+					input.className = 'paypal-input';
+					input.name = "os"+item.displayOrder;//os - Option Select
+					input.value = fieldDetails.value;
+					label.appendChild(input); //Text field
+				}
+				child = document.createElement('p');
+				child.className = 'paypal-group';
+				child.appendChild(label);
+
+				form.appendChild(child);
+			}
 		}
 
 		// Safari won't let you set read-only attributes on buttons.
@@ -268,8 +336,20 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		return form;
 	}
-
-
+	/**
+	 * Sort Optional Fields by display order
+	 */
+	function sortOptionFields(optionFields) {
+		optionFields.sort(
+			function (a,b){
+				if ( isNaN(a.displayOrder)&&isNaN(b.displayOrder)) return a<b?-1:a==b?0:1;//both are string
+				else if (isNaN(a.displayOrder)) return 1;//only a is a string
+				else if (isNaN(b.displayOrder)) return -1;//only b is a string
+				else return a.displayOrder-b.displayOrder;//both are num
+			}
+		);
+		return optionFields;
+	}
 	/**
 	 * Builds the image for a QR code
 	 *
@@ -313,8 +393,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 		if ((attrs = el.attributes)) {
 			for (i = 0, len = attrs.length; i < len; i++) {
 				attr = attrs[i];
-
-				if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-editable)?/i))) {
+				if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-options)-([0-9])?/i))) {
+					dataset[matches[1]] = {
+						value: attr.value,
+						hasOptions: !!matches[2],
+						displayOrder: parseInt(matches[3])
+					};
+				} else if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-editable)?/i))) {
 					dataset[matches[1]] = {
 						value: attr.value,
 						isEditable: !!matches[2]
@@ -322,7 +407,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 				}
 			}
 		}
-
 		return dataset;
 	}
 
@@ -333,11 +417,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 	function DataStore() {
 		this.items = {};
 
-		this.add = function (key, value, isEditable) {
+		this.add = function (key, value, isEditable, hasOptions, displayOrder) {
 			this.items[key] = {
 				key: key,
 				value: value,
-				isEditable: isEditable
+				isEditable: isEditable,
+				hasOptions : hasOptions,
+				displayOrder : displayOrder
 			};
 		};
 
@@ -351,7 +437,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 	if (typeof document !== 'undefined') {
 		var ButtonFactory = PAYPAL.apps.ButtonFactory,
 			nodes = document.getElementsByTagName('script'),
-			node, data, type, business, i, len;
+			node, data, type, business, i, len, buttonId;
 
 		for (i = 0, len = nodes.length; i < len; i++) {
 			node = nodes[i];
@@ -361,9 +447,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 			data = node && getDataSet(node);
 			type = data && data.button && data.button.value;
 			business = node.src.split('?merchant=')[1];
+			buttonId = data && data.hosted_button_id && data.hosted_button_id.value;
 
 			if (business) {
-				ButtonFactory.create(business, data, type, node.parentNode);
+				ButtonFactory.create(business, data, type, node.parentNode, buttonId);
 
 				// Clean up
 				node.parentNode.removeChild(node);
