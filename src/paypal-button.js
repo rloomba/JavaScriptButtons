@@ -99,9 +99,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			if (buttonId) {
 				data.add('cmd', '_s-xclick');
-			}
 			// Cart buttons
-			else if (type === 'cart') {
+			} else if (type === 'cart') {
 				data.add('cmd', '_cart');
 				data.add('add', true);
 			// Donation buttons
@@ -130,13 +129,12 @@ PAYPAL.apps = PAYPAL.apps || {};
 			if (type === 'qr') {
 				button = buildQR(data, data.items.size);
 				data.remove('size');
-			} else if (buttonId) {
-				button = buildForm(data, type);
-				button.insertBefore(parent.firstChild, button.firstChild);				
 			} else {
 				button = buildForm(data, type);
 			}
-
+			if (buttonId) {
+				button.insertBefore(parent.firstChild, button.firstChild);
+			}
 			// Inject CSS
 			injectCSS();
 
@@ -204,13 +202,25 @@ PAYPAL.apps = PAYPAL.apps || {};
 		var form = document.createElement('form'),
 			btn = document.createElement('button'),
 			hidden = document.createElement('input'),
+			paraElem = document.createElement('p'),
+			labelElem = document.createElement('label'),
+			inputTextElem = document.createElement('input'),
+			selectElem = document.createElement('select'),
+			optionElem = document.createElement('option'),
 			items = data.items,
-			item, child, label, input, key, size, locale, localeText, MiniCart, btnText;
+			optionFieldArr = [],
+			item, child, label, input, key, size, locale, localeText, MiniCart, btnText, selector, optionField, fieldDetails, fieldDetail, fieldValue, field, labelText;
 
 		form.method = 'post';
 		form.action = paypalURL.replace('{env}', data.items.env.value);
 		form.className = 'paypal-button';
 		form.target = '_top';
+
+		inputTextElem.type = 'text';
+		inputTextElem.className = 'paypal-input';
+		paraElem.className = 'paypal-group';
+		labelElem.className = 'paypal-label';
+		selectElem.className = 'paypal-select';
 
 		hidden.type = 'hidden';
 
@@ -224,25 +234,22 @@ PAYPAL.apps = PAYPAL.apps || {};
 			data.remove('text');
 		}
 
-		var optionFields = [];
 		for (key in items) {
 			item = items[key];
 			if (item.hasOptions) {
-				optionFields.push(item);
+				optionFieldArr.push(item);
 			} else if (item.isEditable) {
-				input = document.createElement('input');
-				input.type = 'text';
-				input.className = 'paypal-input';
+				input = inputTextElem.cloneNode(true);
 				input.name = item.key;
 				input.value = item.value;
 
-				label = document.createElement('label');
-				label.className = 'paypal-label';
-				label.appendChild(document.createTextNode(app.config.labels[item.key] || localeText[item.key]));
+				label = labelElem.cloneNode(true);
+				labelText = app.config.labels[item.key] || localeText[item.key];
+				label.htmlFor = labelText;
+				label.appendChild(document.createTextNode(labelText));
 				label.appendChild(input);
 
-				child = document.createElement('p');
-				child.className = 'paypal-group';
+				child = paraElem.cloneNode(true);
 				child.appendChild(label);
 				form.appendChild(child);
 			} else {
@@ -252,61 +259,61 @@ PAYPAL.apps = PAYPAL.apps || {};
 				form.appendChild(child);
 			}
 		}
-		optionFields = sortOptionFields(optionFields);
-		for (key in optionFields) {
-			var item = optionFields[key];
-			if(optionFields[key].hasOptions) {
+		optionFieldArr = sortOptionFields(optionFieldArr);
+		for (key in optionFieldArr) {
+			item = optionFieldArr[key];
+			if (optionFieldArr[key].hasOptions) {
 				//Create Options Fields
-				var fieldDetails = JSON.parse(item.value);
+				fieldDetails = JSON.parse(item.value);
 				if (fieldDetails.value instanceof Array) {
 					input = hidden.cloneNode(true);
-					input.name = "on"+item.displayOrder;//on - Option Name
+					//on - Option Name
+					input.name = 'on' + item.displayOrder;
 					input.value = fieldDetails.label;
 				
-					var selector = document.createElement('select');
-					selector.name = "os"+item.displayOrder;//os - Option Select
+					selector = selectElem.cloneNode(true);
+					//os - Option Select
+					selector.name = 'os' + item.displayOrder;
 
-					var option;
-					for (var fieldDetail in fieldDetails.value) {
-						var fieldValue = fieldDetails.value[fieldDetail];
-						if( typeof fieldValue === 'string' ) {
-							option = document.createElement('option');
-							option.value = fieldValue;
-							option.appendChild(document.createTextNode(fieldValue));
-							selector.appendChild(option);
+					for (fieldDetail in fieldDetails.value) {
+						fieldValue = fieldDetails.value[fieldDetail];
+						if (typeof fieldValue === 'string') {
+							optionField = optionElem.cloneNode(true);
+							optionField.value = fieldValue;
+							optionField.appendChild(document.createTextNode(fieldValue));
+							selector.appendChild(optionField);
 						} else {
-							for(var field in fieldValue){
-								option = document.createElement('option');
-								option.value = field;
-								option.appendChild(document.createTextNode(fieldValue[field]));
-								selector.appendChild(option);
+							for (field in fieldValue) {
+								optionField = optionElem.cloneNode(true);
+								optionField.value = field;
+								optionField.appendChild(document.createTextNode(fieldValue[field]));
+								selector.appendChild(optionField);
 							}
 						}
 					}
-					label = document.createElement('label');
-					label.className = 'paypal-label';
-					label.appendChild(document.createTextNode(fieldDetails.label || item.key));
+					label = labelElem.cloneNode(true);
+					labelText = fieldDetails.label || item.key;
+					label.htmlFor = labelText;
+					label.appendChild(document.createTextNode(labelText));
 					label.appendChild(selector);
-					label.appendChild(input); //Hidden field
+					label.appendChild(input);
 				} else {
-					label = document.createElement('label');
-					label.className = 'paypal-label';
-					label.appendChild(document.createTextNode(fieldDetails.label || fieldDetails.key));
+					label = labelElem.cloneNode(true);
+					labelText = fieldDetails.label || fieldDetails.key;
+					label.htmlFor = labelText;
+					label.appendChild(document.createTextNode(labelText));
 					
 					input = hidden.cloneNode(true);
-					input.name = "on"+item.displayOrder;//on - Option Name
+					input.name = 'on' + item.displayOrder;
 					input.value = fieldDetails.label;
-					label.appendChild(input); //Hidden field
+					label.appendChild(input);
 					
-					input = document.createElement('input');
-					input.type = 'text';
-					input.className = 'paypal-input';
-					input.name = "os"+item.displayOrder;//os - Option Select
+					input = inputTextElem.cloneNode(true);
+					input.name = 'os' + item.displayOrder;
 					input.value = fieldDetails.value;
-					label.appendChild(input); //Text field
+					label.appendChild(input);
 				}
-				child = document.createElement('p');
-				child.className = 'paypal-group';
+				child = paraElem.cloneNode(true);
 				child.appendChild(label);
 
 				form.appendChild(child);
@@ -321,7 +328,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 		}
 		btn.className = 'paypal-button ' + size;
 		btn.appendChild(document.createTextNode(btnText));
-
 		form.appendChild(btn);
 
 		// If the Mini Cart is present then register the form
@@ -339,16 +345,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 	/**
 	 * Sort Optional Fields by display order
 	 */
-	function sortOptionFields(optionFields) {
-		optionFields.sort(
-			function (a,b){
-				if ( isNaN(a.displayOrder)&&isNaN(b.displayOrder)) return a<b?-1:a==b?0:1;//both are string
-				else if (isNaN(a.displayOrder)) return 1;//only a is a string
-				else if (isNaN(b.displayOrder)) return -1;//only b is a string
-				else return a.displayOrder-b.displayOrder;//both are num
-			}
-		);
-		return optionFields;
+	function sortOptionFields(optionFieldArr) {
+		optionFieldArr.sort(function (a, b) {
+			return a.displayOrder - b.displayOrder;
+		});
+		return optionFieldArr;
 	}
 	/**
 	 * Builds the image for a QR code
@@ -397,7 +398,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 					dataset[matches[1]] = {
 						value: attr.value,
 						hasOptions: !!matches[2],
-						displayOrder: parseInt(matches[3])
+						displayOrder: parseInt(matches[3], 10)
 					};
 				} else if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-editable)?/i))) {
 					dataset[matches[1]] = {
