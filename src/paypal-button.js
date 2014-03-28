@@ -132,9 +132,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 			} else {
 				button = buildForm(data, type);
 			}
-			if (buttonId) {
-				button.insertBefore(parent.firstChild, button.firstChild);
-			}
 			// Inject CSS
 			injectCSS();
 
