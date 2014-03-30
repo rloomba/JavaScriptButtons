@@ -199,7 +199,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			btn = document.createElement('button'),
 			hidden = document.createElement('input'),
 			items = data.items,
-			item, child, label, input, key, size, locale, localeText, MiniCart, btnText;
+			item, child, label, input, key, size, locale, localeText, btnText;
 
 		form.method = 'post';
 		form.action = paypalURL.replace('{env}', data.items.env.value);
@@ -255,16 +255,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 		btn.appendChild(document.createTextNode(btnText));
 
 		form.appendChild(btn);
-
-		// If the Mini Cart is present then register the form
-		if ((MiniCart = PAYPAL.apps.MiniCart) && data.items.cmd.value === '_cart') {
-
-			if (!MiniCart.UI.itemList) {
-				MiniCart.render();
-			}
-
-			MiniCart.bindForm(form);
-		}
 
 		return form;
 	}
