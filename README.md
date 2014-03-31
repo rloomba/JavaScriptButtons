@@ -81,6 +81,40 @@ All of PayPal's [HTML button variables](https://developer.paypal.com/webapps/dev
 ## Editable fields
 Creating editable fields is easy! Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.
 
+## Hosted Button Support
+Button stored on PayPal will have hosted button id. Add `data-hosted_button_id` variable. e.g. 
+
+	data-hosted_button_id='<HOSTED_BUTTON_ID>'
+
+## Optional fields
+Creating custom dropdown field is by adding `-options-N` where N is a digit between 0 and 4
+
+	data-<OPTION_NAME>-options-N='<JSON_DATA>'
+
+**Usage:**
+
+	data-colors-options-0='<DROP_DOWN_JSON_DATA>'
+	data-sizes-options-1='<DROP_DOWN_JSON_DATA>'
+	data-coupon-options2='<TEXT_FIELD_JSON_DATA>'
+
+**Note:** JSON should be wrapped with Single quote
+
+**Sample JSON Data for dropdown field**
+
+	DROPDOWN_JSON_DATA
+        { "label" : "<DROP_DOWN_LABEL>",  "value": [ {"<DROP_DOWN_VALUE>": "<DROP_DOWN_DISPLAY_TEXT>"}, ............. ]} 
+	Ex: { "label" : "Colors",             "value": [ {"Red": "Red $10.00"} {"Blue" : "$8.00"}, {"Green","$12.00"} ]}
+    or
+        { "label" : "<DROPDOWN_LABEL>", "value": [ "<DROPDOWN_DISPLAY_TEXT_1>", "<DROPDOWN_DISPLAY_TEXT_2>",  ............. ]}
+	Ex: { "label" : "Sizes",            "value": [ "Small", "Medium", "Large" }
+
+
+**Sample JSON Data for input field**
+
+	TEXT_FIELD_JSON_DATA
+	    { "label" : "<TEXT_FIELD_LABEL>", "value": "<TEXT_FIELD_VALUE>" }
+	Ex: { "label" : "Coupon Number",      "value": ""}
+
 ## Callback notification
 On completion of a transaction you can get a payment notification ([IPN](https://www.x.com/developers/paypal/documentation-tools/ipn/integration-guide/IPNIntro)) on a callback URL you specify using the `data-callback` attribute. An [IPN simulator](https://developer.paypal.com/webapps/developer/applications/ipn_simulator) is available on the sandbox.
 
