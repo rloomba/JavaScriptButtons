@@ -19,7 +19,7 @@ Buy Now buttons are for single item purchases.
 Add To Cart buttons let users add multiple items to their PayPal cart.
 
 ```html
-<script src="paypal-button-minicart.min.js?merchant=YOUR_MERCHANT_ID"
+<script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="cart"
     data-name="Product in your cart"
     data-amount="1.00"
@@ -107,9 +107,6 @@ Creates and returns an HTML element that contains the button code.
 To download the production-ready JavaScript you'll need to save one of these files:
 
 * [JavaScript Buttons](http://www.paypalobjects.com/js/external/paypal-button.min.js)
-* [JavaScript Buttons + MiniCart](http://www.paypalobjects.com/js/external/paypal-button-minicart.min.js)
-
-The first file gives you support for PayPal's JavaScript buttons. The second file has the same code from the first, but also contains functionality for the [PayPal Mini Cart](https://github.com/jeffharrell/MiniCart).
 
 To see the un-minified code you can take a peek at [paypal-button.js](https://github.com/paypal/JavaScriptButtons/blob/master/src/paypal-button.js).
 
