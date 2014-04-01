@@ -169,6 +169,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 		paypalInput = paypalButton + ' button';
 
 		css += paypalButton + ' { white-space: nowrap; }';
+		//Firefox automatically shows a red border to input element with required
+		css += ' .paypal-button [required]{box-shadow: none;}';
+		css += ' .paypal-button .fieldErr { border:1px solid red; }';
+
 		css += paypalInput + ' { white-space: nowrap; overflow: hidden; border-radius: 13px; font-family: "Arial", bold, italic; font-weight: bold; font-style: italic; border: 1px solid #ffa823; color: #0E3168; background: #ffa823; position: relative; text-shadow: 0 1px 0 rgba(255,255,255,.5); cursor: pointer; z-index: 0; }';
 		css += paypalInput + ':before { content: " "; position: absolute; width: 100%; height: 100%; border-radius: 11px; top: 0; left: 0; background: #ffa823; background: -webkit-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -moz-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -ms-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); z-index: -2; }';
 		css += paypalInput + ':after { content: " "; position: absolute; width: 98%; height: 60%; border-radius: 40px 40px 38px 38px; top: 0; left: 0; background: -webkit-linear-gradient(top, #fefefe 0%, #fed994 100%); background: -moz-linear-gradient(top, #fefefe 0%, #fed994 100%); background: -ms-linear-gradient(top, #fefefe 0%, #fed994 100%); background: linear-gradient(top, #fefefe 0%, #fed994 100%); z-index: -1; -webkit-transform: translateX(1%);-moz-transform: translateX(1%); -ms-transform: translateX(1%); transform: translateX(1%); }';
@@ -206,6 +210,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			optionElem = document.createElement('option'),
 			items = data.items,
 			optionFieldArr = [],
+			formError = 0,
 			item, child, label, input, key, size, locale, localeText, MiniCart, btnText, selector, optionField, fieldDetails, fieldDetail, fieldValue, field, labelText;
 
 		form.method = 'post';
@@ -308,6 +313,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 					input = inputTextElem.cloneNode(true);
 					input.name = 'os' + item.displayOrder;
 					input.value = fieldDetails.value;
+					if (fieldDetails.required) {
+						input.required = "required";
+					}
 					label.appendChild(input);
 				}
 				child = paraElem.cloneNode(true);
@@ -326,6 +334,23 @@ PAYPAL.apps = PAYPAL.apps || {};
 		btn.className = 'paypal-button ' + size;
 		btn.appendChild(document.createTextNode(btnText));
 		form.appendChild(btn);
+
+		form.addEventListener('submit', function (e) {
+			e.preventDefault();
+			//HTML5 required attribute on non supported browsers (IE 9,IE 8)
+			formError = 0;
+			fieldDetails = form.getElementsByTagName("input");
+			for (var field in fieldDetails) {
+				fieldDetails[field].className = '';
+				if (fieldDetails[field].value === "" && fieldDetails[field].required) {
+					formError++;
+					fieldDetails[field].className = 'fieldErr';
+				}
+			}
+			if (formError === 0) {
+				form.submit();
+			}
+		}, false);
 
 		// If the Mini Cart is present then register the form
 		if ((MiniCart = PAYPAL.apps.MiniCart) && data.items.cmd.value === '_cart') {
