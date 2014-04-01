@@ -170,8 +170,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		css += paypalButton + ' { white-space: nowrap; }';
 		//Firefox automatically shows a red border to input element with required
-		css += ' .paypal-button [required]{box-shadow: none;}';
-		css += ' .paypal-button .fieldErr { border:1px solid red; }';
+		css += paypalButton + ' [required]{box-shadow: none;}';
+		css += paypalButton + ' .fieldError { border:1px solid red; }';
 
 		css += paypalInput + ' { white-space: nowrap; overflow: hidden; border-radius: 13px; font-family: "Arial", bold, italic; font-weight: bold; font-style: italic; border: 1px solid #ffa823; color: #0E3168; background: #ffa823; position: relative; text-shadow: 0 1px 0 rgba(255,255,255,.5); cursor: pointer; z-index: 0; }';
 		css += paypalInput + ':before { content: " "; position: absolute; width: 100%; height: 100%; border-radius: 11px; top: 0; left: 0; background: #ffa823; background: -webkit-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -moz-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -ms-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); z-index: -2; }';
@@ -344,7 +344,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				fieldDetails[field].className = '';
 				if (fieldDetails[field].value === "" && fieldDetails[field].required) {
 					formError++;
-					fieldDetails[field].className = 'fieldErr';
+					fieldDetails[field].className = 'fieldError';
 				}
 			}
 			if (formError === 0) {
