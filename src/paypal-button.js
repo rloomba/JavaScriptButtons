@@ -19,7 +19,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 			currency: 'currency_code',
 			recurrence: 'p3',
 			period: 't3',
-			callback: 'notify_url'
+			callback: 'notify_url',
+			button_id: 'hosted_button_id'
 		},
 		locales = {
 			da_DK: { buynow: 'Køb nu', cart: 'Læg i indkøbsvogn', donate: 'Doner', subscribe: 'Abonner', item_name: 'Vare', number: 'Nummer', amount: 'Pris', quantity: 'Antal' },
@@ -48,6 +49,12 @@ PAYPAL.apps = PAYPAL.apps || {};
 			zh_HK: { buynow: '立即買', cart: '加入購物車', donate: '捐款', subscribe: '訂用', item_name: '項目', number: '號碼', amount: '金額', quantity: '數量' },
 			zh_TW: { buynow: '立即購', cart: '加到購物車', donate: '捐款', subscribe: '訂閱', item_name: '商品', number: '商品編號', amount: '單價', quantity: '數量' },
 			zh_XC: { buynow: '立即购买', cart: '添加到购物车', donate: '捐赠', subscribe: '租用', item_name: '物品', number: '编号', amount: '金额', quantity: '数量' }
+		},
+		validateFieldHandlers = {
+			required : { message: 'The %s field is required' },
+			numericRegex : { regex : /^[0-9]+$/, message : 'The %s field must contain only numbers.' },
+			alphaRegex :  { regex : /^[a-z]+$/i, message : 'The %s field must only contain alphabetical characters.' },
+			alphaNumericRegex : { regex : /^[a-z0-9]+$/i, message : 'The %s field must only contain alpha-numeric characters.' }
 		};
 
 	if (!PAYPAL.apps.ButtonFactory) {
@@ -79,7 +86,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		 * @param parent {HTMLElement} The element to add the button to (Optional)
 		 * @return {HTMLElement}
 		 */
-		app.create = function (business, raw, type, parent, buttonId) {
+		app.create = function (business, raw, type, parent) {
 			var data = new DataStore(), button, key, env;
 
 			if (!business) { return false; }
@@ -97,7 +104,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				env += "." + data.items.env.value;
 			}
 
-			if (buttonId) {
+			if (data.items.hosted_button_id) {
 				data.add('cmd', '_s-xclick');
 			// Cart buttons
 			} else if (type === 'cart') {
@@ -169,9 +176,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 		paypalInput = paypalButton + ' button';
 
 		css += paypalButton + ' { white-space: nowrap; }';
-		//Firefox automatically shows a red border to input element with required
-		css += paypalButton + ' [required]{box-shadow: none;}';
-		css += paypalButton + ' .fieldError { border:1px solid red; }';
+
+		css += paypalButton + ' .field-error {  border: 1px solid #FF0000; }';
+		css += paypalButton + ' .hide { display: none; }';
+		css += paypalButton + ' .error-box { background: none repeat scroll 0 0 #EEEEEE; border: 1px solid #DADADA; border-radius: 5px; padding: 8px; display: inline-block; }';
 
 		css += paypalInput + ' { white-space: nowrap; overflow: hidden; border-radius: 13px; font-family: "Arial", bold, italic; font-weight: bold; font-style: italic; border: 1px solid #ffa823; color: #0E3168; background: #ffa823; position: relative; text-shadow: 0 1px 0 rgba(255,255,255,.5); cursor: pointer; z-index: 0; }';
 		css += paypalInput + ':before { content: " "; position: absolute; width: 100%; height: 100%; border-radius: 11px; top: 0; left: 0; background: #ffa823; background: -webkit-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -moz-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -ms-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); z-index: -2; }';
@@ -211,12 +219,17 @@ PAYPAL.apps = PAYPAL.apps || {};
 			items = data.items,
 			optionFieldArr = [],
 			formError = 0,
-			item, child, label, input, key, size, locale, localeText, MiniCart, btnText, selector, optionField, fieldDetails, fieldDetail, fieldValue, field, labelText;
+			item, child, label, input, key, size, locale, localeText, MiniCart, btnText, selector, optionField, fieldDetails = {}, fieldDetail, fieldValue, field, labelText, addEventMethodName;
 
 		form.method = 'post';
 		form.action = paypalURL.replace('{env}', data.items.env.value);
 		form.className = 'paypal-button';
 		form.target = '_top';
+
+		var divElem = document.createElement('div');
+		divElem.className = 'hide';
+		divElem.id = 'errorBox';
+		form.appendChild(divElem);
 
 		inputTextElem.type = 'text';
 		inputTextElem.className = 'paypal-input';
@@ -235,7 +248,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 			btnText = data.items.text.value;
 			data.remove('text');
 		}
-
 		for (key in items) {
 			item = items[key];
 			if (item.hasOptions) {
@@ -247,7 +259,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 				label = labelElem.cloneNode(true);
 				labelText = app.config.labels[item.key] || localeText[item.key];
-				label.htmlFor = labelText;
+				label.htmlFor = item.key;
 				label.appendChild(document.createTextNode(labelText));
 				label.appendChild(input);
 
@@ -265,9 +277,18 @@ PAYPAL.apps = PAYPAL.apps || {};
 		for (key in optionFieldArr) {
 			item = optionFieldArr[key];
 			if (optionFieldArr[key].hasOptions) {
-				//Create Options Fields
-				fieldDetails = JSON.parse(item.value);
-				if (fieldDetails.value instanceof Array) {
+				
+				//IE8 >= Works fine
+				if (typeof JSON === "object" && JSON !== null) {
+					//Create Options Fields
+					fieldDetails = JSON.parse(item.value);
+				} else {
+					//For IE7 display input field
+					fieldDetails.value = '';
+					fieldDetails.label = '';
+					fieldDetails.key = item.key;
+				}
+				if (fieldDetails.value instanceof Array && typeof JSON === "object" && JSON !== null) {
 					input = hidden.cloneNode(true);
 					//on - Option Name
 					input.name = 'on' + item.displayOrder;
@@ -295,14 +316,14 @@ PAYPAL.apps = PAYPAL.apps || {};
 					}
 					label = labelElem.cloneNode(true);
 					labelText = fieldDetails.label || item.key;
-					label.htmlFor = labelText;
+					label.htmlFor = item.key;
 					label.appendChild(document.createTextNode(labelText));
 					label.appendChild(selector);
 					label.appendChild(input);
 				} else {
 					label = labelElem.cloneNode(true);
 					labelText = fieldDetails.label || fieldDetails.key;
-					label.htmlFor = labelText;
+					label.htmlFor = item.key;
 					label.appendChild(document.createTextNode(labelText));
 					
 					input = hidden.cloneNode(true);
@@ -313,8 +334,14 @@ PAYPAL.apps = PAYPAL.apps || {};
 					input = inputTextElem.cloneNode(true);
 					input.name = 'os' + item.displayOrder;
 					input.value = fieldDetails.value;
+					input.setAttribute('data-label', fieldDetails.label);
+
 					if (fieldDetails.required) {
-						input.required = "required";
+						input.setAttribute('data-required', 'required');
+					}
+					//TODO Need to add complex validation
+					if (fieldDetails.pattern && validateFieldHandlers[fieldDetails.pattern]) {
+						input.setAttribute('data-pattern', fieldDetails.pattern);
 					}
 					label.appendChild(input);
 				}
@@ -337,17 +364,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		form.addEventListener('submit', function (e) {
 			e.preventDefault();
-			//HTML5 required attribute on non supported browsers (IE 9,IE 8)
-			formError = 0;
-			fieldDetails = form.getElementsByTagName("input");
-			for (var field in fieldDetails) {
-				fieldDetails[field].className = '';
-				if (fieldDetails[field].value === "" && fieldDetails[field].required) {
-					formError++;
-					fieldDetails[field].className = 'fieldError';
-				}
-			}
-			if (formError === 0) {
+			if (validateFields(form.getElementsByTagName('input'))) {
 				form.submit();
 			}
 		}, false);
@@ -364,6 +381,74 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		return form;
 	}
+
+	/**
+	 * Validate all input fields
+	 */
+	function validateFields(fields) {
+		var field, fieldLabel, patternName, errors = [], errorBox = document.getElementById('errorBox');
+		for (var i = 0, len = fields.length; i < len; i++) {
+			field = fields[i];
+			field.className = 'paypal-input';
+			
+			fieldLabel = field.getAttribute('data-label');
+			patternName = field.getAttribute('data-pattern');
+			if (!checkField(field)) {
+				errors.push(validateFieldHandlers.required.message.replace('%s', fieldLabel));
+				field.className = field.className + ' field-error';
+			} else if (!checkPattern(field, patternName))
+			{
+				field.className = field.className + ' field-error';
+				errors.push(validateFieldHandlers[patternName].message.replace('%s', fieldLabel));
+			}
+		}
+		if (errors.length === 0) {
+			errorBox.className = 'hide';
+			return true;
+		} else {
+			errorBox.className = 'error-box';
+			errorBox.innerHTML = displayErrorMsg(errors);
+			return false;
+		}
+	}
+
+	/**
+	 * Check each field for required option
+	 */
+	function checkField(field) {
+		if (field.getAttribute('data-required'))
+		{
+			field.value = field.value.trim();
+			return !(!field.value || field.value === '' || field.value === undefined);
+		}
+		return true;
+	}
+
+	/**
+	 * Check each field value with pattern
+	 */
+	function checkPattern(field, patternName) {
+		var pattern;
+		var patternKey = field.getAttribute('data-pattern');
+		var validateData = validateFieldHandlers[patternName];
+		if (patternKey && validateData) {
+			pattern = new RegExp(validateData.regex);
+			return pattern.test(field.value);
+		}
+		return true;
+	}
+
+	/**
+	 * Display all error message
+	 */
+	function displayErrorMsg(errors) {
+		var errMsg = '';
+		for (var i = 0; i < errors.length; i++) {
+			errMsg += errors[i] + "<br/>";
+		}
+		return errMsg;
+	}
+
 	/**
 	 * Sort Optional Fields by display order
 	 */
@@ -470,10 +555,10 @@ PAYPAL.apps = PAYPAL.apps || {};
 			data = node && getDataSet(node);
 			type = data && data.button && data.button.value;
 			business = node.src.split('?merchant=')[1];
-			buttonId = data && data.hosted_button_id && data.hosted_button_id.value;
+			//buttonId = data && data.button_id && data.button_id.value;
 
 			if (business) {
-				ButtonFactory.create(business, data, type, node.parentNode, buttonId);
+				ButtonFactory.create(business, data, type, node.parentNode);
 
 				// Clean up
 				node.parentNode.removeChild(node);
