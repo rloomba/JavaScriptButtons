@@ -179,7 +179,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		css += paypalButton + ' .field-error {  border: 1px solid #FF0000; }';
 		css += paypalButton + ' .hide { display: none; }';
-		css += paypalButton + ' .error-box { background: none repeat scroll 0 0 #EEEEEE; border: 1px solid #DADADA; border-radius: 5px; padding: 8px; display: inline-block; }';
+		css += paypalButton + ' .error-box { background: #FFFFFF; verflow: scroll; border: 1px solid #DADADA; border-radius: 5px; padding: 8px; display: inline-block; }';
 
 		css += paypalInput + ' { white-space: nowrap; overflow: hidden; border-radius: 13px; font-family: "Arial", bold, italic; font-weight: bold; font-style: italic; border: 1px solid #ffa823; color: #0E3168; background: #ffa823; position: relative; text-shadow: 0 1px 0 rgba(255,255,255,.5); cursor: pointer; z-index: 0; }';
 		css += paypalInput + ':before { content: " "; position: absolute; width: 100%; height: 100%; border-radius: 11px; top: 0; left: 0; background: #ffa823; background: -webkit-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -moz-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -ms-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); z-index: -2; }';
@@ -277,18 +277,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 		for (key in optionFieldArr) {
 			item = optionFieldArr[key];
 			if (optionFieldArr[key].hasOptions) {
-				
-				//IE8 >= Works fine
-				if (typeof JSON === "object" && JSON !== null) {
-					//Create Options Fields
-					fieldDetails = JSON.parse(item.value);
-				} else {
-					//For IE7 display input field
-					fieldDetails.value = '';
-					fieldDetails.label = '';
-					fieldDetails.key = item.key;
-				}
-				if (fieldDetails.value instanceof Array && typeof JSON === "object" && JSON !== null) {
+				fieldDetails = item.value;
+				if (fieldDetails.options.length > 1) {
 					input = hidden.cloneNode(true);
 					//on - Option Name
 					input.name = 'on' + item.displayOrder;
@@ -298,8 +288,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 					//os - Option Select
 					selector.name = 'os' + item.displayOrder;
 
-					for (fieldDetail in fieldDetails.value) {
-						fieldValue = fieldDetails.value[fieldDetail];
+					for (fieldDetail in fieldDetails.options) {
+						fieldValue = fieldDetails.options[fieldDetail];
 						if (typeof fieldValue === 'string') {
 							optionField = optionElem.cloneNode(true);
 							optionField.value = fieldValue;
@@ -322,7 +312,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 					label.appendChild(input);
 				} else {
 					label = labelElem.cloneNode(true);
-					labelText = fieldDetails.label || fieldDetails.key;
+					labelText = fieldDetails.label || item.key;
 					label.htmlFor = item.key;
 					label.appendChild(document.createTextNode(labelText));
 					
@@ -333,7 +323,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 					
 					input = inputTextElem.cloneNode(true);
 					input.name = 'os' + item.displayOrder;
-					input.value = fieldDetails.value;
+					input.value = fieldDetails.options[0] || '';
 					input.setAttribute('data-label', fieldDetails.label);
 
 					if (fieldDetails.required) {
@@ -396,9 +386,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			if (!checkField(field)) {
 				errors.push(validateFieldHandlers.required.message.replace('%s', fieldLabel));
 				field.className = field.className + ' field-error';
-			} else if (!checkPattern(field, patternName))
-			{
-				field.className = field.className + ' field-error';
+			} else if (!checkPattern(field, patternName)) {
 				errors.push(validateFieldHandlers[patternName].message.replace('%s', fieldLabel));
 			}
 		}
@@ -418,8 +406,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 	function checkField(field) {
 		if (field.getAttribute('data-required'))
 		{
-			field.value = field.value.trim();
-			return !(!field.value || field.value === '' || field.value === undefined);
+			field.value = field.value ? field.value.trim() : '';
+			return !(field.value === '');
 		}
 		return true;
 	}
@@ -433,6 +421,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		var validateData = validateFieldHandlers[patternName];
 		if (patternKey && validateData) {
 			pattern = new RegExp(validateData.regex);
+			field.className = field.className + ' field-error';
 			return pattern.test(field.value);
 		}
 		return true;
@@ -442,11 +431,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * Display all error message
 	 */
 	function displayErrorMsg(errors) {
-		var errMsg = '';
+		var errMsg = '<ul>';
 		for (var i = 0; i < errors.length; i++) {
-			errMsg += errors[i] + "<br/>";
+			errMsg += "<li>" + errors[i] + "</li>";
 		}
-		return errMsg;
+		return errMsg + "</ul>";
 	}
 
 	/**
@@ -496,12 +485,27 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @return {Object}
 	 */
 	function getDataSet(el) {
-		var dataset = {}, attrs, attr, matches, len, i;
-
+		var dataset = {}, attrs, attr, matches, len, i, j;
+		var customFieldMap = {}, customSelectMap = {}, optionCount = 0, valueCount = {}, optionArray = [], optionMap = {};
 		if ((attrs = el.attributes)) {
 			for (i = 0, len = attrs.length; i < len; i++) {
 				attr = attrs[i];
-				if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-options)-([0-9])?/i))) {
+				if ((matches = attr.name.match(/^data-OPTION([0-9])([a-z]+)?/i))) {
+					if (matches[2] === 'name') {
+						optionCount++;
+					}
+					dataset["option_" + matches[1]] = {
+						value: '',
+						hasOptions: true,
+						displayOrder: parseInt(matches[1], 10)
+					};
+					customFieldMap["value_" + matches[1] + "_" + matches[2]] = attr.value;
+				} else if ((matches = attr.name.match(/^data-L_OPTION([0-9])([a-z]+)([0-9])?/i))) {
+					if (matches[2] === 'select') {
+						valueCount[matches[1]] = (valueCount[matches[1]] ? valueCount[matches[1]] + 1 : 1);
+					}
+					customSelectMap["dropdown_" + matches[1] + "_option_" + matches[2] + "_" + matches[3]] = attr.value;
+				} else if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-options)-([0-9])?/i))) {
 					dataset[matches[1]] = {
 						value: attr.value,
 						hasOptions: !!matches[2],
@@ -515,9 +519,23 @@ PAYPAL.apps = PAYPAL.apps || {};
 				}
 			}
 		}
+
+		for (i = 0; i < optionCount; i++) {
+			optionArray = [];
+			for (j = 0; j < valueCount[i]; j++) {
+				optionMap = {};
+				if (customSelectMap["dropdown_" + i + "_option_price_" + j] === undefined) {
+					optionArray.push(customSelectMap["dropdown_" + i + "_option_select_" + j]);
+				} else {
+					optionMap[customSelectMap["dropdown_" + i + "_option_select_" + j]] = customSelectMap["dropdown_" + i + "_option_select_" + j] + " " + customSelectMap["dropdown_" + i + "_option_price_" + j];
+					optionArray.push(optionMap);
+				}
+			}
+			dataset['option_' + i].value = { "options" : '', "label" : customFieldMap["value_" + i + "_name"], "required" : customFieldMap["value_" + i + "_required"], "pattern" : customFieldMap["value_" + i + "_pattern"] };
+			dataset['option_' + i].value.options = optionArray;
+		}
 		return dataset;
 	}
-
 
 	/**
 	 * A storage object to create structured methods around a button's data
@@ -555,7 +573,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 			data = node && getDataSet(node);
 			type = data && data.button && data.button.value;
 			business = node.src.split('?merchant=')[1];
-			//buttonId = data && data.button_id && data.button_id.value;
 
 			if (business) {
 				ButtonFactory.create(business, data, type, node.parentNode);

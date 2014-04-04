@@ -87,31 +87,30 @@ Button stored on PayPal will have hosted button id. Add `data-hosted_button_id` 
 	data-hosted_button_id='<HOSTED_BUTTON_ID>'
 
 ## Optional fields
-Creating custom dropdown field is by adding `-options-N`
+Creating custom dropdown field is by adding 
 
-	data-<OPTION_NAME>-options-N='<JSON_DATA>'
+	`data-OPTIONnNAME`
+	'data-L_OPTIONnSELECTx`
+	`data-L_OPTIONnPRICEx`
 
-**Usage:**
+	`data-OPTIONnREQUIRED="true"`
+	`data-OPTIONnPATTERN="alphaNumericRegex|alphaRegex|numericRegex"`
 
-	data-colors-options-0='<DROP_DOWN_JSON_DATA>'
-	data-sizes-options-1='<DROP_DOWN_JSON_DATA>'
-	data-coupon-options2='<TEXT_FIELD_JSON_DATA>'
-
-**Note:** JSON should be wrapped with Single quote
-
-**Sample JSON Data for dropdown field**
-
-	DROP_DOWN_JSON_DATA
-	Ex: { "label" : "Colors", "value": [ {"Red" : "Red $10.00"}, {"Blue" : "Blue $8.00"} ,{"Green" : "Green $12.00"} ]}
-    or
-	Ex: { "label" : "Sizes", "value": [ "Small", "Medium", "Large" ] }
-
-
-**Sample JSON Data for input field**
-
-	TEXT_FIELD_JSON_DATA
-	Ex: { "label" : "Coupon Number", "value": "", "required" : true, "pattern" : "alphaNumericRegex"}
-	pattern = alphaNumericRegex, alphaRegex, numericRegex
+**Dropdown field**
+	Ex:
+	data-OPTION0NAME="Color"
+	data-L_OPTION0SELECT0="Red"
+	data-L_OPTION0SELECT1="Blue"
+	data-L_OPTION0SELECT2="Green"
+	data-L_OPTION0PRICE0="10.00"
+	data-L_OPTION0PRICE1="8.00"
+	data-L_OPTION0PRICE2="12.00"
+	
+	data-OPTION1NAME="Size"
+	data-L_OPTION1SELECT0="Small"
+	data-L_OPTION1SELECT1="Large"
+	data-OPTION2REQUIRED="true"
+	data-OPTION2PATTERN="alphaNumericRegex"
 
 ## Callback notification
 On completion of a transaction you can get a payment notification ([IPN](https://www.x.com/developers/paypal/documentation-tools/ipn/integration-guide/IPNIntro)) on a callback URL you specify using the `data-callback` attribute. An [IPN simulator](https://developer.paypal.com/webapps/developer/applications/ipn_simulator) is available on the sandbox.
