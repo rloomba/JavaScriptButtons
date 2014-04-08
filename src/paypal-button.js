@@ -403,7 +403,9 @@ PAYPAL.apps = PAYPAL.apps || {};
 		var field, fieldLabel, patternName, errors = [];
 		for (var i = 0, len = fields.length; i < len; i++) {
 			field = fields[i];
-			removeClass(field, 'field-error');
+			if (field.getAttribute('data-required') || field.getAttribute('data-pattern')) {
+				removeClass(field, 'field-error');
+			}
 
 			fieldLabel = field.getAttribute('data-label');
 			patternName = field.getAttribute('data-pattern');
