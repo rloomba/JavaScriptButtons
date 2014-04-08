@@ -179,7 +179,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		css += paypalButton + ' .field-error {  border: 1px solid #FF0000; }';
 		css += paypalButton + ' .hide { display: none; }';
-		css += paypalButton + ' .error-box { background: #FFFFFF; verflow: scroll; border: 1px solid #DADADA; border-radius: 5px; padding: 8px; display: inline-block; }';
+		css += paypalButton + ' .error-box { background: #FFFFFF; border: 1px solid #DADADA; border-radius: 5px; padding: 8px; display: inline-block; }';
 
 		css += paypalInput + ' { white-space: nowrap; overflow: hidden; border-radius: 13px; font-family: "Arial", bold, italic; font-weight: bold; font-style: italic; border: 1px solid #ffa823; color: #0E3168; background: #ffa823; position: relative; text-shadow: 0 1px 0 rgba(255,255,255,.5); cursor: pointer; z-index: 0; }';
 		css += paypalInput + ':before { content: " "; position: absolute; width: 100%; height: 100%; border-radius: 11px; top: 0; left: 0; background: #ffa823; background: -webkit-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -moz-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: -ms-linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); background: linear-gradient(top, #FFAA00 0%,#FFAA00 80%,#FFF8FC 100%); z-index: -2; }';
@@ -354,7 +354,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		form.addEventListener('submit', function (e) {
 			e.preventDefault();
-			if (validateFields(form.getElementsByTagName('input'))) {
+			if (validateFields(form.querySelectorAll('input[type=text]'), form.querySelectorAll('div[id=errorBox]')[0])) {
 				form.submit();
 			}
 		}, false);
@@ -373,20 +373,46 @@ PAYPAL.apps = PAYPAL.apps || {};
 	}
 
 	/**
+	 * Check className exist in element
+	 */
+	function hasClass(ele, cls) {
+		return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+	}
+	/**
+	 * Add className to element
+	 */
+	function addClass(ele, cls) {
+		if (!hasClass(ele, cls)) {
+			ele.className += " " + cls;
+		}
+	}
+	/**
+	 * Remove className from element
+	 */
+	function removeClass(ele, cls) {
+		if (hasClass(ele, cls)) {
+			var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+			ele.className = ele.className.replace(reg, ' ');
+		}
+	}
+
+	/**
 	 * Validate all input fields
 	 */
-	function validateFields(fields) {
-		var field, fieldLabel, patternName, errors = [], errorBox = document.getElementById('errorBox');
+	function validateFields(fields, errorBox) {
+		var field, fieldLabel, patternName, errors = [];
 		for (var i = 0, len = fields.length; i < len; i++) {
 			field = fields[i];
-			field.className = 'paypal-input';
-			
+			removeClass(field, 'field-error');
+
 			fieldLabel = field.getAttribute('data-label');
 			patternName = field.getAttribute('data-pattern');
-			if (!checkField(field)) {
+			field.value = field.value.trim();
+			if (field.getAttribute('data-required') && field.value.trim() === '') {
 				errors.push(validateFieldHandlers.required.message.replace('%s', fieldLabel));
-				field.className = field.className + ' field-error';
-			} else if (!checkPattern(field, patternName)) {
+				addClass(field, 'field-error');
+			} else if (field.getAttribute('data-pattern') && validateFieldHandlers[patternName] && !checkPattern(field, patternName)) {
+				addClass(field, 'field-error');
 				errors.push(validateFieldHandlers[patternName].message.replace('%s', fieldLabel));
 			}
 		}
@@ -401,30 +427,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 	}
 
 	/**
-	 * Check each field for required option
-	 */
-	function checkField(field) {
-		if (field.getAttribute('data-required'))
-		{
-			field.value = field.value ? field.value.trim() : '';
-			return !(field.value === '');
-		}
-		return true;
-	}
-
-	/**
 	 * Check each field value with pattern
 	 */
 	function checkPattern(field, patternName) {
-		var pattern;
-		var patternKey = field.getAttribute('data-pattern');
-		var validateData = validateFieldHandlers[patternName];
-		if (patternKey && validateData) {
-			pattern = new RegExp(validateData.regex);
-			field.className = field.className + ' field-error';
-			return pattern.test(field.value);
-		}
-		return true;
+		var pattern = new RegExp(validateFieldHandlers[patternName].regex);
+		return pattern.test(field.value);
 	}
 
 	/**

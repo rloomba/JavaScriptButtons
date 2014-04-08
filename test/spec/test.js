@@ -65,7 +65,7 @@ describe('Test page button counter', function () {
 	});
 
 	it('Should have seven buy now buttons', function () {
-		buttons.buynow.should.equal(7);
+		buttons.buynow.should.equal(8);
 	});
 
 	it('Should have two cart buttons', function () {
