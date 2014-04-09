@@ -89,29 +89,33 @@ Button stored on PayPal will have hosted button id. Add `data-hosted_button_id` 
 ## Optional fields
 Creating custom dropdown field is by adding 
 
-	`data-OPTIONnNAME`
-	'data-L_OPTIONnSELECTx`
-	`data-L_OPTIONnPRICEx`
+	`data-optionNname`
+	'data-optionNselectX`
+	`data-optionNpriceX`
 
-	`data-OPTIONnREQUIRED="true"`
-	`data-OPTIONnPATTERN="alphaNumericRegex|alphaRegex|numericRegex"`
+	`data-optionNrequired="true"`
+	`data-optionNpattern="alphaNumericRegex|alphaRegex|numericRegex"`
 
 **Dropdown field**
 
 	Ex:
-		data-OPTION0NAME="Color"
-		data-L_OPTION0SELECT0="Red"
-		data-L_OPTION0SELECT1="Blue"
-		data-L_OPTION0SELECT2="Green"
-		data-L_OPTION0PRICE0="10.00"
-		data-L_OPTION0PRICE1="8.00"
-		data-L_OPTION0PRICE2="12.00"
+		data-option0name="Color"
+		data-option0select0="Red"
+		data-option0select1="Blue"
+		data-option0select2="Green"
+		data-option0price0="10.00"
+		data-option0price1="8.00"
+		data-option0price2="12.00"
 
-		data-OPTION1NAME="Size"
-		data-L_OPTION1SELECT0="Small"
-		data-L_OPTION1SELECT1="Large"
-		data-OPTION2REQUIRED="true"
-		data-OPTION2PATTERN="alphaNumericRegex"
+		data-option1name="Size"
+		data-option1select0="Small"
+		data-option1select1="Medium"
+		data-option1select2="Large"
+		
+		data-option2name="Coupon Number"
+		data-option2select0=""
+		data-option2required="true"
+		data-option2pattern="alphaNumericRegex"
 
 ## Callback notification
 On completion of a transaction you can get a payment notification ([IPN](https://www.x.com/developers/paypal/documentation-tools/ipn/integration-guide/IPNIntro)) on a callback URL you specify using the `data-callback` attribute. An [IPN simulator](https://developer.paypal.com/webapps/developer/applications/ipn_simulator) is available on the sandbox.

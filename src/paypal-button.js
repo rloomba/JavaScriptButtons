@@ -352,12 +352,19 @@ PAYPAL.apps = PAYPAL.apps || {};
 		btn.appendChild(document.createTextNode(btnText));
 		form.appendChild(btn);
 
-		form.addEventListener('submit', function (e) {
-			e.preventDefault();
-			if (validateFields(form.querySelectorAll('input[type=text]'), form.querySelectorAll('div[id=errorBox]')[0])) {
-				form.submit();
-			}
-		}, false);
+		if (window.addEventListener) {
+			form.addEventListener('submit', function (e) {
+				e.preventDefault();
+				if (validateFields(form.querySelectorAll('input[type=text]'), form.querySelectorAll('div[id=errorBox]')[0])) {
+					form.submit();
+				}
+			}, false);
+		//For IE 8
+		} else {
+			form.attachEvent('onsubmit', function () {
+				return validateFields(form.querySelectorAll('input[type=text]'), form.querySelectorAll('div[id=errorBox]')[0]);
+			});
+		}
 
 		// If the Mini Cart is present then register the form
 		if ((MiniCart = PAYPAL.apps.MiniCart) && data.items.cmd.value === '_cart') {
@@ -409,8 +416,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			fieldLabel = field.getAttribute('data-label');
 			patternName = field.getAttribute('data-pattern');
-			field.value = field.value.trim();
-			if (field.getAttribute('data-required') && field.value.trim() === '') {
+			//Trim not supported in IE8
+			if (field.value.trim) {
+				field.value = field.value.trim();
+			}
+			if (field.getAttribute('data-required') && field.value === '') {
 				errors.push(validateFieldHandlers.required.message.replace('%s', fieldLabel));
 				addClass(field, 'field-error');
 			} else if (field.getAttribute('data-pattern') && validateFieldHandlers[patternName] && !checkPattern(field, patternName)) {
