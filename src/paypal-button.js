@@ -93,7 +93,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			// Normalize the data's keys and add to a data store
 			for (key in raw) {
-				data.add(prettyParams[key] || key, raw[key].value, raw[key].isEditable, raw[key].isRequired, raw[key].hasOptions, raw[key].displayOrder);
+				data.add(prettyParams[key] || key, raw[key].value, raw[key].isEditable, raw[key].hasOptions, raw[key].displayOrder);
 			}
 
 			// Defaults
@@ -568,12 +568,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 	function DataStore() {
 		this.items = {};
 
-		this.add = function (key, value, isEditable, isRequired, hasOptions, displayOrder) {
+		this.add = function (key, value, isEditable, hasOptions, displayOrder) {
 			this.items[key] = {
 				key: key,
 				value: value,
 				isEditable: isEditable,
-				isRequired: isRequired,
 				hasOptions : hasOptions,
 				displayOrder : displayOrder
 			};
