@@ -93,7 +93,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			// Normalize the data's keys and add to a data store
 			for (key in raw) {
-				data.add(prettyParams[key] || key, raw[key].value || raw[key], raw[key].isEditable, raw[key].hasOptions, raw[key].displayOrder);
+				data.add(prettyParams[key] || key, raw[key].value, raw[key].isEditable, raw[key].isRequired, raw[key].hasOptions, raw[key].displayOrder);
 			}
 
 			// Defaults
@@ -258,7 +258,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				input.value = item.value;
 
 				label = labelElem.cloneNode(true);
-				labelText = app.config.labels[item.key] || localeText[item.key];
+				labelText = app.config.labels[item.key] || localeText[item.key] || item.key;
 				label.htmlFor = item.key;
 				label.appendChild(document.createTextNode(labelText));
 				label.appendChild(input);
@@ -494,32 +494,12 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 * @return {Object}
 	 */
 	function getDataSet(el) {
-		var dataset = {}, attrs, attr, matches, len, i, j;
-		var customFieldMap = {}, customSelectMap = {}, optionCount = 0, valueCount = {}, optionArray = [], optionMap = {};
+		var dataset = {}, attrs, attr, matches, len, i, j, customFields = [];
 		if ((attrs = el.attributes)) {
 			for (i = 0, len = attrs.length; i < len; i++) {
 				attr = attrs[i];
-				if ((matches = attr.name.match(/^data-OPTION([0-9])([a-z]+)?/i))) {
-					if (matches[2] === 'name') {
-						optionCount++;
-					}
-					dataset["option_" + matches[1]] = {
-						value: '',
-						hasOptions: true,
-						displayOrder: parseInt(matches[1], 10)
-					};
-					customFieldMap["value_" + matches[1] + "_" + matches[2]] = attr.value;
-				} else if ((matches = attr.name.match(/^data-L_OPTION([0-9])([a-z]+)([0-9])?/i))) {
-					if (matches[2] === 'select') {
-						valueCount[matches[1]] = (valueCount[matches[1]] ? valueCount[matches[1]] + 1 : 1);
-					}
-					customSelectMap["dropdown_" + matches[1] + "_option_" + matches[2] + "_" + matches[3]] = attr.value;
-				} else if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-options)-([0-9])?/i))) {
-					dataset[matches[1]] = {
-						value: attr.value,
-						hasOptions: !!matches[2],
-						displayOrder: parseInt(matches[3], 10)
-					};
+				if ((matches = attr.name.match(/^data-option([0-9])([a-z]+)([0-9])?/i))) {
+					customFields.push({ "name" : "option." + matches[1] + "." + matches[2] + (matches[3] ? "." + matches[3] : ''), value: attr.value });
 				} else if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-editable)?/i))) {
 					dataset[matches[1]] = {
 						value: attr.value,
@@ -528,22 +508,58 @@ PAYPAL.apps = PAYPAL.apps || {};
 				}
 			}
 		}
-
-		for (i = 0; i < optionCount; i++) {
-			optionArray = [];
-			for (j = 0; j < valueCount[i]; j++) {
-				optionMap = {};
-				if (customSelectMap["dropdown_" + i + "_option_price_" + j] === undefined) {
-					optionArray.push(customSelectMap["dropdown_" + i + "_option_select_" + j]);
-				} else {
-					optionMap[customSelectMap["dropdown_" + i + "_option_select_" + j]] = customSelectMap["dropdown_" + i + "_option_select_" + j] + " " + customSelectMap["dropdown_" + i + "_option_price_" + j];
-					optionArray.push(optionMap);
+		processCustomFieldValues(customFields, dataset);
+		
+		return dataset;
+	}
+	
+	function processCustomFieldValues(customFields, dataset) {
+		//Read all custom field values and create a structured object
+		var result = {}, keyValuePairs, name, nameParts, accessor, cursor;
+		for (i = 0; i < customFields.length; i++) {
+			keyValuePairs = customFields[i];
+			name = keyValuePairs.name;
+			nameParts = name.split(".");
+			accessor = nameParts.shift();
+			cursor = result;
+			while (accessor) {
+				if (!cursor[accessor]) {
+					cursor[accessor] = {};
+				}
+				if (!nameParts.length) {
+					cursor[accessor] = keyValuePairs.value;
+				}
+				cursor = cursor[accessor];
+				accessor = nameParts.shift();
+			}
+		}
+		//Store custom fields in dataset
+		var key, i, j, field, selectMap = {}, priceMap = {}, optionArray = [], optionMap = {}, owns = Object.prototype.hasOwnProperty;
+		for (key in result) {
+			if (owns.call(result, key)) {
+				field = result[key];
+				for (i in field) {
+					dataset["option_" + i] = {
+						value: { "options" : '', "label" : field[i].name, "required" : field[i].required, "pattern" : field[i].pattern },
+						hasOptions: true,
+						displayOrder: parseInt(i, 10)
+					};
+					selectMap = field[i].select;
+					priceMap = field[i].price;
+					optionArray = [];
+					for (j in selectMap) {
+						optionMap = {};
+						if (priceMap) {
+							optionMap[selectMap[j]] = selectMap[j] + " " + priceMap[j];
+							optionArray.push(optionMap);
+						} else {
+							optionArray.push(selectMap[j]);
+						}
+					}
+					dataset['option_' + i].value.options = optionArray;
 				}
 			}
-			dataset['option_' + i].value = { "options" : '', "label" : customFieldMap["value_" + i + "_name"], "required" : customFieldMap["value_" + i + "_required"], "pattern" : customFieldMap["value_" + i + "_pattern"] };
-			dataset['option_' + i].value.options = optionArray;
 		}
-		return dataset;
 	}
 
 	/**
@@ -552,11 +568,12 @@ PAYPAL.apps = PAYPAL.apps || {};
 	function DataStore() {
 		this.items = {};
 
-		this.add = function (key, value, isEditable, hasOptions, displayOrder) {
+		this.add = function (key, value, isEditable, isRequired, hasOptions, displayOrder) {
 			this.items[key] = {
 				key: key,
 				value: value,
 				isEditable: isEditable,
+				isRequired: isRequired,
 				hasOptions : hasOptions,
 				displayOrder : displayOrder
 			};
