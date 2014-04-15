@@ -87,13 +87,14 @@ PAYPAL.apps = PAYPAL.apps || {};
 		 * @return {HTMLElement}
 		 */
 		app.create = function (business, raw, type, parent) {
-			var data = new DataStore(), button, key, env;
+			var data = new DataStore(), button, key, env, rawKey;
 
 			if (!business) { return false; }
 
 			// Normalize the data's keys and add to a data store
 			for (key in raw) {
-				data.add(prettyParams[key] || key, raw[key].value, raw[key].isEditable, raw[key].hasOptions, raw[key].displayOrder);
+				rawKey = raw[key];
+				data.add(prettyParams[key] || key, rawKey.value, rawKey.isEditable, rawKey.hasOptions, rawKey.displayOrder);
 			}
 
 			// Defaults
