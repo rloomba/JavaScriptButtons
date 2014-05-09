@@ -220,7 +220,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			items = data.items,
 			optionFieldArr = [],
 			formError = 0,
-			item, child, label, input, key, size, locale, localeText, MiniCart, btnText, selector, optionField, fieldDetails = {}, fieldDetail, fieldValue, field, labelText, addEventMethodName;
+			item, child, label, input, key, size, locale, localeText, btnText, selector, optionField, fieldDetails = {}, fieldDetail, fieldValue, field, labelText, addEventMethodName;
 
 		form.method = 'post';
 		form.action = paypalURL.replace('{env}', data.items.env.value);
@@ -251,6 +251,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		}
 		for (key in items) {
 			item = items[key];
+
 			if (item.hasOptions) {
 				optionFieldArr.push(item);
 			} else if (item.isEditable) {
@@ -351,6 +352,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		}
 		btn.className = 'paypal-button ' + size;
 		btn.appendChild(document.createTextNode(btnText));
+
 		form.appendChild(btn);
 
 		if (window.addEventListener) {
@@ -366,17 +368,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 				return validateFields(form.querySelectorAll('input[type=text]'), form.querySelectorAll('div[id=errorBox]')[0]);
 			});
 		}
-
-		// If the Mini Cart is present then register the form
-		if ((MiniCart = PAYPAL.apps.MiniCart) && data.items.cmd.value === '_cart') {
-
-			if (!MiniCart.UI.itemList) {
-				MiniCart.render();
-			}
-
-			MiniCart.bindForm(form);
-		}
-
 		return form;
 	}
 
@@ -506,9 +497,11 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 */
 	function getDataSet(el) {
 		var dataset = {}, attrs, attr, matches, len, i, j, customFields = [];
+
 		if ((attrs = el.attributes)) {
 			for (i = 0, len = attrs.length; i < len; i++) {
 				attr = attrs[i];
+
 				if ((matches = attr.name.match(/^data-option([0-9])([a-z]+)([0-9])?/i))) {
 					customFields.push({ "name" : "option." + matches[1] + "." + matches[2] + (matches[3] ? "." + matches[3] : ''), value: attr.value });
 				} else if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-editable)?/i))) {
@@ -520,7 +513,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 			}
 		}
 		processCustomFieldValues(customFields, dataset);
-		
 		return dataset;
 	}
 	
@@ -572,7 +564,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 			}
 		}
 	}
-
 	/**
 	 * A storage object to create structured methods around a button's data
 	 */
