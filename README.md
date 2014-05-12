@@ -84,36 +84,28 @@ Creating editable fields is easy! Just add `-editable` to the name of your varia
 ## Hosted Button Support
 We now support hosted buttons!  Add `data-hosted_button_id` to your script with your button ID, e.g. `data-hosted_button_id=<HOSTED_BUTTON_ID>`.
 
-## Custom dropdown fields
-You can also create custom dropdown fields for your form.
+## Custom fields
+You can also add custom text fields and dropdowns to your form.
 
-	`data-optionNname`
-	'data-optionNselectX`
-	`data-optionNpriceX`
+For a text field:
+```javascript
+data-option0name="Coupon Number"
+data-option0required="true"
+```
 
-	`data-optionNrequired="true"`
-	`data-optionNpattern="alphaNumericRegex|alphaRegex|numericRegex"`
+For a dropdown:
+```javascript
+data-option0name="Size"
+data-option0select0="Small"
+data-option0select1="Medium"
+data-option0select2="Large"
+data-option0price0="8.00"
+data-option0price1="10.00"
+data-option0price2="12.00"
+```
 
-**Dropdown field**
-
-	Ex:
-		data-option0name="Color"
-		data-option0select0="Red"
-		data-option0select1="Blue"
-		data-option0select2="Green"
-		data-option0price0="10.00"
-		data-option0price1="8.00"
-		data-option0price2="12.00"
-
-		data-option1name="Size"
-		data-option1select0="Small"
-		data-option1select1="Medium"
-		data-option1select2="Large"
-		
-		data-option2name="Coupon Number"
-		data-option2select0=""
-		data-option2required="true"
-		data-option2pattern="alphaNumericRegex"
+## Form validation
+We can also handle form validation for you.  To make a field required, add `data-optionNrequired="true"`.  We support patterns, too.  Add `data-optionNpattern`, e.g. `data-optionNpattern="alphaNumericRegex"`.  Supported validators are: `alphaNumericRegex`, `alphaRegex`, and `numericRegex`.
 
 ## Callback notification
 On completion of a transaction you can get a payment notification ([IPN](https://www.x.com/developers/paypal/documentation-tools/ipn/integration-guide/IPNIntro)) on a callback URL you specify using the `data-callback` attribute. An [IPN simulator](https://developer.paypal.com/webapps/developer/applications/ipn_simulator) is available on the sandbox.
