@@ -27,13 +27,6 @@ module.exports = function (grunt) {
 				options: {
 					banner: "<%= meta.banner %>"
 				}
-			},
-			bundled: {
-				src: [ "<%= meta.banner %>", "lib/MiniCart/src/minicart.js", "src/paypal-button.js" ],
-				dest: "dist/paypal-button-minicart.min.js",
-				options: {
-					banner: "<%= meta.banner %>"
-				}
 			}
 		},
 
@@ -51,9 +44,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-mocha-test");
-	grunt.loadNpmTasks("grunt-update-submodules");
 
-	grunt.registerTask("default", ["jshint", "update_submodules", "uglify"]);
+	grunt.registerTask("default", ["jshint", "uglify"]);
 	grunt.registerTask("test", ["jshint", "mochaTest"]);
 
 };
