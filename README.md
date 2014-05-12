@@ -81,6 +81,42 @@ All of PayPal's [HTML button variables](https://developer.paypal.com/webapps/dev
 ## Editable fields
 Creating editable fields is easy! Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.
 
+## Hosted Button Support
+Button stored on PayPal will have hosted button id. Add `data-hosted_button_id` variable. e.g. 
+
+	data-hosted_button_id='<HOSTED_BUTTON_ID>'
+
+## Optional fields
+Creating custom dropdown field is by adding 
+
+	`data-optionNname`
+	'data-optionNselectX`
+	`data-optionNpriceX`
+
+	`data-optionNrequired="true"`
+	`data-optionNpattern="alphaNumericRegex|alphaRegex|numericRegex"`
+
+**Dropdown field**
+
+	Ex:
+		data-option0name="Color"
+		data-option0select0="Red"
+		data-option0select1="Blue"
+		data-option0select2="Green"
+		data-option0price0="10.00"
+		data-option0price1="8.00"
+		data-option0price2="12.00"
+
+		data-option1name="Size"
+		data-option1select0="Small"
+		data-option1select1="Medium"
+		data-option1select2="Large"
+		
+		data-option2name="Coupon Number"
+		data-option2select0=""
+		data-option2required="true"
+		data-option2pattern="alphaNumericRegex"
+
 ## Callback notification
 On completion of a transaction you can get a payment notification ([IPN](https://www.x.com/developers/paypal/documentation-tools/ipn/integration-guide/IPNIntro)) on a callback URL you specify using the `data-callback` attribute. An [IPN simulator](https://developer.paypal.com/webapps/developer/applications/ipn_simulator) is available on the sandbox.
 
