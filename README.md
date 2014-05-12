@@ -90,7 +90,6 @@ You can also add custom text fields and dropdowns to your form.
 For a text field:
 ```javascript
 data-option0name="Coupon Number"
-data-option0required="true"
 ```
 
 For a dropdown:
