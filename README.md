@@ -82,12 +82,10 @@ All of PayPal's [HTML button variables](https://developer.paypal.com/webapps/dev
 Creating editable fields is easy! Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.
 
 ## Hosted Button Support
-Button stored on PayPal will have hosted button id. Add `data-hosted_button_id` variable. e.g. 
+We now support hosted buttons!  Add `data-hosted_button_id` to your script with your button ID, e.g. `data-hosted_button_id=<HOSTED_BUTTON_ID>`.
 
-	data-hosted_button_id='<HOSTED_BUTTON_ID>'
-
-## Optional fields
-Creating custom dropdown field is by adding 
+## Custom dropdown fields
+You can also create custom dropdown fields for your form.
 
 	`data-optionNname`
 	'data-optionNselectX`
