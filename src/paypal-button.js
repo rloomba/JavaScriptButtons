@@ -49,12 +49,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 			zh_HK: { buynow: '立即買', cart: '加入購物車', donate: '捐款', subscribe: '訂用', paynow : '现在支付', item_name: '項目', number: '號碼', amount: '金額', quantity: '數量' },
 			zh_TW: { buynow: '立即購', cart: '加到購物車', donate: '捐款', subscribe: '訂閱', paynow : '现在支付', item_name: '商品', number: '商品編號', amount: '單價', quantity: '數量' },
 			zh_XC: { buynow: '立即购买', cart: '添加到购物车', donate: '捐赠', subscribe: '租用', paynow : '现在支付', item_name: '物品', number: '编号', amount: '金额', quantity: '数量' }
-		},
-		validateFieldHandlers = {
-			required : { message: 'The %s field is required' },
-			numericRegex : { regex : /^[0-9]+$/, message : 'The %s field must contain only numbers.' },
-			alphaRegex :  { regex : /^[a-z]+$/i, message : 'The %s field must only contain alphabetical characters.' },
-			alphaNumericRegex : { regex : /^[a-z0-9]+$/i, message : 'The %s field must only contain alpha-numeric characters.' }
 		};
 
 	if (!PAYPAL.apps.ButtonFactory) {
@@ -328,13 +322,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 					input.value = fieldDetails.options[0] || '';
 					input.setAttribute('data-label', fieldDetails.label);
 
-					if (fieldDetails.required) {
-						input.setAttribute('data-required', 'required');
-					}
-					//TODO Need to add complex validation
-					if (fieldDetails.pattern && validateFieldHandlers[fieldDetails.pattern]) {
-						input.setAttribute('data-pattern', fieldDetails.pattern);
-					}
 					label.appendChild(input);
 				}
 				child = paraElem.cloneNode(true);
@@ -355,19 +342,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		form.appendChild(btn);
 
-		if (window.addEventListener) {
-			form.addEventListener('submit', function (e) {
-				e.preventDefault();
-				if (validateFields(form.querySelectorAll('input[type=text]'), form.querySelectorAll('div[id=errorBox]')[0])) {
-					form.submit();
-				}
-			}, false);
-		//For IE 8
-		} else {
-			form.attachEvent('onsubmit', function () {
-				return validateFields(form.querySelectorAll('input[type=text]'), form.querySelectorAll('div[id=errorBox]')[0]);
-			});
-		}
 		return form;
 	}
 
@@ -393,49 +367,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 			var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
 			ele.className = ele.className.replace(reg, ' ');
 		}
-	}
-
-	/**
-	 * Validate all input fields
-	 */
-	function validateFields(fields, errorBox) {
-		var field, fieldLabel, patternName, errors = [];
-		for (var i = 0, len = fields.length; i < len; i++) {
-			field = fields[i];
-			if (field.getAttribute('data-required') || field.getAttribute('data-pattern')) {
-				removeClass(field, 'field-error');
-			}
-
-			fieldLabel = field.getAttribute('data-label');
-			patternName = field.getAttribute('data-pattern');
-			//Trim not supported in IE8
-			if (field.value.trim) {
-				field.value = field.value.trim();
-			}
-			if (field.getAttribute('data-required') && field.value === '') {
-				errors.push(validateFieldHandlers.required.message.replace('%s', fieldLabel));
-				addClass(field, 'field-error');
-			} else if (field.getAttribute('data-pattern') && validateFieldHandlers[patternName] && !checkPattern(field, patternName)) {
-				addClass(field, 'field-error');
-				errors.push(validateFieldHandlers[patternName].message.replace('%s', fieldLabel));
-			}
-		}
-		if (errors.length === 0) {
-			errorBox.className = 'hide';
-			return true;
-		} else {
-			errorBox.className = 'error-box';
-			errorBox.innerHTML = displayErrorMsg(errors);
-			return false;
-		}
-	}
-
-	/**
-	 * Check each field value with pattern
-	 */
-	function checkPattern(field, patternName) {
-		var pattern = new RegExp(validateFieldHandlers[patternName].regex);
-		return pattern.test(field.value);
 	}
 
 	/**
@@ -543,7 +474,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				field = result[key];
 				for (i in field) {
 					dataset["option_" + i] = {
-						value: { "options" : '', "label" : field[i].name, "required" : field[i].required, "pattern" : field[i].pattern },
+						value: { "options" : '', "label" : field[i].name},
 						hasOptions: true,
 						displayOrder: parseInt(i, 10)
 					};
