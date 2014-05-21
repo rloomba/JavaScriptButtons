@@ -104,7 +104,7 @@ data-option0price2="12.00"
 ```
 
 ## Callback notification
-On completion of a transaction you can get a payment notification ([IPN](https://www.x.com/developers/paypal/documentation-tools/ipn/integration-guide/IPNIntro)) on a callback URL you specify using the `data-callback` attribute. An [IPN simulator](https://developer.paypal.com/webapps/developer/applications/ipn_simulator) is available on the sandbox.
+On completion of a transaction you can get a payment notification ([IPN](https://developer.paypal.com/docs/classic/ipn/integration-guide/IPNIntro/)) on a callback URL you specify using the `data-callback` attribute. An [IPN simulator](https://developer.paypal.com/webapps/developer/applications/ipn_simulator) is available on the sandbox.
 
 ## Localization
 * Changing the default language of a button can be done by setting the variable `data-lc` with the correct locale code, e.g. es_ES.
