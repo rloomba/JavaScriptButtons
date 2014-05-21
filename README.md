@@ -103,13 +103,6 @@ data-option0price1="10.00"
 data-option0price2="12.00"
 ```
 
-## Form validation
-We can also handle form validation for you.  
-
-To make a field required, add `data-optionNrequired="true"`.  
-
-We support patterns, too.  Add `data-optionNpattern`, e.g. `data-optionNpattern="alphaNumericRegex"`.  Supported validators are: `alphaNumericRegex`, `alphaRegex`, and `numericRegex`.
-
 ## Callback notification
 On completion of a transaction you can get a payment notification ([IPN](https://www.x.com/developers/paypal/documentation-tools/ipn/integration-guide/IPNIntro)) on a callback URL you specify using the `data-callback` attribute. An [IPN simulator](https://developer.paypal.com/webapps/developer/applications/ipn_simulator) is available on the sandbox.
 
