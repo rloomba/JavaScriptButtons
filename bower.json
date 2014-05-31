@@ -22,7 +22,6 @@
     "javascriptbuttons",
     "jsbuttons"
   ],
-  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
