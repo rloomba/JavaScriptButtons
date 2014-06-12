@@ -31,7 +31,9 @@
   "scripts": {
     "test": "grunt test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "grunt-contrib-watch": "^0.6.1"
+  },
   "devDependencies": {
     "chai": "~1.8.1",
     "grunt": "~0.4.2",

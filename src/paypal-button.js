@@ -177,7 +177,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 		// Primary
 		css += '.paypal-button button { height: 26px; background: #009cde; border: 1px transparent; border-radius: 3px; color: #fff; }';
 
-
 		styleEl.type = 'text/css';
 		styleEl.id = 'paypal-button';
 
