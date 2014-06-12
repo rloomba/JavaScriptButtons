@@ -93,12 +93,13 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 			// Defaults
 			type = type || 'buynow';
-			env = "www";
+			env = 'www';
 
 			if (data.items.env && data.items.env.value) {
-				env += "." + data.items.env.value;
+				env += '.' + data.items.env.value;
 			}
 
+			// Hosted buttons
 			if (data.items.hosted_button_id) {
 				data.add('cmd', '_s-xclick');
 			// Cart buttons
@@ -134,6 +135,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			} else {
 				button = buildForm(data, type);
 			}
+
 			// Inject CSS
 			injectCSS();
 
@@ -223,7 +225,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		var divElem = document.createElement('div');
 		divElem.className = 'hide';
-		divElem.id = 'errorBox';
 		form.appendChild(divElem);
 
 		inputTextElem.type = 'text';
@@ -243,6 +244,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			btnText = data.items.text.value;
 			data.remove('text');
 		}
+
 		for (key in items) {
 			item = items[key];
 
@@ -269,9 +271,12 @@ PAYPAL.apps = PAYPAL.apps || {};
 				form.appendChild(child);
 			}
 		}
+
 		optionFieldArr = sortOptionFields(optionFieldArr);
+
 		for (key in optionFieldArr) {
 			item = optionFieldArr[key];
+
 			if (optionFieldArr[key].hasOptions) {
 				fieldDetails = item.value;
 				if (fieldDetails.options.length > 1) {
@@ -286,6 +291,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 					for (fieldDetail in fieldDetails.options) {
 						fieldValue = fieldDetails.options[fieldDetail];
+
 						if (typeof fieldValue === 'string') {
 							optionField = optionElem.cloneNode(true);
 							optionField.value = fieldValue;
@@ -300,6 +306,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 							}
 						}
 					}
+
 					label = labelElem.cloneNode(true);
 					labelText = fieldDetails.label || item.key;
 					label.htmlFor = item.key;
@@ -351,21 +358,24 @@ PAYPAL.apps = PAYPAL.apps || {};
 	function hasClass(ele, cls) {
 		return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
 	}
+
 	/**
 	 * Add className to element
 	 */
 	function addClass(ele, cls) {
 		if (!hasClass(ele, cls)) {
-			ele.className += " " + cls;
+			ele.className += ' ' + cls;
 		}
 	}
 	/**
 	 * Remove className from element
 	 */
 	function removeClass(ele, cls) {
+		var regex;
+
 		if (hasClass(ele, cls)) {
-			var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
-			ele.className = ele.className.replace(reg, ' ');
+			regex = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+			ele.className = ele.className.replace(regex, ' ');
 		}
 	}
 
@@ -374,10 +384,12 @@ PAYPAL.apps = PAYPAL.apps || {};
 	 */
 	function displayErrorMsg(errors) {
 		var errMsg = '<ul>';
+
 		for (var i = 0; i < errors.length; i++) {
-			errMsg += "<li>" + errors[i] + "</li>";
+			errMsg += '<li>' + errors[i] + '</li>';
 		}
-		return errMsg + "</ul>";
+
+		return errMsg + '</ul>';
 	}
 
 	/**
@@ -387,6 +399,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		optionFieldArr.sort(function (a, b) {
 			return a.displayOrder - b.displayOrder;
 		});
+
 		return optionFieldArr;
 	}
 	/**
@@ -434,7 +447,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 				attr = attrs[i];
 
 				if ((matches = attr.name.match(/^data-option([0-9])([a-z]+)([0-9])?/i))) {
-					customFields.push({ "name" : "option." + matches[1] + "." + matches[2] + (matches[3] ? "." + matches[3] : ''), value: attr.value });
+					customFields.push({ 'name' : 'option.' + matches[1] + '.' + matches[2] + (matches[3] ? '.' + matches[3] : ''), value: attr.value });
 				} else if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-editable)?/i))) {
 					dataset[matches[1]] = {
 						value: attr.value,
@@ -443,17 +456,23 @@ PAYPAL.apps = PAYPAL.apps || {};
 				}
 			}
 		}
+
 		processCustomFieldValues(customFields, dataset);
+
 		return dataset;
 	}
 	
+
+	/**
+	 * Read all custom field values and create a structured object
+	 */
 	function processCustomFieldValues(customFields, dataset) {
-		//Read all custom field values and create a structured object
 		var result = {}, keyValuePairs, name, nameParts, accessor, cursor;
+
 		for (i = 0; i < customFields.length; i++) {
 			keyValuePairs = customFields[i];
 			name = keyValuePairs.name;
-			nameParts = name.split(".");
+			nameParts = name.split('.');
 			accessor = nameParts.shift();
 			cursor = result;
 			while (accessor) {
@@ -467,14 +486,16 @@ PAYPAL.apps = PAYPAL.apps || {};
 				accessor = nameParts.shift();
 			}
 		}
+
 		//Store custom fields in dataset
 		var key, i, j, field, selectMap = {}, priceMap = {}, optionArray = [], optionMap = {}, owns = Object.prototype.hasOwnProperty;
+		
 		for (key in result) {
 			if (owns.call(result, key)) {
 				field = result[key];
 				for (i in field) {
-					dataset["option_" + i] = {
-						value: { "options" : '', "label" : field[i].name},
+					dataset['option_' + i] = {
+						value: { 'options' : '', 'label' : field[i].name},
 						hasOptions: true,
 						displayOrder: parseInt(i, 10)
 					};
@@ -484,7 +505,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 					for (j in selectMap) {
 						optionMap = {};
 						if (priceMap) {
-							optionMap[selectMap[j]] = selectMap[j] + " " + priceMap[j];
+							optionMap[selectMap[j]] = selectMap[j] + ' ' + priceMap[j];
 							optionArray.push(optionMap);
 						} else {
 							optionArray.push(selectMap[j]);
@@ -495,6 +516,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 			}
 		}
 	}
+
+
 	/**
 	 * A storage object to create structured methods around a button's data
 	 */
