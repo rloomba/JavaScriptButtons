@@ -38,6 +38,7 @@
 		    data-button="buynow"
 		    data-name="Buy now!"
 		    data-amount="1.00"
+		    data-size="large"
 		></script>
 	</div>
 
@@ -53,7 +54,7 @@
 	</div>
 
 	<div id="buynow-es_ES">
-		<h2>Buy Now (Large/Spanish)</h2>
+		<h2>Buy Now (Spanish)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="buynow"
 		    data-name="Buy now!"
@@ -64,7 +65,7 @@
 	</div>
 
 	<div id="buynow-ja_JP">
-		<h2>Buy Now (Large/Japanese)</h2>
+		<h2>Buy Now (Japanese)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="buynow"
 		    data-name="Buy now!"
@@ -74,7 +75,7 @@
 	</div>
 
 	<div id="buynow-de_DE">
-		<h2>Buy Now (Large/German)</h2>
+		<h2>Buy Now (German)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="buynow"
 		    data-name="Buy now!"
@@ -85,7 +86,7 @@
 	</div>
 
 	<div id="buynow-editable">
-		<h2>Buy Now (Large/Editable/English)</h2>
+		<h2>Buy Now (Editable)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="buynow"
 		    data-name-editable="Buy now!"
@@ -96,18 +97,27 @@
 	</div>
 
 	<div id="cart-sm">
-		<h2>Cart (Small/Italian)</h2>
+		<h2>Cart (Small)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="cart"
 		    data-name="Add to cart!"
 		    data-amount="1.00"
 		    data-size="small"
-		    data-locale="it_IT"
+		></script>
+	</div>
+
+	<div id="cart-md">
+		<h2>Cart (Large)</h2>
+		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
+		    data-button="cart"
+		    data-name="Add to cart!"
+		    data-amount="1.00"
+		    data-size="medium"
 		></script>
 	</div>
 
 	<div id="cart-lg">
-		<h2>Cart (Large/English)</h2>
+		<h2>Cart (Large)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="cart"
 		    data-name="Add to cart!"
@@ -117,7 +127,7 @@
 	</div>
 
 	<div id="donate-sm">
-		<h2>Donate (Small/English)</h2>
+		<h2>Donate (Small)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="donate"
 		    data-name="Donate!"
@@ -126,8 +136,18 @@
 		></script>
 	</div>
 
+	<div id="donate-md">
+		<h2>Donate (Medium)</h2>
+		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
+		    data-button="donate"
+		    data-name="Donate!"
+		    data-amount="1.00"
+		    data-size="medium"
+		></script>
+	</div>
+
 	<div id="donate-lg">
-		<h2>Donate (Large/English)</h2>
+		<h2>Donate (Large)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="donate"
 		    data-name="Donate!"
@@ -137,7 +157,7 @@
 	</div>
 
 	<div id="subscribe-sm">
-		<h2>Subscribe (Small/English)</h2>
+		<h2>Subscribe (Small)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="subscribe"
 		    data-name="Subscribe!"
@@ -148,29 +168,32 @@
 		></script>
 	</div>
 
-	<div id="subscribe-lg">
-		<h2>Subscribe (Large/English)</h2>
+	<div id="subscribe-md">
+		<h2>Subscribe (Medium)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 		    data-button="subscribe"
 		    data-name="Subscribe!"
+		    data-size="medium"
 		    data-amount="1.00"
 		    data-recurrence="1"
 		    data-period="M"
 		></script>
 	</div>
 
-	<div id="qr">
-		<h2>QR Code</h2>
+	<div id="subscribe-lg">
+		<h2>Subscribe (Large)</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
-		    data-button="qr"
-		    data-name="Buy from a QR code!"
+		    data-button="subscribe"
+		    data-name="Subscribe!"
+		    data-size="large"
 		    data-amount="1.00"
-		    data-size="250"
+		    data-recurrence="1"
+		    data-period="M"
 		></script>
 	</div>
 
 	<div id="button-id">
-		<h2>Hosted buttons</h2>
+		<h2>Hosted button</h2>
 		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
 			data-button_id="NQ9MQGA8YG53C"
 			data-button="buynow"
@@ -191,11 +214,19 @@
 			data-option2name="Coupon Number"
 			data-option2required="true"
 			data-option2pattern="alphaNumericRegex"
-			data-option2select0=""
-
-			data-env="sandbox"	
+			data-option2select0=""	
 		>
 		</script>
+	</div>
+
+	<div id="qr">
+		<h2>QR Code</h2>
+		<script src="../src/paypal-button.js?merchant=6XF3MPZBZV6HU"
+		    data-button="qr"
+		    data-name="Buy from a QR code!"
+		    data-amount="1.00"
+		    data-size="250"
+		></script>
 	</div>
 </body>
 </html>

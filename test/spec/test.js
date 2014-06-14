@@ -69,15 +69,15 @@ describe('Test page button counter', function () {
 	});
 
 	it('Should have two cart buttons', function () {
-		buttons.cart.should.equal(2);
+		buttons.cart.should.equal(3);
 	});
 
 	it('Should have two donation buttons', function () {
-		buttons.donate.should.equal(2);
+		buttons.donate.should.equal(3);
 	});
 
 	it('Should have two subscribe buttons', function () {
-		buttons.subscribe.should.equal(2);
+		buttons.subscribe.should.equal(3);
 	});
 
 	it('Should have one QR code', function () {
@@ -176,5 +176,12 @@ describe('Multiple button image sizes', function () {
 	testSize('md', 'buynow', 'medium');
 	testSize('lg', 'buynow', 'large');
 	testSize('sm', 'cart', 'small');
+	testSize('md', 'cart', 'medium');
 	testSize('lg', 'cart', 'large');
+	testSize('sm', 'donate', 'small');
+	testSize('md', 'donate', 'medium');
+	testSize('lg', 'donate', 'large');
+	testSize('sm', 'subscribe', 'small');
+	testSize('md', 'subscribe', 'medium');
+	testSize('lg', 'subscribe', 'large');
 });
