@@ -379,45 +379,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 		return form;
 	}
 
-	/**
-	 * Check className exist in element
-	 */
-	function hasClass(ele, cls) {
-		return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-	}
-
-	/**
-	 * Add className to element
-	 */
-	function addClass(ele, cls) {
-		if (!hasClass(ele, cls)) {
-			ele.className += ' ' + cls;
-		}
-	}
-	/**
-	 * Remove className from element
-	 */
-	function removeClass(ele, cls) {
-		var regex;
-
-		if (hasClass(ele, cls)) {
-			regex = new RegExp('(\\s|^)' + cls + '(\\s|$)');
-			ele.className = ele.className.replace(regex, ' ');
-		}
-	}
-
-	/**
-	 * Display all error message
-	 */
-	function displayErrorMsg(errors) {
-		var errMsg = '<ul>';
-
-		for (var i = 0; i < errors.length; i++) {
-			errMsg += '<li>' + errors[i] + '</li>';
-		}
-
-		return errMsg + '</ul>';
-	}
 
 	/**
 	 * Sort Optional Fields by display order
