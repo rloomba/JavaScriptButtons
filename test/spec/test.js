@@ -65,7 +65,7 @@ describe('Test page button counter', function () {
 	});
 
 	it('Should have seven buy now buttons', function () {
-		buttons.buynow.should.equal(8);
+		buttons.buynow.should.equal(9);
 	});
 
 	it('Should have two cart buttons', function () {
@@ -173,7 +173,8 @@ describe('Multiple button image sizes', function () {
 	}
 
 	testSize('sm', 'buynow', 'small');
-	testSize('sm', 'cart', 'small');
+	testSize('md', 'buynow', 'medium');
 	testSize('lg', 'buynow', 'large');
+	testSize('sm', 'cart', 'small');
 	testSize('lg', 'cart', 'large');
 });

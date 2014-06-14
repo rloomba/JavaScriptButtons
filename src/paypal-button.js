@@ -182,7 +182,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		// Medium
 		css += '.medium .paypal-button-logo { width: 25px; height: 29px; }';
 		css += '.medium .paypal-button-logo svg { height: 22px; margin: 4px 0 0 -2px; }';
-		css += '.medium .paypal-button-content { height: 15px; padding: 8px; font-size: 10px; line-height: 12px; }';
+		css += '.medium .paypal-button-content { height: 15px; padding: 8px; font-size: 10px; line-height: 15px; }';
 
 		// Large
 		css += '.large .paypal-button-logo { width: 45px; height: 44px; }';
