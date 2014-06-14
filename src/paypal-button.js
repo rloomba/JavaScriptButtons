@@ -27,7 +27,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 			de_DE: { buynow: 'Jetzt kaufen', cart: 'In den Warenkorb', donate: 'Spenden', subscribe: 'Abonnieren', paynow : 'Jetzt bezahlen', item_name: 'Artikel', number: 'Nummer', amount: 'Betrag', quantity: 'Menge' },
 			en_AU: { buynow: 'Buy Now', cart: 'Add to Cart', donate: 'Donate', subscribe: 'Subscribe', paynow : 'Pay Now', item_name: 'Item', number: 'Number', amount: 'Amount', quantity: 'Quantity' },
 			en_GB: { buynow: 'Buy Now', cart: 'Add to Cart', donate: 'Donate', subscribe: 'Subscribe', paynow : 'Pay Now', item_name: 'Item', number: 'Number', amount: 'Amount', quantity: 'Quantity' },
-			en_US: { buynow: 'Buy Now', cart: 'Add to Cart', donate: 'Donate', subscribe: 'Subscribe', paynow : 'Pay Now', item_name: 'Item', number: 'Number', amount: 'Amount', quantity: 'Quantity' },
+			en_US: { buynow: 'Buy with PayPal', cart: 'Add to Cart', donate: 'Donate', subscribe: 'Subscribe', paynow : 'Pay Now', item_name: 'Item', number: 'Number', amount: 'Amount', quantity: 'Quantity' },
 			es_ES: { buynow: 'Comprar ahora', cart: 'Añadir al carro', donate: 'Donar', subscribe: 'Suscribirse', paynow : 'Pague ahora', item_name: 'Artículo', number: 'Número', amount: 'Importe', quantity: 'Cantidad' },
 			es_XC: { buynow: 'Comprar ahora', cart: 'Añadir al carrito', donate: 'Donar', subscribe: 'Suscribirse', paynow : 'Pague ahora', item_name: 'Artículo', number: 'Número', amount: 'Importe', quantity: 'Cantidad' },
 			fr_CA: { buynow: 'Acheter', cart: 'Ajouter au panier', donate: 'Faire un don', subscribe: 'Souscrire', paynow : 'Payer maintenant', item_name: 'Objet', number: 'Numéro', amount: 'Montant', quantity: 'Quantité' },
@@ -171,11 +171,26 @@ PAYPAL.apps = PAYPAL.apps || {};
 		styleEl = document.createElement('style');
 
 		css += '.paypal-button { white-space: nowrap; }';
-		css += '.paypal-button .hide { display: none; }';
-		css += '.paypal-button button { white-space: nowrap; overflow: hidden; font-family: Arial, Helvetica; cursor: pointer; z-index: 0; }';
+		css += '.paypal-button button { white-space: nowrap; overflow: hidden; margin: 0; padding: 0; background: 0; border: 0; font-family: Arial, Helvetica; cursor: pointer; z-index: 0; }';
+		css += '.paypal-button-logo { display: inline-block; border: 1px solid #aaa; border-right: 0; border-radius: 4px 0 0 4px; vertical-align: top; }';
+		
+		// Small
+		css += '.paypal-button-logo { width: 25px; height: 25px; }';
+		css += '.paypal-button-logo svg { height: 18px; margin: 4px 0 0 -2px; }';
+		css += '.paypal-button-content { height: 11px; padding: 8px; font-size: 10px; line-height: 12px; }';
+
+		// Medium
+		css += '.medium .paypal-button-logo { width: 25px; height: 29px; }';
+		css += '.medium .paypal-button-logo svg { height: 22px; margin: 4px 0 0 -2px; }';
+		css += '.medium .paypal-button-content { height: 15px; padding: 8px; font-size: 10px; line-height: 12px; }';
+
+		// Large
+		css += '.large .paypal-button-logo { width: 45px; height: 44px; }';
+		css += '.large .paypal-button-logo svg { height: 30px; margin: 8px 0 0 -2px; }';
+		css += '.large .paypal-button-content { height: 30px; padding: 8px; font-size: 13px; line-height: 32px; }';
 
 		// Primary
-		css += '.paypal-button button { height: 26px; background: #009cde; border: 1px transparent; border-radius: 3px; color: #fff; }';
+		css += '.paypal-button-content { display:inline-block; background: #009cde; border: 1px #009cde; border-radius: 0 4px 4px 0; color: #fff; }';
 
 		styleEl.type = 'text/css';
 		styleEl.id = 'paypal-button';
@@ -200,6 +215,8 @@ PAYPAL.apps = PAYPAL.apps || {};
 	function buildForm(data, type) {
 		var form = document.createElement('form'),
 			btn = document.createElement('button'),
+			btnLogo = document.createElement('span'),
+			btnContent = document.createElement('span'),
 			hidden = document.createElement('input'),
 			paraElem = document.createElement('p'),
 			labelElem = document.createElement('label'),
@@ -211,14 +228,15 @@ PAYPAL.apps = PAYPAL.apps || {};
 			formError = 0,
 			item, child, label, input, key, size, locale, localeText, btnText, selector, optionField, fieldDetails = {}, fieldDetail, fieldValue, field, labelText, addEventMethodName;
 
+		size = items.size && items.size.value || 'large';
+		locale = items.lc && items.lc.value || 'en_US';
+		localeText = locales[locale] || locales.en_US;
+		btnText = localeText[type];
+
 		form.method = 'post';
 		form.action = paypalURL.replace('{env}', data.items.env.value);
-		form.className = 'paypal-button';
+		form.className = 'paypal-button ' + size;
 		form.target = '_top';
-
-		var divElem = document.createElement('div');
-		divElem.className = 'hide';
-		form.appendChild(divElem);
 
 		inputTextElem.type = 'text';
 		inputTextElem.className = 'paypal-input';
@@ -228,10 +246,6 @@ PAYPAL.apps = PAYPAL.apps || {};
 
 		hidden.type = 'hidden';
 
-		size = items.size && items.size.value || 'large';
-		locale = items.lc && items.lc.value || 'en_US';
-		localeText = locales[locale] || locales.en_US;
-		btnText = localeText[type];
 
 		if (data.items.text) {
 			btnText = data.items.text.value;
@@ -337,8 +351,14 @@ PAYPAL.apps = PAYPAL.apps || {};
 		} catch (e) {
 			btn.setAttribute('type', 'submit');
 		}
-		btn.className = 'paypal-button ' + size;
-		btn.appendChild(document.createTextNode(btnText));
+		btnLogo.className = 'paypal-button-logo';
+		btnLogo.innerHTML = '<svg version="1.1" id="paypal_monogram" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="30px" viewBox="0 0 30 30" enable-background="new 0 0 30 30" xml:space="preserve"><g><path fill="#223A78" d="M26.487,17.71c0.579-0.972,1.006-2.144,1.266-3.481c0.23-1.18,0.273-2.237,0.129-3.141c-0.153-0.955-0.521-1.769-1.093-2.421c-0.347-0.395-0.79-0.737-1.319-1.018l-0.021-0.012l0.004-0.006l0.002-0.014c0.184-1.175,0.178-2.158-0.021-3.003c-0.199-0.848-0.604-1.61-1.236-2.331c-1.311-1.494-3.696-2.251-7.09-2.251H7.783c-0.646,0-1.187,0.462-1.288,1.1l-3.882,24.62c-0.035,0.223,0.029,0.448,0.175,0.62c0.146,0.171,0.36,0.27,0.585,0.27h5.792L9.16,26.676l-0.397,2.52c-0.03,0.193,0.025,0.391,0.152,0.539c0.127,0.15,0.313,0.234,0.509,0.234h4.852c0.563,0,1.035-0.402,1.123-0.959l0.047-0.247l0.915-5.796l0.059-0.32c0.092-0.586,0.59-1.01,1.183-1.01h0.726c2.498,0,4.54-0.553,6.07-1.641C25.233,19.402,25.937,18.633,26.487,17.71z"/><g><g><path fill="#223A78" d="M12.129,7.653c0.061-0.39,0.312-0.709,0.648-0.871c0.153-0.073,0.325-0.114,0.504-0.114h7.31c0.865,0,1.672,0.057,2.41,0.176c0.211,0.034,0.417,0.073,0.616,0.117c0.199,0.044,0.393,0.094,0.58,0.149c0.094,0.027,0.187,0.056,0.276,0.086c0.363,0.12,0.699,0.262,1.011,0.427c0.366-2.333-0.003-3.922-1.265-5.36C22.829,0.679,20.319,0,17.106,0H7.783C7.126,0,6.567,0.478,6.465,1.126l-3.883,24.62c-0.076,0.486,0.299,0.926,0.791,0.926h5.756l1.446-9.169L12.129,7.653z"/><path fill="#169BD8" d="M25.484,7.622L25.484,7.622L25.484,7.622c-0.028,0.178-0.06,0.359-0.096,0.546c-1.229,6.313-5.437,8.496-10.81,8.496h-2.735c-0.657,0-1.211,0.478-1.313,1.126l0,0l0,0l-1.401,8.882L8.732,29.19C8.665,29.616,8.994,30,9.424,30h4.852c0.575,0,1.063-0.418,1.153-0.985l0.048-0.246l0.914-5.796l0.059-0.32c0.09-0.567,0.579-0.985,1.153-0.985h0.726c4.7,0,8.381-1.909,9.456-7.433c0.45-2.308,0.218-4.234-0.972-5.588C26.453,8.237,26.006,7.898,25.484,7.622z"/><path fill="#232F5D" d="M24.197,7.109c-0.188-0.055-0.381-0.104-0.58-0.149c-0.199-0.044-0.405-0.083-0.616-0.117c-0.738-0.119-1.545-0.176-2.41-0.176h-7.31c-0.179,0-0.351,0.041-0.504,0.114c-0.337,0.162-0.587,0.481-0.648,0.871l-1.554,9.85l-0.044,0.287c0.102-0.648,0.656-1.126,1.313-1.126h2.735c5.373,0,9.58-2.183,10.81-8.496c0.036-0.187,0.067-0.368,0.096-0.546c-0.312-0.165-0.647-0.307-1.011-0.427C24.384,7.165,24.291,7.137,24.197,7.109z"/></g></g></g></svg>';
+
+		btnContent.className = 'paypal-button-content';
+		btnContent.innerHTML = btnText;
+		
+		btn.appendChild(btnLogo);
+		btn.appendChild(btnContent);
 
 		form.appendChild(btn);
 

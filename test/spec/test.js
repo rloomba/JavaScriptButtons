@@ -166,7 +166,7 @@ describe('Multiple button image sizes', function () {
 	function testSize(size, type, expected) {
 		it('Should have a ' + size + ' version of ' + type + ' button', function () {
 			var button = document.querySelector('#' + type + '-' + size + ' button[type=submit]'),
-				buttonClass = button && button.className;
+				buttonClass = button && button.parentNode.className;
 
 			buttonClass.should.include(expected);
 		});
