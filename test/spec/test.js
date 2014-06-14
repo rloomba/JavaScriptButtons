@@ -65,7 +65,7 @@ describe('Test page button counter', function () {
 	});
 
 	it('Should have seven buy now buttons', function () {
-		buttons.buynow.should.equal(9);
+		buttons.buynow.should.equal(12);
 	});
 
 	it('Should have two cart buttons', function () {
@@ -175,6 +175,9 @@ describe('Multiple button image sizes', function () {
 	testSize('sm', 'buynow', 'small');
 	testSize('md', 'buynow', 'medium');
 	testSize('lg', 'buynow', 'large');
+	testSize('sm', 'buynow-secondary', 'small');
+	testSize('md', 'buynow-secondary', 'medium');
+	testSize('lg', 'buynow-secondary', 'large');
 	testSize('sm', 'cart', 'small');
 	testSize('md', 'cart', 'medium');
 	testSize('lg', 'cart', 'large');
@@ -184,4 +187,27 @@ describe('Multiple button image sizes', function () {
 	testSize('sm', 'subscribe', 'small');
 	testSize('md', 'subscribe', 'medium');
 	testSize('lg', 'subscribe', 'large');
+});
+
+
+// Test button styles
+describe('Styled buttons', function () {
+
+	'use strict';
+
+	var primary, secondary;
+
+	before(function () {
+		primary = document.querySelectorAll('.primary');
+		secondary = document.querySelectorAll('.secondary');
+	});
+
+	it('Should have primary buttons', function () {
+		primary.length.should.equal(18);
+	});
+
+	it('Should have secondary buttons', function () {
+		secondary.length.should.equal(3);
+	});
+
 });

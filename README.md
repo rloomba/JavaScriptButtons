@@ -73,6 +73,7 @@ All of PayPal's [HTML button variables](https://developer.paypal.com/webapps/dev
 * `data-shipping` The cost of shipping this item.
 * `data-tax` Transaction-based tax override variable.
 * `data-size` For button images: `small` and `large` work. For QR codes enter the pixel length of the longest side.
+* `data-style` The style of the button. Can be set to `primary` (default) and `secondary`.
 * `data-locale` The desired locale of the PayPal site.
 * `data-callback` The IPN notify URL to be called on completion of the transaction.
 * `data-env` The PayPal environment to checkout in, e.g. `sandbox` (defaults to 'www')
@@ -82,7 +83,7 @@ All of PayPal's [HTML button variables](https://developer.paypal.com/webapps/dev
 Creating editable fields is easy! Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.
 
 ## Hosted Button Support
-We now support hosted buttons!  Add `data-hosted_button_id` to your script with your button ID, e.g. `data-hosted_button_id=<HOSTED_BUTTON_ID>`.
+Add `data-hosted_button_id` to your script with your button ID, e.g. `data-hosted_button_id=<HOSTED_BUTTON_ID>`.
 
 ## Custom fields
 You can also add custom text fields and dropdowns to your form.

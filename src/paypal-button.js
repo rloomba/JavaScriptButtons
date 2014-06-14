@@ -178,28 +178,32 @@ PAYPAL.apps = PAYPAL.apps || {};
 		css += '.paypal-button { white-space: nowrap; }';
 		css += '.paypal-button button { white-space: nowrap; overflow: hidden; margin: 0; padding: 0; background: 0; border: 0; font-family: Arial, Helvetica !important; cursor: pointer; z-index: 0; }';
 		css += '.paypal-button-logo { display: inline-block; border: 1px solid #aaa; border-right: 0; border-radius: 4px 0 0 4px; vertical-align: top; }';
+		css += '.paypal-button-content { padding: 7px 8px 9px; border: 1px solid transparent; border-radius: 0 4px 4px 0; } ';
 		css += '.paypal-button-content svg { vertical-align: middle; }';
 
 		// Small
 		css += '.paypal-button-logo { width: 25px; height: 25px; }';
 		css += '.paypal-button-logo svg { height: 18px; margin: 4px 0 0 -2px; }';
-		css += '.paypal-button-content { height: 11px; padding: 7px 8px 9px; font-size: 10px !important; line-height: 12px !important; }';
+		css += '.paypal-button-content { height: 9px; display:inline-block; font-size: 10px !important; line-height: 9px !important; }';
 		css += '.paypal-button-content svg { width: 60px; height: 16px; }';
 
 		// Medium
 		css += '.medium .paypal-button-logo { width: 25px; height: 29px; }';
 		css += '.medium .paypal-button-logo svg { height: 22px; margin: 4px 0 0 -2px; }';
-		css += '.medium .paypal-button-content { height: 15px; padding: 8px; font-size: 10px !important; line-height: 15px !important; }';
+		css += '.medium .paypal-button-content { height: 13px; font-size: 10px !important; line-height: 13px !important; }';
 		css += '.medium .paypal-button-content svg { width: 71px; height: 19px; }';
 
 		// Large
 		css += '.large .paypal-button-logo { width: 45px; height: 44px; }';
 		css += '.large .paypal-button-logo svg { height: 30px; margin: 8px 0 0 -2px; }';
-		css += '.large .paypal-button-content { height: 30px; padding: 8px; font-size: 13px !important; line-height: 32px !important; }';
+		css += '.large .paypal-button-content { height: 28px; padding: 9px 8px 7px; font-size: 13px !important; line-height: 28px !important; }';
 		css += '.large .paypal-button-content svg { width: 94px; height: 25px; }';
 
 		// Primary
-		css += '.paypal-button-content { display:inline-block; background: #009cde; border: 1px #009cde; border-radius: 0 4px 4px 0; color: #fff; }';
+		css += '.primary .paypal-button-content { background: #009cde; border-color: #009cde; color: #fff; }';
+
+		// Secondary
+		css += '.secondary .paypal-button-content { background: #eee; border-color: #cfcfcf; color: #333; }';
 
 		styleEl.type = 'text/css';
 		styleEl.id = 'paypal-button';
@@ -235,16 +239,17 @@ PAYPAL.apps = PAYPAL.apps || {};
 			items = data.items,
 			optionFieldArr = [],
 			formError = 0,
-			item, child, label, input, key, size, locale, localeText, btnText, selector, optionField, fieldDetails = {}, fieldDetail, fieldValue, field, labelText, addEventMethodName;
+			item, child, label, input, key, size, locale, localeText, btnText, btnStyle, selector, optionField, fieldDetails = {}, fieldDetail, fieldValue, field, labelText, addEventMethodName;
 
 		size = items.size && items.size.value || 'large';
 		locale = items.lc && items.lc.value || 'en_US';
 		localeText = locales[locale] || locales.en_US;
 		btnText = localeText[type];
+		btnStyle = items.style && items.style.value || 'primary';
 
 		form.method = 'post';
 		form.action = paypalURL.replace('{env}', data.items.env.value);
-		form.className = 'paypal-button ' + size;
+		form.className = 'paypal-button ' + size + ' ' + btnStyle;
 		form.target = '_top';
 
 		inputTextElem.type = 'text';
@@ -364,7 +369,7 @@ PAYPAL.apps = PAYPAL.apps || {};
 		btnLogo.innerHTML = logo;
 
 		btnContent.className = 'paypal-button-content';
-		btnContent.innerHTML = btnText.replace('{wordmark}', wordmark.primary);
+		btnContent.innerHTML = btnText.replace('{wordmark}', wordmark[btnStyle]);
 		
 		btn.appendChild(btnLogo);
 		btn.appendChild(btnContent);
