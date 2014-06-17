@@ -69,9 +69,11 @@ if (typeof window === 'undefined') {
     module.exports = app;
 } else {
     // Make the API available
-    window.paypal = window.paypal || {};
-    window.paypal.button = app;
+    if (!window.paypal) {
+        window.paypal = {};
+        window.paypal.button = app;
+    }
 
     // Bind to existing scripts
-    app.process(document);
+    window.paypal.button.process(document);
 }
