@@ -149,7 +149,7 @@ describe('Multi-language button images', function () {
 
 	function testLanguage(locale, type, expected) {
 		it('Should have a ' + locale + ' version of the ' + type + ' button', function () {
-			var button = document.querySelector('#' + type + '-' + locale + ' button[type=submit]'),
+			var button = document.querySelector('#' + type + '-' + locale + ' button[type=submit] .paypal-button-content'),
 				buttonText = button && button.textContent;
 
 			buttonText.should.equal(expected);
