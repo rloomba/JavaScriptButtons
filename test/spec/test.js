@@ -65,7 +65,7 @@ describe('Test page button counter', function () {
 	});
 
 	it('Should have seven buy now buttons', function () {
-		buttons.buynow.should.equal(12);
+		buttons.buynow.should.equal(14);
 	});
 
 	it('Should have two cart buttons', function () {
@@ -79,11 +79,8 @@ describe('Test page button counter', function () {
 	it('Should have two subscribe buttons', function () {
 		buttons.subscribe.should.equal(3);
 	});
-
-	it('Should have one QR code', function () {
-		buttons.qr.should.equal(1);
-	});
 });
+
 
 // Test environments
 describe('Environments', function () {
@@ -105,6 +102,25 @@ describe('Environments', function () {
 		www.action.should.include('//www.paypal');
 	});
 
+});
+
+
+// Test different forms
+describe('Form factors', function () {
+	'use strict';
+
+	it('Should produce a valid form', function () {
+		document.querySelectorAll('#buynow-sm form').length.should.equal(1);
+	});
+
+	it('Should produce a single button', function () {
+		document.querySelectorAll('#button form').length.should.equal(0);
+		document.querySelectorAll('#button button').length.should.equal(1);
+	});
+
+	it('Should produce a valid QR code', function () {
+		document.querySelector('#qr img').src.should.include('//www.paypal.com');
+	});
 });
 
 
@@ -203,7 +219,7 @@ describe('Styled buttons', function () {
 	});
 
 	it('Should have primary buttons', function () {
-		primary.length.should.equal(18);
+		primary.length.should.equal(19);
 	});
 
 	it('Should have secondary buttons', function () {

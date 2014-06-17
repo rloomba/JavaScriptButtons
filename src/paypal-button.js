@@ -11,7 +11,7 @@ PAYPAL.apps = PAYPAL.apps || {};
     var app = {},
         paypalURL = 'https://{env}.paypal.com/cgi-bin/webscr',
         qrCodeURL = 'https://{env}.paypal.com/webapps/ppint/qrcode?data={url}&pattern={pattern}&height={size}',
-        bnCode = 'JavaScriptButton_{type}',
+        bnCode = 'JavaScriptButton_{label}',
         logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA1RJREFUeNrkmr9v01AQx99LoC1SAatCpQgJ0krQSkjgKUOllg4wIsFfABmYaTa2wMZI5g7lPyD9CxoWZnfrBJm7YFja2LHNnUlQVdWJ794PO8pXerLS1ok/vfP37l4sBVNrm+/fwKEmzKoLy//x/ZOn6w0lE/YDHFrCnvwh/AGsDvwDfNvAv+DgiGKEsB1YTQ64ZMBiGv8UxQthGwDdoZxUYXxQTZRDmGFfh15iFNgV5dI+QO+YBL4vyieMtDMrER6l9+4sAaPemQJ2Sgrs5LmXScAUcyhIru4I10oO7Mwa8ERdIf79U9anJLEQcajvqqvz1oDphpVEQp6e/IPWKQnJWbkqkuoCUFyD11UjwOSSJIM/+mFHWRP1hYQlgt9p1Af3HugrS+DQvPoLEbYiAA9ct7W8d7wPy9FhWjXuhdhSdDftenGYOMyCrphMZyOpPB72/LW2VIHpQ4NOZ6YBo3Yhyjt2U9oicLj28LIfv1YBJreV0pJhxTduivjW7ct+9ZIFPNzWEWWNcPikntk3QFq7nAgzgQfGYZP5BRFuPM7dLOUFLm0NxugidF7lBaY7tIX6i/dtv75FOsdchC1E9/TZC/I5xoBNO/QZwGY480X5HGD6lBQFRmEnGNV/nbzd8EjTEntbx0CE0Zz6W89zw4I8znhYihqMreMZwOZMY8vAGmGxiwrq25SontcBB5i+raM4JWHqDqA3Hqyup0cFdTnAZMOScUBK1fQIqZpANAfwmpi2WfoChuVzgOk1GFpKNJcgu8e1oTa5DnO3dcL1R0XDdi+Wo7x1mOXQ/c3tImHTL8q5nRY5wsncHKmZN6CPEN0eF5g8NMRLS0XColF9Vumla1MEjLAN1eGB3FbG1xeLgG3mgR1blrjbOpYjjI1FY9w9S6nDLOBk0XiER89ptbNKDxeYVYNjvcDeEBAjeDSuvuoAJjt0tLKiErVXANM1nR4VrTWYH92mDVjtwAoObQV2EjB5SuI6NMVljQBzt3WYhuUJi6roLEnMCPemElih4TgqAzB5WwenJIVaWzgwWdEdpRpcOHCbeiHcGmyr/o4kdb3R8t7xIWO66gHw6lSmNLP3turQ2oCHjwhxHiv+NpXAgv/QuD9rwN60ArNgbTs06q8AAwC1swu0LaowrwAAAABJRU5ErkJggg==',
         wordmark = {
             primary: 'data:image/png;base64,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',
@@ -72,7 +72,6 @@ PAYPAL.apps = PAYPAL.apps || {};
             buynow: 0,
             cart: 0,
             donate: 0,
-            qr: 0,
             subscribe: 0
         };
 
@@ -81,11 +80,12 @@ PAYPAL.apps = PAYPAL.apps || {};
          *
          * @param business {Object} The ID or email address of the merchant to create the button for
          * @param raw {Object} An object of key/value data to set as button params
-         * @param type (String) The type of the button to render
+         * @param type (String) The type of widget to render, e.g. form or button
+         * @param label (String) The label key of the button to render
          * @param parent {HTMLElement} The element to add the button to (Optional)
          * @return {HTMLElement}
          */
-        app.create = function (business, raw, type, parent) {
+        app.create = function (business, raw, type, label, parent) {
             var data = new DataStore(), button, key, env, rawKey;
 
             if (!business) { return false; }
@@ -97,12 +97,18 @@ PAYPAL.apps = PAYPAL.apps || {};
             }
 
             // Defaults
-            type = type || 'buynow';
+            label = label || 'buynow';
+            type = type || 'button';
             env = 'www';
 
             if (data.items.env && data.items.env.value) {
                 env += '.' + data.items.env.value;
             }
+
+            // Pluck off unneeded data
+            data.remove('type');
+            data.remove('label');
+            data.remove('env');
 
             // Hosted buttons
             if (data.items.hosted_button_id) {
@@ -130,22 +136,24 @@ PAYPAL.apps = PAYPAL.apps || {};
 
             // Add common data
             data.add('business', business);
-            data.add('bn', bnCode.replace(/\{type\}/, type));
+            data.add('bn', bnCode.replace(/\{label\}/, label));
             data.add('env',  env);
 
             // Build the UI components
             if (type === 'qr') {
                 button = buildQR(data, data.items.size);
                 data.remove('size');
+            } else if (type === 'button') {
+                button = buildButton(data, label);
             } else {
-                button = buildForm(data, type);
+                button = buildForm(data, label);
             }
 
             // Inject CSS
             injectCSS();
 
             // Register it
-            this.buttons[type] += 1;
+            this.buttons[label] += 1;
 
             // Add it to the DOM
             if (parent) {
@@ -221,26 +229,19 @@ PAYPAL.apps = PAYPAL.apps || {};
      * Builds the form DOM structure for a button
      *
      * @param data {Object} An object of key/value data to set as button params
-     * @param type (String) The type of the button to render
+     * @param label (String) The label key of the button to render
      * @return {HTMLElement}
      */
-    function buildButton(data, type) {
-        var btn = document.createElement('button'),
-            btnLogo = document.createElement('span'),
-            btnContent = document.createElement('span'),
-            items = data.items,
+    function buildButton(data, label) {
+        var items = data.items,
             locale = items.lc && items.lc.value || 'en_US',
             localeText = locales[locale] || locales.en_US,
-            label = localeText[type],
+            btn = document.createElement('button'),
+            btnLogo = document.createElement('span'),
+            btnContent = document.createElement('span'),
+            btnLabel = localeText[label],
             style = items.style && items.style.value || 'primary',
             size = items.size && items.size.value || 'large';
-
-        // Safari won't let you set read-only attributes on buttons.
-        try {
-            btn.type = 'submit';
-        } catch (e) {
-            btn.setAttribute('type', 'submit');
-        }
 
         btn.className += 'paypal-button ' + style + ' ' + size;
 
@@ -248,7 +249,7 @@ PAYPAL.apps = PAYPAL.apps || {};
         btnLogo.innerHTML = '<img src="' + logo + '" />';
 
         btnContent.className = 'paypal-button-content';
-        btnContent.innerHTML = label.replace('{wordmark}', '<img src="' + wordmark[style] + '" />');
+        btnContent.innerHTML = btnLabel.replace('{wordmark}', '<img src="' + wordmark[style] + '" />');
         
         btn.appendChild(btnLogo);
         btn.appendChild(btnContent);
@@ -261,7 +262,7 @@ PAYPAL.apps = PAYPAL.apps || {};
      * Builds the form DOM structure for a checkout form
      *
      * @param data {Object} An object of key/value data to set as button params
-     * @param type (String) The type of the button to render
+     * @param type (String) The label key of the button to render
      * @return {HTMLElement}
      */
     function buildForm(data, type) {
@@ -274,7 +275,7 @@ PAYPAL.apps = PAYPAL.apps || {};
             optionElem = document.createElement('option'),
             items = data.items,
             optionFieldArr = [],
-            item, child, label, input, key, selector, optionField, fieldDetails = {}, fieldDetail, fieldValue, field, labelText;
+            item, child, label, input, key, selector, optionField, fieldDetails = {}, fieldDetail, fieldValue, field, labelText, btn;
 
         form.method = 'post';
         form.action = paypalURL.replace('{env}', data.items.env.value);
@@ -382,8 +383,17 @@ PAYPAL.apps = PAYPAL.apps || {};
             }
         }
 
+        btn = buildButton(data, type);
+
+        // Safari won't let you set read-only attributes on buttons.
+        try {
+            btn.type = 'submit';
+        } catch (e) {
+            btn.setAttribute('type', 'submit');
+        }
+
         // Add the correct button
-        form.appendChild(buildButton(data, type));
+        form.appendChild(btn);
 
         return form;
     }
@@ -541,7 +551,7 @@ PAYPAL.apps = PAYPAL.apps || {};
     if (typeof document !== 'undefined') {
         var ButtonFactory = PAYPAL.apps.ButtonFactory,
             nodes = document.getElementsByTagName('script'),
-            node, data, type, business, i, len, buttonId;
+            node, data, type, label, business, i, len, buttonId;
 
         for (i = 0, len = nodes.length; i < len; i++) {
             node = nodes[i];
@@ -549,11 +559,12 @@ PAYPAL.apps = PAYPAL.apps || {};
             if (!node || !node.src) { continue; }
 
             data = node && getDataSet(node);
-            type = data && data.button && data.button.value;
+            type = data && data.type && data.type.value;
+            label = data && data.button && data.button.value;
             business = node.src.split('?merchant=')[1];
 
             if (business) {
-                ButtonFactory.create(business, data, type, node.parentNode);
+                ButtonFactory.create(business, data, type, label, node.parentNode);
 
                 // Clean up
                 node.parentNode.removeChild(node);
