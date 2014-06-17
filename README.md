@@ -106,7 +106,7 @@ All of PayPal's [HTML button variables](https://developer.paypal.com/webapps/dev
 * `data-style` The style of the button. Can be set to `primary` (default) and `secondary`.
 * `data-locale` The desired locale of the PayPal site.
 * `data-callback` The IPN notify URL to be called on completion of the transaction.
-* `data-env` The PayPal environment to checkout in, e.g. `sandbox` (defaults to 'www').
+* `data-host` The PayPal host to checkout in, e.g. `www.sandbox.paypal.com` (defaults to 'www.paypal.com').
 * `data-type` The type of button to render. `button` for a plain button (default), `form` to create a button with a PayPal Payments Standard HTML form, or `qr` to create a PayPal Payments Standard compatible QR code.
 
 

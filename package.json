@@ -6,6 +6,12 @@
     "name": "Jeff Harrell",
     "url": "https://github.com/jeffharrell/"
   },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jeffharrell/MiniCart/raw/master/LICENSE"
+    }
+  ],
   "contributors": [
     {
       "name": "Mark Stuart",
@@ -22,24 +28,32 @@
     "javascriptbuttons",
     "jsbuttons"
   ],
-  "homepage": "http://paypal.github.com/JavaScriptButtons",
+  "homepage": "http://paypal.github.io/JavaScriptButtons",
   "issues": "http://github.com/paypal/JavaScriptButtons/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/paypal/JavaScriptButtons.git"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "coverage": "istanbul cover _mocha -- test/unit/*.js"
   },
   "dependencies": {
-    "grunt-contrib-watch": "^0.6.1"
+    "ejs": "^0.8.4"
   },
   "devDependencies": {
+    "browserify": "^2.35.0",
     "chai": "^1.8.1",
-    "grunt": "^0.4.2",
-    "grunt-contrib-jshint": "^0.8.0",
-    "grunt-contrib-uglify": "^0.2.7",
+    "grunt": "^0.4.1",
+    "grunt-banner": "^0.2.0",
+    "grunt-browserify": "^1.2.11",
+    "grunt-cli": "^0.1.9",
+    "grunt-contrib-jshint": "^0.6.4",
+    "grunt-contrib-uglify": "^0.2.4",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha": "^0.4.1",
     "grunt-mocha-test": "^0.7.0",
+    "istanbul": "^0.2.0",
     "jsdom": "^0.8.10",
     "mocha": "^1.13.0",
     "should": "^2.1.1"

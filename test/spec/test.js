@@ -1,5 +1,5 @@
 /*jshint node:true, evil:true */
-/*global describe:true, it:true, PAYPAL:true, document:true, window:true, before:true, beforeEach:true */
+/*global describe:true, it:true, paypal:true, document:true, window:true, before:true, beforeEach:true */
 
 if (typeof window === 'undefined') {
 	var fs = require('fs'),
@@ -21,31 +21,19 @@ describe('JavaScript API', function () {
 	var namespace;
 
 	before(function () {
-		namespace = PAYPAL;
+		namespace = paypal;
 	});
 
-	it('Should have a PAYPAL namespace', function () {
+	it('Should have a paypal namespace', function () {
 		namespace.should.be.an.Object;
 	});
 
-	it('Should have a PAYPAL.apps namespace', function () {
-		namespace.apps.should.be.an.Object;
-	});
-
-	it('Should have a PAYPAL.apps.ButtonFactory namespace', function () {
-		namespace.apps.ButtonFactory.should.be.an.Object;
-	});
-
-	it('Should have a configuration object', function () {
-		namespace.apps.ButtonFactory.config.should.be.an.Object;
-	});
-
 	it('Should have a create method', function () {
-		namespace.apps.ButtonFactory.create.should.be.a.Function;
+		namespace.button.create.should.be.a.Function;
 	});
 
 	it('Create return false if no parameters', function () {
-		var result = namespace.apps.ButtonFactory.create();
+		var result = namespace.button.create();
 
 		result.should.equal(false);
 	});
@@ -61,7 +49,7 @@ describe('Test page button counter', function () {
 	var buttons;
 
 	before(function () {
-		buttons = PAYPAL.apps.ButtonFactory.buttons;
+		buttons = paypal.button.counter;
 	});
 
 	it('Should have seven buy now buttons', function () {

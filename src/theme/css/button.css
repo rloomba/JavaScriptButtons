@@ -1,0 +1,127 @@
+.paypal-button {
+	white-space: nowrap;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	background: 0;
+	border: 0;
+	font-family: Arial, Helvetica !important;
+	cursor: pointer;
+	z-index: 0;
+}
+
+.paypal-button-logo {
+	display: inline-block;
+	border: 1px solid #aaa;
+	border-right: 0;
+	border-radius: 4px 0 0 4px;
+	vertical-align: top;
+}
+
+.paypal-button-content {
+	padding: 6px 8px 10px;
+	border: 1px solid transparent;
+	border-radius: 0 4px 4px 0;
+}
+
+.paypal-button-content img {
+	vertical-align: middle;
+}
+
+
+
+/* Small */
+
+.paypal-button-logo {
+	width: 25px;
+	height: 25px;
+}
+
+.paypal-button-logo img {
+	width:18px;
+	height: 18px;
+	margin: 4px 0 0 -2px;
+}
+
+.paypal-button-content {
+	height: 9px;
+	display:inline-block;
+	font-size: 10px !important;
+	line-height: 9px !important;
+}
+
+.paypal-button-content img {
+	width: 60px;
+	height: 16px;
+}
+
+
+
+/* Medium */
+
+.paypal-button.medium .paypal-button-logo {
+	width: 25px;
+	height: 29px;
+}
+
+.paypal-button.medium .paypal-button-logo img {
+	width: 22px;
+	height: 22px;
+	margin: 4px 0 0 -2px;
+}
+
+.paypal-button.medium .paypal-button-content {
+	height: 13px;
+	font-size: 10px !important;
+	line-height: 13px !important;
+}
+
+.paypal-button.medium .paypal-button-content img {
+	width: 71px;
+	height: 19px;
+}
+
+
+/* Large */
+
+.paypal-button.large .paypal-button-logo {
+	width: 45px;
+	height: 44px;
+}
+
+.paypal-button.large .paypal-button-logo img {
+	width: 30px;
+	height: 30px;
+	margin: 8px 0 0 -2px;
+}
+
+.paypal-button.large .paypal-button-content {
+	height: 28px;
+	padding: 9px 8px 7px;
+	font-size: 13px !important;
+	line-height: 28px !important;
+}
+
+.paypal-button.large .paypal-button-content img {
+	width: 93px;
+	height: 25px;
+}
+
+
+/* Primary */
+
+.paypal-button.primary .paypal-button-content {
+	background: #009cde;
+	border-color: #009cde;
+	color: #fff;
+}
+
+
+/* Secondary */
+
+.paypal-button.secondary .paypal-button-content {
+	background: #eee;
+	border-color: #cfcfcf;
+	color: #333;
+}
+

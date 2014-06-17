@@ -1,61 +1,93 @@
+'use strict';
+
+
 module.exports = function (grunt) {
 
-	'use strict';
+    // Configuration
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
 
-	// Project configuration.
-	grunt.initConfig({
+        jshint: {
+            options: grunt.file.readJSON('.jshintrc'),
+            all: ['src/**/*.js', 'test/**/*.js']
+        },
 
-		pkg: grunt.file.readJSON('package.json'),
+        browserify: {
+            all: {
+                files: {
+                    'dist/all.js': ['src/**/*.js']
+                }
+            }
+        },
 
-		meta: {
-			banner: '/*!\n * <%= pkg.name %>\n * <%= pkg.description %>\n * @version <%= pkg.version %> - <%= grunt.template.today(\'yyyy-mm-dd\') %>\n * @author <%= pkg.author.name %> <<%= pkg.author.url %>>\n */\n'
-		},
+        uglify: {
+            all: {
+                files: {
+                    'dist/all.js': ['dist/all.js']
+                }
+            }
+        },
 
-		jshint: {
-			all: {
-				src: ['src/*.js', 'test/spec/*.js'],
-				options: {
-					jshintrc: '.jshintrc'
-				}
-			}
-		},
+        usebanner: {
+            all: {
+                options: {
+                    banner: grunt.file.read('.banner')
+                },
+                files: {
+                    src: [ 'dist/**/*.js' ]
+                }
+            }
+        },
 
-		uglify: {
-			dist: {
-				src: ['<%= meta.banner %>', 'src/paypal-button.js'],
-				dest: 'dist/paypal-button.min.js',
-				options: {
-					banner: '<%= meta.banner %>'
-				}
-			}
-		},
+        mocha: {
+            browser: [ 'test/functional/**/*.html' ],
 
-		mochaTest: {
-			all: {
-				options: {
-					reporter: 'spec'
-				},
-				src: ['test/spec/*.js']
-			}
-		},
-		watch: {
-			scripts: {
-				files: ['src/**/*.js'],
-				tasks: ['build'],
-				options: {
-					spawn: false
-				}
-			}
-		}
-	});
+            options: {
+                bail: true,
+                log: true,
+                mocha: {},
+                reporter: 'Spec',
+                run: true,
+                timeout: 10000
+            }
+        },
 
-	// Load grunt tasks from npm packages
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-mocha-test');
+        mochaTest: {
+            all: {
+                options: {
+                    reporter: 'spec'
+                },
+                src: ['test/unit/**/*.js']
+            }
+        },
 
-	grunt.registerTask('build', ['jshint', 'uglify']);
-	grunt.registerTask('test', ['jshint', 'mochaTest']);
+        watch: {
+            scripts: {
+                files: ['src/**/*.js'],
+                tasks: ['browserify'],
+                options: {
+                    spawn: false
+                }
+            }
+        }
+    });
+
+
+    // Dependencies
+    grunt.task.loadNpmTasks('grunt-contrib-jshint');
+    grunt.task.loadNpmTasks('grunt-contrib-uglify');
+    grunt.task.loadNpmTasks('grunt-contrib-watch');
+    grunt.task.loadNpmTasks('grunt-banner');
+    grunt.task.loadNpmTasks('grunt-mocha');
+    grunt.task.loadNpmTasks('grunt-mocha-test');
+    grunt.task.loadNpmTasks('grunt-browserify');
+
+
+    // Tasks
+    grunt.registerTask('lint',  ['jshint']);
+    grunt.registerTask('test',  ['lint', 'build', 'mochaTest', 'mocha']);
+    grunt.registerTask('build', ['browserify', 'uglify', 'usebanner']);
 
 };
+
+
