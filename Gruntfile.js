@@ -64,7 +64,7 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: ['src/**/*.js'],
-                tasks: ['browserify'],
+                tasks: ['develop'],
                 options: {
                     spawn: false
                 }
@@ -81,12 +81,14 @@ module.exports = function (grunt) {
     grunt.task.loadNpmTasks('grunt-mocha');
     grunt.task.loadNpmTasks('grunt-mocha-test');
     grunt.task.loadNpmTasks('grunt-browserify');
+    grunt.task.loadTasks('./tasks');
 
 
     // Tasks
     grunt.registerTask('lint',  ['jshint']);
     grunt.registerTask('test',  ['lint', 'build', 'mochaTest', 'mocha']);
-    grunt.registerTask('build', ['browserify', 'uglify', 'usebanner']);
+    grunt.registerTask('develop', ['browserify', 'themify']);
+    grunt.registerTask('build', ['browserify', 'themify', 'uglify', 'usebanner']);
 
 };
 

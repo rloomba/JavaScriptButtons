@@ -65,6 +65,13 @@ module.exports = {
 		zh_XC: { buynow: '立即购买', cart: '添加到购物车', donate: '捐赠', subscribe: '租用', paynow : '现在支付', item_name: '物品', number: '编号', amount: '金额', quantity: '数量' }
 	},
 
-	STYLES: '$STYLE_TOKEN$'
+	STYLES: '$STYLES$',
+
+	LOGO: '$LOGO$',
+
+	WORDMARK: {
+		primary: '$WORDMARK_PRIMARY$',
+		secondary: '$WORDMARK_SECONDARY$'
+	}
 
 };
