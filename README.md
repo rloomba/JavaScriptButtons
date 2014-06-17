@@ -13,6 +13,7 @@ Perfect for use with Express Checkout or other API-based solutions
 ```html
 <script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="buynow"
+    async
 ></script>
 ```
 
