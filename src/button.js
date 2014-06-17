@@ -19,10 +19,10 @@ module.exports = function Button(label, data, config) {
     btn.className += 'paypal-button ' + config.style + ' ' + config.size;
 
     btnLogo.className = 'paypal-button-logo';
-    btnLogo.innerHTML = constants.LOGO;
+    btnLogo.innerHTML = '<img src="' + constants.LOGO + '" />';
 
     btnContent.className = 'paypal-button-content';
-    btnContent.innerHTML = constants.STRINGS[locale][label].replace('{wordmark}', constants.WORDMARK[config.style]);
+    btnContent.innerHTML = constants.STRINGS[locale][label].replace('{wordmark}', '<img src="' + constants.WORDMARK[config.style] + '" alt="PayPal" />');
 
     btn.appendChild(btnLogo);
     btn.appendChild(btnContent);

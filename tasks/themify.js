@@ -18,28 +18,58 @@ module.exports = function (grunt) {
     var tokens = {
         content: '$STRINGS$',
         styles: '$STYLES$',
-        logo: '$LOGO',
+        logo: '$LOGO$',
         primary: '$WORDMARK_PRIMARY$',
-        secondary: '$WORDMARK_SECONDARY$'
+        secondary: '$WORDMARK_SECONDARY$',
+        strings: '$STRINGS$'
     };
 
 
-    function processCss(file) {
+    function processCss(str) {
 	    var styles = trim(grunt.file.read('src/theme/css/index.css'));
 
-	    return file.replace(tokens.styles, styles);
+	    return str.replace(tokens.styles, styles);
     }
 
-    function processImages(file) {
-	    var logo = grunt.file.read('src/theme/images/logo.png'),
-			primary = grunt.file.read('src/theme/images/wordmark_white.png'),
-			secondary = grunt.file.read('src/theme/images/wordmark_blue.png');
+    function processImages(str) {
+	    var logo = grunt.file.read('src/theme/images/logo.png', { encoding: null }),
+			primary = grunt.file.read('src/theme/images/wordmark_white.png', { encoding: null }),
+			secondary = grunt.file.read('src/theme/images/wordmark_blue.png', { encoding: null });
 
-	    file = file.replace(tokens.logo, base64(logo));
-	    file = file.replace(tokens.primary, base64(primary));
-	    file = file.replace(tokens.secondary, base64(secondary));
+	    str = str.replace(tokens.logo, base64(logo));
+	    str = str.replace(tokens.primary, base64(primary));
+	    str = str.replace(tokens.secondary, base64(secondary));
 
-	    return file;
+	    return str;
+    }
+
+    // TODO: Localizr instead
+    function processContent(str) {
+        var bundles = grunt.file.expand('locales/**/*.properties'),
+            content = {},
+            props, locale;
+
+        bundles.forEach(function (bundle) {
+            locale = bundle.split(/locales\/([A-Z]{2})\/([a-z]{2})\//);
+            locale = locale[2] + '_' + locale[1];
+
+            content[locale] = {};
+
+            props = grunt.file.read(bundle);
+            props = props.split(/\n/);
+
+            props.forEach(function (line) {
+                var pair = line.split(/=(.+)/);
+
+                if (pair[0]) {
+                    content[locale][pair[0]] = pair[1];
+                }
+            });
+        });
+
+        str = str.replace(tokens.strings, JSON.stringify(content));
+
+        return str;
     }
 
     grunt.registerTask('themify', 'Bundles the theme files into the JavaScript.', function () {
@@ -47,6 +77,7 @@ module.exports = function (grunt) {
 
         out = processCss(out);
         out = processImages(out);
+        out = processContent(out);
 
         grunt.file.write(src, out);
         grunt.log.ok('Theme applied to ' + src);
