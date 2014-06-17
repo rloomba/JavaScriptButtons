@@ -9,23 +9,24 @@ function DataStore() {
 }
 
 
-DataStore.prototype.add = function addData(key, value) {
+DataStore.prototype.add = function addData(key, val) {
 	// Remap nice values
 	key = constants.PRETTY_PARAMS[key] || key;
 
-	if (typeof value === 'string') {
-		value = {
+	// Convenience to let you use add(key, 'some value')
+	if (typeof val === 'string') {
+		val = {
 			key: key,
-			value: value
+			value: val
 		};
 	}
 
     this.items[key] = {
         key: key,
-        value: value.value,
-        isEditable: !!value.isEditable,
-        hasOptions : !!value.hasOptions,
-        displayOrder : !!value.displayOrder
+        value: val.value,
+        isEditable: !!val.isEditable,
+        hasOptions : !!val.hasOptions,
+        displayOrder : !!val.displayOrder
     };
 };
 

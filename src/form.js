@@ -37,6 +37,7 @@ module.exports = function Form(type, data, config) {
     for (key in items) {
         item = items[key];
 
+
         if (item.hasOptions) {
             optionFieldArr.push(item);
         } else if (item.isEditable) {

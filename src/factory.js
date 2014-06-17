@@ -14,11 +14,15 @@ module.exports = function factory(business, raw, config) {
 
     if (!business) { return false; }
 
-    // Normalize incoming data
-    data = new DataStore();
+    // Normalize incoming data if needed
+    if (raw.items) {
+        data = raw;
+    } else {
+        data = new DataStore();
 
-    for (key in raw) {
-        data.add(key, raw[key]);
+        for (key in raw) {
+            data.add(key, raw[key]);
+        }
     }
 
     // Defaults
