@@ -65,25 +65,22 @@ describe('Test page button counter', function () {
 	});
 
 	it('Should have seven buy now buttons', function () {
-		buttons.buynow.should.equal(8);
+		buttons.buynow.should.equal(14);
 	});
 
 	it('Should have two cart buttons', function () {
-		buttons.cart.should.equal(2);
+		buttons.cart.should.equal(3);
 	});
 
 	it('Should have two donation buttons', function () {
-		buttons.donate.should.equal(2);
+		buttons.donate.should.equal(3);
 	});
 
 	it('Should have two subscribe buttons', function () {
-		buttons.subscribe.should.equal(2);
-	});
-
-	it('Should have one QR code', function () {
-		buttons.qr.should.equal(1);
+		buttons.subscribe.should.equal(3);
 	});
 });
+
 
 // Test environments
 describe('Environments', function () {
@@ -105,6 +102,25 @@ describe('Environments', function () {
 		www.action.should.include('//www.paypal');
 	});
 
+});
+
+
+// Test different forms
+describe('Form factors', function () {
+	'use strict';
+
+	it('Should produce a valid form', function () {
+		document.querySelectorAll('#buynow-sm form').length.should.equal(1);
+	});
+
+	it('Should produce a single button', function () {
+		document.querySelectorAll('#button form').length.should.equal(0);
+		document.querySelectorAll('#button button').length.should.equal(1);
+	});
+
+	it('Should produce a valid QR code', function () {
+		document.querySelector('#qr img').src.should.include('//www.paypal.com');
+	});
 });
 
 
@@ -173,7 +189,41 @@ describe('Multiple button image sizes', function () {
 	}
 
 	testSize('sm', 'buynow', 'small');
-	testSize('sm', 'cart', 'small');
+	testSize('md', 'buynow', 'medium');
 	testSize('lg', 'buynow', 'large');
+	testSize('sm', 'buynow-secondary', 'small');
+	testSize('md', 'buynow-secondary', 'medium');
+	testSize('lg', 'buynow-secondary', 'large');
+	testSize('sm', 'cart', 'small');
+	testSize('md', 'cart', 'medium');
 	testSize('lg', 'cart', 'large');
+	testSize('sm', 'donate', 'small');
+	testSize('md', 'donate', 'medium');
+	testSize('lg', 'donate', 'large');
+	testSize('sm', 'subscribe', 'small');
+	testSize('md', 'subscribe', 'medium');
+	testSize('lg', 'subscribe', 'large');
+});
+
+
+// Test button styles
+describe('Styled buttons', function () {
+
+	'use strict';
+
+	var primary, secondary;
+
+	before(function () {
+		primary = document.querySelectorAll('.primary');
+		secondary = document.querySelectorAll('.secondary');
+	});
+
+	it('Should have primary buttons', function () {
+		primary.length.should.equal(19);
+	});
+
+	it('Should have secondary buttons', function () {
+		secondary.length.should.equal(3);
+	});
+
 });
