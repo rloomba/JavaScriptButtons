@@ -34,7 +34,11 @@ module.exports = {
 
 	DEFAULT_STYLE: 'primary',
 
+	DEFAULT_LOCALE: 'en_US',
+
 	DEFAULT_ENV: 'www',
+
+	TEMPLATES: $TEMPLATES$,
 
 	STRINGS: $STRINGS$,
 

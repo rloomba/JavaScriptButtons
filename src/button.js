@@ -1,33 +1,31 @@
 'use strict';
 
 
-var constants = require('./constants'),
-	css = require('./util/css');
+var template = require('./util/template'),
+    constants = require('./constants'),
+	css = require('./util/css'),
+    hasCss = false;
 
 
 module.exports = function Button(label, data, config) {
-    var locale = data.get('lc') || 'en_US',
-        btn = document.createElement('button'),
-        btnLogo = document.createElement('span'),
-        btnContent = document.createElement('span');
+    var model, locale, style;
 
-    // Defaults
     config = config || {};
-    config.style = config.style || constants.DEFAULT_STYLE;
-    config.size = config.size || constants.DEFAULT_SIZE;
+    locale = data.get('lc') || constants.DEFAULT_LOCALE;
+    style = config.style || constants.DEFAULT_STYLE;
 
-    btn.className += 'paypal-button ' + config.style + ' ' + config.size;
+    model = {
+        style: style,
+        size: config.size || constants.DEFAULT_SIZE,
+        logo: constants.LOGO,
+        wordmark: constants.WORDMARK[style],
+        label: constants.STRINGS[locale][label]
+    };
 
-    btnLogo.className = 'paypal-button-logo';
-    btnLogo.innerHTML = '<img src="' + constants.LOGO + '" />';
-
-    btnContent.className = 'paypal-button-content';
-    btnContent.innerHTML = constants.STRINGS[locale][label].replace('{wordmark}', '<img src="' + constants.WORDMARK[config.style] + '" alt="PayPal" />');
-
-    btn.appendChild(btnLogo);
-    btn.appendChild(btnContent);
-
-    css.inject(document.getElementsByTagName('head')[0], constants.STYLES);
-
-    return btn;
+    if (!hasCss) {
+        hasCss = true;
+        css.inject(document.getElementsByTagName('head')[0], constants.STYLES);
+    }
+    
+    return template(constants.TEMPLATE.button, model);
 };

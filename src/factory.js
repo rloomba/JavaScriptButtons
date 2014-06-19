@@ -74,6 +74,6 @@ module.exports = function factory(business, raw, config) {
     return {
         label: label,
         type: type,
-        el: el
+        el: document.createElement('div').innerHTML = el
     };
 };

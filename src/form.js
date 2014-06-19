@@ -2,66 +2,67 @@
 
 
 var constants = require('./constants'),
-	Button = require('./button');
+	template = require('./util/template'),
+    Button = require('./button');
 
 
 module.exports = function Form(type, data, config) {
-    var form = document.createElement('form'),
-        hidden = document.createElement('input'),
-        paraElem = document.createElement('p'),
-        labelElem = document.createElement('label'),
-        inputTextElem = document.createElement('input'),
-        selectElem = document.createElement('select'),
-        optionElem = document.createElement('option'),
-        items = data.items,
-        optionFieldArr = [],
-        item, child, label, input, key, selector, optionField, fieldDetails = {}, fieldDetail, fieldValue, field, labelText, btn;
+    // var form = document.createElement('form'),
+    //     hidden = document.createElement('input'),
+    //     paraElem = document.createElement('p'),
+    //     labelElem = document.createElement('label'),
+    //     inputTextElem = document.createElement('input'),
+    //     selectElem = document.createElement('select'),
+    //     optionElem = document.createElement('option'),
+    //     items = data.items,
+    //     optionFieldArr = [],
+    //     item, child, label, input, key, selector, optionField, fieldDetails = {}, fieldDetail, fieldValue, field, labelText, btn;
 
-    // Defaults
-    config = config || {};
-    config.host = config.host || constants.DEFAULT_HOST;
+    // // Defaults
+    // config = config || {};
+    // config.host = config.host || constants.DEFAULT_HOST;
 
-    form.method = 'post';
-    form.action = constants.PAYPAL_URL.replace('{host}', config.host);
-    form.className = 'paypal-button-widget';
-    form.target = '_top';
+    // form.method = 'post';
+    // form.action = constants.PAYPAL_URL.replace('{host}', config.host);
+    // form.className = 'paypal-button-widget';
+    // form.target = '_top';
 
-    inputTextElem.type = 'text';
-    inputTextElem.className = 'paypal-input';
-    paraElem.className = 'paypal-group';
-    labelElem.className = 'paypal-label';
-    selectElem.className = 'paypal-select';
+    // inputTextElem.type = 'text';
+    // inputTextElem.className = 'paypal-input';
+    // paraElem.className = 'paypal-group';
+    // labelElem.className = 'paypal-label';
+    // selectElem.className = 'paypal-select';
 
-    hidden.type = 'hidden';
+    // hidden.type = 'hidden';
 
-    for (key in items) {
-        item = items[key];
+    // for (key in items) {
+    //     item = items[key];
 
 
-        if (item.hasOptions) {
-            optionFieldArr.push(item);
-        } else if (item.isEditable) {
-            input = inputTextElem.cloneNode(true);
-            input.name = item.key;
-            input.value = item.value;
+    //     if (item.hasOptions) {
+    //         optionFieldArr.push(item);
+    //     } else if (item.isEditable) {
+    //         input = inputTextElem.cloneNode(true);
+    //         input.name = item.key;
+    //         input.value = item.value;
 
-            label = labelElem.cloneNode(true);
-            // FIXME: This needs to resolve to user strings
-            labelText = item.key;
-            label.htmlFor = item.key;
-            label.appendChild(document.createTextNode(labelText));
-            label.appendChild(input);
+    //         label = labelElem.cloneNode(true);
+    //         // FIXME: This needs to resolve to user strings
+    //         labelText = item.key;
+    //         label.htmlFor = item.key;
+    //         label.appendChild(document.createTextNode(labelText));
+    //         label.appendChild(input);
 
-            child = paraElem.cloneNode(true);
-            child.appendChild(label);
-            form.appendChild(child);
-        } else {
-            input = child = hidden.cloneNode(true);
-            input.name = item.key;
-            input.value = item.value;
-            form.appendChild(child);
-        }
-    }
+    //         child = paraElem.cloneNode(true);
+    //         child.appendChild(label);
+    //         form.appendChild(child);
+    //     } else {
+    //         input = child = hidden.cloneNode(true);
+    //         input.name = item.key;
+    //         input.value = item.value;
+    //         form.appendChild(child);
+    //     }
+    // }
 
     // optionFieldArr = sortOptionFields(optionFieldArr);
 
@@ -128,34 +129,28 @@ module.exports = function Form(type, data, config) {
     //         form.appendChild(child);
     //     }
     // }
+    
+    var model = {
+        data: data.items,
+        button: new Button(type, data, config),
+        url: constants.PAYPAL_URL.replace('{host}', config.host || constants.DEFAULT_HOST)
+    };
 
-    btn = new Button(type, data, config);
-
-    // Safari won't let you set read-only attributes on buttons.
-    try {
-        btn.type = 'submit';
-    } catch (e) {
-        btn.setAttribute('type', 'submit');
-    }
-
-    // Add the correct button
-    form.appendChild(btn);
-
-    return form;
+    return template(constants.TEMPLATE.form, model);
 };
 
 
 
-/**
- * Sort Optional Fields by display order
- */
-function sortOptionFields(optionFieldArr) {
-    optionFieldArr.sort(function (a, b) {
-        return a.displayOrder - b.displayOrder;
-    });
+// /**
+//  * Sort Optional Fields by display order
+//  */
+// function sortOptionFields(optionFieldArr) {
+//     optionFieldArr.sort(function (a, b) {
+//         return a.displayOrder - b.displayOrder;
+//     });
 
-    return optionFieldArr;
-}
+//     return optionFieldArr;
+// }
 
 
 

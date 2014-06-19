@@ -21,9 +21,24 @@ module.exports = function (grunt) {
         logo: '$LOGO$',
         primary: '$WORDMARK_PRIMARY$',
         secondary: '$WORDMARK_SECONDARY$',
-        strings: '$STRINGS$'
+        strings: '$STRINGS$',
+        templates: '$TEMPLATES$'
     };
 
+    function processTemplates(str) {
+        var files = grunt.file.expand('src/theme/**/*.html'),
+            templates = {},
+            name;
+
+        files.forEach(function (file) {
+            name = file.split(/src\/theme\/(.*).html/);
+            name = name[1];
+
+            templates[name] = trim(grunt.file.read(file));           
+        });
+
+        return str.replace(tokens.templates, JSON.stringify(templates));
+    }
 
     function processCss(str) {
 	    var styles = trim(grunt.file.read('src/theme/css/index.css'));
@@ -75,6 +90,7 @@ module.exports = function (grunt) {
     grunt.registerTask('themify', 'Bundles the theme files into the JavaScript.', function () {
         var out = grunt.file.read(src);
 
+        out = processTemplates(out);
         out = processCss(out);
         out = processImages(out);
         out = processContent(out);
