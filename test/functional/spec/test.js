@@ -135,6 +135,14 @@ describe('Editable buttons', function () {
 		inputs[0].parentNode.children[0].className.should.include('paypal-label');
 	});
 
+	it('Should have proper labels', function () {
+		var labels = document.querySelectorAll('#buynow-editable label');
+
+		labels[0].textContent.should.equal('Item');
+		labels[1].textContent.should.equal('Amount');
+		labels[2].textContent.should.equal('Quantity');
+	});
+
 	it('Should have a CSS class on the container', function () {
 		inputs[0].parentNode.className.should.include('paypal-group');
 	});
