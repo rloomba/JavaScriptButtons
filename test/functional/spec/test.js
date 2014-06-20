@@ -53,7 +53,7 @@ describe('Test page button counter', function () {
 	});
 
 	it('Should have seven buy now buttons', function () {
-		buttons.buynow.should.equal(14);
+		buttons.buynow.should.equal(15);
 	});
 
 	it('Should have two cart buttons', function () {
@@ -215,7 +215,7 @@ describe('Styled buttons', function () {
 	});
 
 	it('Should have primary buttons', function () {
-		primary.length.should.equal(19);
+		primary.length.should.equal(20);
 	});
 
 	it('Should have secondary buttons', function () {
