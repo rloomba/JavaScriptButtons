@@ -1,7 +1,7 @@
-<form method="post" action="<%= url %>" class="paypal-button-widget" target="_top">
+<form method="post" action="<%= url %>" target="_top">
 	<% for (var key in data) { %>
-		<input type="hidden" name="<%= key %>" value="<%= data[key] %>" />
+		<input type="hidden" name="<%= key %>" value="<%= data[key].value %>" />
 	<% } %>
 
-	<%= button %>
+	<%- button %>
 </form>

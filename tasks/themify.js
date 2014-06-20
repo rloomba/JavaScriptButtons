@@ -1,5 +1,7 @@
 'use strict';
 
+//TODO: Clean this all up
+
 
 function trim(str) {
     return str.replace(/(^\s+|\s+$)/g, '').replace(/(\r\n|\n|\r)/g, '');

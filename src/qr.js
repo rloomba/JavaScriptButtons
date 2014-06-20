@@ -1,15 +1,16 @@
 'use strict';
 
 
-var constants = require('./constants');
+var constants = require('./constants'),
+    template = require('./util/template');
 
 
-module.exports = function QrCode(data, config) {
-    var img, url, item, key, size;
-
+module.exports = function Qr(data, config) {
+    var model = {}, url, key;
+    
     // Defaults
     config = config || {};
-    size = config.size || constants.QR_SIZE;
+    config.size = config.size || constants.QR_SIZE;
     config.host = config.host || constants.DEFAULT_HOST;
 
     // Construct URL
@@ -23,13 +24,13 @@ module.exports = function QrCode(data, config) {
 
     url = encodeURIComponent(url);
 
-    // Build the image
-    img = document.createElement('img');
-    img.src = constants.QR_URL
+    // Render
+    model.url = constants.QR_URL
 		.replace('{host}', config.host)
 		.replace('{url}', url)
 		.replace('{pattern}', constants.QR_PATTERN)
-		.replace('{size}', size);
+		.replace('{size}', config.size);
 
-    return img;
+
+    return template(constants.TEMPLATES.qr, model);
 };

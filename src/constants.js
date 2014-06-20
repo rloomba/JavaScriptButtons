@@ -24,6 +24,8 @@ module.exports = {
 		button_id: 'hosted_button_id'
 	},
 
+	WIDGET_NAME: 'paypal-button-widget',
+
 	DEFAULT_HOST: 'www.paypal.com',
 
 	DEFAULT_TYPE: 'button',

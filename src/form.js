@@ -3,10 +3,10 @@
 
 var constants = require('./constants'),
 	template = require('./util/template'),
-    Button = require('./button');
+    button = require('./button');
 
 
-module.exports = function Form(type, data, config) {
+module.exports = function form(type, data, config) {
     // var form = document.createElement('form'),
     //     hidden = document.createElement('input'),
     //     paraElem = document.createElement('p'),
@@ -130,13 +130,20 @@ module.exports = function Form(type, data, config) {
     //     }
     // }
     
-    var model = {
+    var model, btn, url;
+
+    btn = button(type, data, config);
+    
+    url = constants.PAYPAL_URL;
+    url = url.replace('{host}', config.host || constants.DEFAULT_HOST);
+
+    model = {
         data: data.items,
-        button: new Button(type, data, config),
-        url: constants.PAYPAL_URL.replace('{host}', config.host || constants.DEFAULT_HOST)
+        button: btn,
+        url: url
     };
 
-    return template(constants.TEMPLATE.form, model);
+    return template(constants.TEMPLATES.form, model);
 };
 
 

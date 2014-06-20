@@ -2,12 +2,10 @@
 
 
 var template = require('./util/template'),
-    constants = require('./constants'),
-	css = require('./util/css'),
-    hasCss = false;
+    constants = require('./constants');
 
 
-module.exports = function Button(label, data, config) {
+module.exports = function button(label, data, config) {
     var model, locale, style;
 
     config = config || {};
@@ -21,11 +19,6 @@ module.exports = function Button(label, data, config) {
         wordmark: constants.WORDMARK[style],
         label: constants.STRINGS[locale][label]
     };
-
-    if (!hasCss) {
-        hasCss = true;
-        css.inject(document.getElementsByTagName('head')[0], constants.STYLES);
-    }
     
-    return template(constants.TEMPLATE.button, model);
+    return template(constants.TEMPLATES.button, model);
 };

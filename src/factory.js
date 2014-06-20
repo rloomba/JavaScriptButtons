@@ -1,18 +1,21 @@
 'use strict';
 
 
-var Button = require('./button'),
-    Form = require('./form'),
+var DataStore = require('./util/datastore'),
+    constants = require('./constants'),
+    button = require('./button'),
+    css = require('./util/css'),
+    form = require('./form'),
     QR = require('./qr'),
-    DataStore = require('./util/datastore'),
-    constants = require('./constants');
+    hasCss = false;
 
 
 
 module.exports = function factory(business, raw, config) {
-    var data, el, key, label, type, env;
+    var data, wrapper, html, key, label, type, env;
 
     if (!business) { return false; }
+
 
     // Normalize incoming data if needed
     if (raw.items) {
@@ -25,28 +28,28 @@ module.exports = function factory(business, raw, config) {
         }
     }
 
+
     // Defaults
     config = config || {};
     label = config.label || constants.DEFAULT_LABEL;
     type = config.type || constants.DEFAULT_TYPE;
 
-    // Cart buttons
+
+    // Cart
     if (type === 'cart') {
         data.add('cmd', '_cart');
         data.add('add', true);
-    // Donation buttons
+    // Donation
     } else if (type === 'donate') {
         data.add('cmd', '_donations');
-    // Subscribe buttons
+    // Subscribe
     } else if (type === 'subscribe') {
         data.add('cmd', '_xclick-subscriptions');
 
-        // TODO: "amount" cannot be used in prettyParams since it's overloaded
-        // Find a better way to do this
         if (data.get('amount') && !data.get('a3')) {
-            data.add('a3', data.get('amount'));
+            data.add('a3', data.pluck('amount'));
         }
-    // Buy Now buttons
+    // Buy Now
     } else {
         if (data.get('hosted_button_id')) {
             data.add('cmd', '_s-xclick');
@@ -59,21 +62,32 @@ module.exports = function factory(business, raw, config) {
     data.add('business', business);
     data.add('bn', constants.BN_CODE.replace(/\{label\}/, label));
 
+
     // Build the UI components
     if (type === 'qr') {
-        el = QR(data, config);
+        html = QR(data, config);
     } else if (type === 'button') {
-        el = Button(label, data, config);
+        html = button(label, data, config);
     } else {
-        el = Form(label, data, config);
+        html = form(label, data, config);
     }
 
-    // Inject CSS
-    // injectCSS();
+
+    // Inject the CSS onto the page
+    if (!hasCss) {
+        hasCss = true;
+        css.inject(document.getElementsByTagName('head')[0], constants.STYLES);
+    }
+
+
+    // Wrap it up all nice and neat and return it
+    wrapper = document.createElement('div');
+    wrapper.className = constants.WIDGET_NAME;
+    wrapper.innerHTML = html;
 
     return {
         label: label,
         type: type,
-        el: document.createElement('div').innerHTML = el
+        el: wrapper
     };
 };

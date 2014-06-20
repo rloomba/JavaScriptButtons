@@ -1626,12 +1626,10 @@ exports.escape = function(html){
 
 
 var template = require('./util/template'),
-    constants = require('./constants'),
-	css = require('./util/css'),
-    hasCss = false;
+    constants = require('./constants');
 
 
-module.exports = function Button(label, data, config) {
+module.exports = function button(label, data, config) {
     var model, locale, style;
 
     config = config || {};
@@ -1645,16 +1643,11 @@ module.exports = function Button(label, data, config) {
         wordmark: constants.WORDMARK[style],
         label: constants.STRINGS[locale][label]
     };
-
-    if (!hasCss) {
-        hasCss = true;
-        css.inject(document.getElementsByTagName('head')[0], constants.STYLES);
-    }
     
-    return template(constants.TEMPLATE.button, model);
+    return template(constants.TEMPLATES.button, model);
 };
 
-},{"./constants":10,"./util/css":15,"./util/template":17}],10:[function(require,module,exports){
+},{"./constants":10,"./util/template":17}],10:[function(require,module,exports){
 'use strict';
 
 
@@ -1681,6 +1674,8 @@ module.exports = {
 		button_id: 'hosted_button_id'
 	},
 
+	WIDGET_NAME: 'paypal-button-widget',
+
 	DEFAULT_HOST: 'www.paypal.com',
 
 	DEFAULT_TYPE: 'button',
@@ -1695,11 +1690,11 @@ module.exports = {
 
 	DEFAULT_ENV: 'www',
 
-	TEMPLATES: {"button":"<button class=\"paypal-button <%= style %> <%= size %>\" type=\"submit\">\t<span class=\"paypal-button-logo\">\t\t<img src=\"<%= logo %>\" />\t</span>\t<span class=\"paypal-button-content\">\t\t<img src=\"<%= wordmark %>\" alt=\"PayPal\" />\t</span></button>","form":"<form method=\"post\" action=\"<%= url %>\" class=\"paypal-button-widget\" target=\"_top\">\t<% for (var key in data) { %>\t\t<input type=\"hidden\" name=\"<%= key %>\" value=\"<%= data[key] %>\" />\t<% } %>\t<%= button %></form>"},
+	TEMPLATES: {"button":"<button class=\"paypal-button <%= style %> <%= size %>\" type=\"submit\">\t<span class=\"paypal-button-logo\">\t\t<img src=\"<%= logo %>\" />\t</span><span class=\"paypal-button-content\">\t\t<img src=\"<%= wordmark %>\" alt=\"PayPal\" />\t</span></button>","form":"<form method=\"post\" action=\"<%= url %>\" target=\"_top\">\t<% for (var key in data) { %>\t\t<input type=\"hidden\" name=\"<%= key %>\" value=\"<%= data[key].value %>\" />\t<% } %>\t<%- button %></form>","qr":"<img src=\"<%= url %>\" alt=\"PayPal QR code\" />"},
 
-	STRINGS: {"en_AU":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate","subscribe":"Subscribe","paynow":"Pay Now","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"},"fr_CA":{"buynow":"Acheter","cart":"Ajouter au panier","donate":"Faire un don","subscribe":"Souscrire","paynow":"Payer maintenant","item_name":"Objet","number":"Numéro","amount":"Montant","quantity":"Quantité"},"zh_CH":{"buynow":"立即购买","cart":"添加到购物车","donate":"捐赠","subscribe":"租用","paynow":"现在支付","item_name":"物品","number":"编号","amount":"金额","quantity":"数量"},"de_DE":{"buynow":"Jetzt kaufen","cart":"In den Warenkorb","donate":"Spenden","subscribe":"Abonnieren","paynow":"Jetzt bezahlen","item_name":"Artikel","number":"Nummer","amount":"Betrag","quantity":"Menge"},"es_ES":{"buynow":"Comprar ahora","cart":"Añadir al carro","donate":"Donar","subscribe":"Suscribirse","paynow":"Pague ahora","item_name":"Artículo","number":"Número","amount":"Importe","quantity":"Cantidad"},"fr_FR":{"buynow":"Acheter","cart":"Ajouter au panier","donate":"Faire un don","subscribe":"Souscrire","paynow":"Payer maintenant","item_name":"Objet","number":"Numéro","amount":"Montant","quantity":"Quantité"},"en_GB":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate","subscribe":"Subscribe","paynow":"Pay Now","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"},"zh_HK":{"buynow":"立即買","cart":"加入購物車","donate":"捐款","subscribe":"訂用","paynow":"现在支付","item_name":"項目","number":"號碼","amount":"金額","quantity":"數量"},"id_ID":{"buynow":"Beli Sekarang","cart":"Tambah ke Keranjang","donate":"Donasikan","subscribe":"Berlangganan","paynow":"Bayar Sekarang","item_name":"Barang","number":"Nomor","amount":"Harga","quantity":"Kuantitas"},"he_IL":{"buynow":"וישכע הנק","cart":"תוינקה לסל ףסוה","donate":"םורת","subscribe":"יונמכ ףרטצה","paynow":"כשיו שלם ע","item_name":"טירפ","number":"רפסמ","amount":"םוכס","quantity":"מותכ"},"it_IT":{"buynow":"Paga adesso","cart":"Aggiungi al carrello","donate":"Donazione","subscribe":"Iscriviti","paynow":"Paga Ora","item_name":"Oggetto","number":"Numero","amount":"Importo","quantity":"Quantità"},"ja_JP":{"buynow":"今すぐ購入","cart":"カートに追加","donate":"寄付","subscribe":"購読","paynow":"今すぐ支払う","item_name":"商品","number":"番号","amount":"価格","quantity":"数量"},"nl_NL":{"buynow":"Nu kopen","cart":"Aan winkelwagentje toevoegen","donate":"Doneren","subscribe":"Abonneren","paynow":"Nu betalen","item_name":"Item","number":"Nummer","amount":"Bedrag","quantity":"Hoeveelheid"},"no_NO":{"buynow":"Kjøp nå","cart":"Legg til i kurv","donate":"Doner","subscribe":"Abonner","paynow":"Betal nå","item_name":"Vare","number":"Nummer","amount":"Beløp","quantity":"Antall"},"pl_PL":{"buynow":"Kup teraz","cart":"Dodaj do koszyka","donate":"Przekaż darowiznę","subscribe":"Subskrybuj","paynow":"Zapłać teraz","item_name":"Przedmiot","number":"Numer","amount":"Kwota","quantity":"Ilość"},"br_PT":{"buynow":"Comprar agora","cart":"Adicionar ao carrinho","donate":"Doar","subscribe":"Assinar","paynow":"Pagar agora","item_name":"Produto","number":"Número","amount":"Valor","quantity":"Quantidade"},"ru_RU":{"buynow":"Купить сейчас","cart":"Добавить в корзину","donate":"Пожертвовать","subscribe":"Подписаться","paynow":"Оплатить сейчас","item_name":"Товар","number":"Номер","amount":"Сумма","quantity":"Количество"},"sv_SE":{"buynow":"Köp nu","cart":"Lägg till i kundvagn","donate":"Donera","subscribe":"Abonnera","paynow":"Betal nu","item_name":"Objekt","number":"Nummer","amount":"Belopp","quantity":"Antal"},"th_TH":{"buynow":"ซื้อทันที","cart":"เพิ่มลงตะกร้า","donate":"บริจาค","subscribe":"บอกรับสมาชิก","paynow":"จ่ายตอนนี้","item_name":"ชื่อสินค้า","number":"รหัสสินค้า","amount":"ราคา","quantity":"จำนวน"},"tr_TR":{"buynow":"Hemen Alın","cart":"Sepete Ekleyin","donate":"Bağış Yapın","subscribe":"Abone Olun","paynow":"Şimdi öde","item_name":"Ürün","number":"Numara","amount":"Tutar","quantity":"Miktar"},"zh_TW":{"buynow":"立即購","cart":"加到購物車","donate":"捐款","subscribe":"訂閱","paynow":"现在支付","item_name":"商品","number":"商品編號","amount":"單價","quantity":"數量"},"en_US":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate","subscribe":"Subscribe","paynow":"Pay Now","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"}},
+	STRINGS: {"en_AU":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate","subscribe":"Subscribe","paynow":"Pay Now","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"},"fr_CA":{"buynow":"Acheter","cart":"Ajouter au panier","donate":"Faire un don","subscribe":"Souscrire","paynow":"Payer maintenant","item_name":"Objet","number":"Numéro","amount":"Montant","quantity":"Quantité"},"zh_CH":{"buynow":"立即购买","cart":"添加到购物车","donate":"捐赠","subscribe":"租用","paynow":"现在支付","item_name":"物品","number":"编号","amount":"金额","quantity":"数量"},"de_DE":{"buynow":"Jetzt kaufen","cart":"In den Warenkorb","donate":"Spenden","subscribe":"Abonnieren","paynow":"Jetzt bezahlen","item_name":"Artikel","number":"Nummer","amount":"Betrag","quantity":"Menge"},"es_ES":{"buynow":"Comprar ahora","cart":"Añadir al carro","donate":"Donar","subscribe":"Suscribirse","paynow":"Pague ahora","item_name":"Artículo","number":"Número","amount":"Importe","quantity":"Cantidad"},"fr_FR":{"buynow":"Acheter","cart":"Ajouter au panier","donate":"Faire un don","subscribe":"Souscrire","paynow":"Payer maintenant","item_name":"Objet","number":"Numéro","amount":"Montant","quantity":"Quantité"},"en_GB":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate","subscribe":"Subscribe","paynow":"Pay Now","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"},"zh_HK":{"buynow":"立即買","cart":"加入購物車","donate":"捐款","subscribe":"訂用","paynow":"现在支付","item_name":"項目","number":"號碼","amount":"金額","quantity":"數量"},"id_ID":{"buynow":"Beli Sekarang","cart":"Tambah ke Keranjang","donate":"Donasikan","subscribe":"Berlangganan","paynow":"Bayar Sekarang","item_name":"Barang","number":"Nomor","amount":"Harga","quantity":"Kuantitas"},"he_IL":{"buynow":"וישכע הנק","cart":"תוינקה לסל ףסוה","donate":"םורת","subscribe":"יונמכ ףרטצה","paynow":"כשיו שלם ע","item_name":"טירפ","number":"רפסמ","amount":"םוכס","quantity":"מותכ"},"it_IT":{"buynow":"Paga adesso","cart":"Aggiungi al carrello","donate":"Donazione","subscribe":"Iscriviti","paynow":"Paga Ora","item_name":"Oggetto","number":"Numero","amount":"Importo","quantity":"Quantità"},"ja_JP":{"buynow":"今すぐ購入","cart":"カートに追加","donate":"寄付","subscribe":"購読","paynow":"今すぐ支払う","item_name":"商品","number":"番号","amount":"価格","quantity":"数量"},"nl_NL":{"buynow":"Nu kopen","cart":"Aan winkelwagentje toevoegen","donate":"Doneren","subscribe":"Abonneren","paynow":"Nu betalen","item_name":"Item","number":"Nummer","amount":"Bedrag","quantity":"Hoeveelheid"},"no_NO":{"buynow":"Kjøp nå","cart":"Legg til i kurv","donate":"Doner","subscribe":"Abonner","paynow":"Betal nå","item_name":"Vare","number":"Nummer","amount":"Beløp","quantity":"Antall"},"pl_PL":{"buynow":"Kup teraz","cart":"Dodaj do koszyka","donate":"Przekaż darowiznę","subscribe":"Subskrybuj","paynow":"Zapłać teraz","item_name":"Przedmiot","number":"Numer","amount":"Kwota","quantity":"Ilość"},"br_PT":{"buynow":"Comprar agora","cart":"Adicionar ao carrinho","donate":"Doar","subscribe":"Assinar","paynow":"Pagar agora","item_name":"Produto","number":"Número","amount":"Valor","quantity":"Quantidade"},"ru_RU":{"buynow":"Купить сейчас","cart":"Добавить в корзину","donate":"Пожертвовать","subscribe":"Подписаться","paynow":"Оплатить сейчас","item_name":"Товар","number":"Номер","amount":"Сумма","quantity":"Количество"},"sv_SE":{"buynow":"Köp nu","cart":"Lägg till i kundvagn","donate":"Donera","subscribe":"Abonnera","paynow":"Betal nu","item_name":"Objekt","number":"Nummer","amount":"Belopp","quantity":"Antal"},"th_TH":{"buynow":"ซื้อทันที","cart":"เพิ่มลงตะกร้า","donate":"บริจาค","subscribe":"บอกรับสมาชิก","paynow":"จ่ายตอนนี้","item_name":"ชื่อสินค้า","number":"รหัสสินค้า","amount":"ราคา","quantity":"จำนวน"},"tr_TR":{"buynow":"Hemen Alın","cart":"Sepete Ekleyin","donate":"Bağış Yapın","subscribe":"Abone Olun","paynow":"Şimdi öde","item_name":"Ürün","number":"Numara","amount":"Tutar","quantity":"Miktar"},"zh_TW":{"buynow":"立即購","cart":"加到購物車","donate":"捐款","subscribe":"訂閱","paynow":"现在支付","item_name":"商品","number":"商品編號","amount":"單價","quantity":"數量"},"en_US":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate with {wordmark}","subscribe":"Subscribe with {wordmark}","paynow":"Pay now with {wordmark}","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"}},
 
-	STYLES: '.paypal-button {	white-space: nowrap;	overflow: hidden;	margin: 0;	padding: 0;	background: 0;	border: 0;	font-family: Arial, Helvetica !important;	cursor: pointer;	z-index: 0;}.paypal-button-logo {	display: inline-block;	border: 1px solid #aaa;	border-right: 0;	border-radius: 4px 0 0 4px;	vertical-align: top;}.paypal-button-content {	padding: 6px 8px 10px;	border: 1px solid transparent;	border-radius: 0 4px 4px 0;}.paypal-button-content img {	vertical-align: middle;}/* Small */.paypal-button-logo {	width: 25px;	height: 25px;}.paypal-button-logo img {	width:18px;	height: 18px;	margin: 4px 0 0 -2px;}.paypal-button-content {	height: 9px;	display:inline-block;	font-size: 10px !important;	line-height: 9px !important;}.paypal-button-content img {	width: 60px;	height: 16px;}/* Medium */.paypal-button.medium .paypal-button-logo {	width: 25px;	height: 29px;}.paypal-button.medium .paypal-button-logo img {	width: 22px;	height: 22px;	margin: 4px 0 0 -2px;}.paypal-button.medium .paypal-button-content {	height: 13px;	font-size: 10px !important;	line-height: 13px !important;}.paypal-button.medium .paypal-button-content img {	width: 71px;	height: 19px;}/* Large */.paypal-button.large .paypal-button-logo {	width: 45px;	height: 44px;}.paypal-button.large .paypal-button-logo img {	width: 30px;	height: 30px;	margin: 8px 0 0 -2px;}.paypal-button.large .paypal-button-content {	height: 28px;	padding: 9px 8px 7px;	font-size: 13px !important;	line-height: 28px !important;}.paypal-button.large .paypal-button-content img {	width: 93px;	height: 25px;}/* Primary */.paypal-button.primary .paypal-button-content {	background: #009cde;	border-color: #009cde;	color: #fff;}/* Secondary */.paypal-button.secondary .paypal-button-content {	background: #eee;	border-color: #cfcfcf;	color: #333;}',
+	STYLES: '.paypal-button { 	white-space: nowrap;	overflow: hidden;	margin: 0;	padding: 0;	background: 0;	border: 0;	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;	font-weight: bold;	-webkit-font-smoothing: antialiased;	font-smoothing: antialiased;	cursor: pointer;	z-index: 0;}.paypal-button-logo { 	display: inline-block;	border: 1px solid #aaa;	border-right: 0;	border-radius: 3px 0 0 3px;	vertical-align: top;}.paypal-button-content { 		padding: 4px 8px 4px;		border: 1px solid transparent;	border-radius: 0 3px 3px 0;	min-width: 57px !important;}.paypal-button-content img { 	vertical-align: middle;}/* Small */.paypal-button-logo { 	width: 24px;	height: 24px;}.paypal-button-logo img { 	width: 18px;	height: 18px;	margin: 3px 0 0 -1px;}.paypal-button-content { 	height: 16px;	display:inline-block;	font-size: 10px !important;	line-height: 16px !important;}.paypal-button-content img { 	width: 60px;	height: 16px;	margin: 1px 0 0 1px;}        /* Medium */.paypal-button.medium .paypal-button-logo { 	width: 30px;	height: 30px;}.paypal-button.medium .paypal-button-logo img { 	width: 22px;	height: 22px;	margin: 4px 0 0 0px;}.paypal-button.medium .paypal-button-content { 	height: 19px;	font-size: 10px !important;	line-height: 19px !important;	padding: 5px 8px 6px;	min-width: 71px !important;}.paypal-button.medium .paypal-button-content img { 	width: 71px;	height: 19px;	margin: 2px 0 0 1px;}        /* Large */.paypal-button.large .paypal-button-logo { 	width: 42px;	height: 42px;}.paypal-button.large .paypal-button-logo img { 	width: 30px;	height: 30px;	margin: 6px 0 0 -1px;}.paypal-button.large .paypal-button-content { 	height: 25px;	font-size: 13px !important;	line-height: 25px !important;	padding: 8px 13px 9px;	min-width: 109px !important;}.paypal-button.large .paypal-button-content img { 	width: 93px;	height: 25px;	margin: 2px 0 0 2px;}    /* Primary */.paypal-button.primary .paypal-button-content { 	background: #009cde;	border-color: #009cde;	color: #fff;}    /* Secondary */.paypal-button.secondary .paypal-button-logo { 	border: 1px solid #cfcfcf;	border-right: 0;}.paypal-button.secondary .paypal-button-content { 	background: #eee;	border-color: #cfcfcf;	color: #333;}',
 
 	LOGO: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA1RJREFUeNrkmr9v01AQx99LoC1SAatCpQgJ0krQSkjgKUOllg4wIsFfABmYaTa2wMZI5g7lPyD9CxoWZnfrBJm7YFja2LHNnUlQVdWJ794PO8pXerLS1ok/vfP37l4sBVNrm+/fwKEmzKoLy//x/ZOn6w0lE/YDHFrCnvwh/AGsDvwDfNvAv+DgiGKEsB1YTQ64ZMBiGv8UxQthGwDdoZxUYXxQTZRDmGFfh15iFNgV5dI+QO+YBL4vyieMtDMrER6l9+4sAaPemQJ2Sgrs5LmXScAUcyhIru4I10oO7Mwa8ERdIf79U9anJLEQcajvqqvz1oDphpVEQp6e/IPWKQnJWbkqkuoCUFyD11UjwOSSJIM/+mFHWRP1hYQlgt9p1Af3HugrS+DQvPoLEbYiAA9ct7W8d7wPy9FhWjXuhdhSdDftenGYOMyCrphMZyOpPB72/LW2VIHpQ4NOZ6YBo3Yhyjt2U9oicLj28LIfv1YBJreV0pJhxTduivjW7ct+9ZIFPNzWEWWNcPikntk3QFq7nAgzgQfGYZP5BRFuPM7dLOUFLm0NxugidF7lBaY7tIX6i/dtv75FOsdchC1E9/TZC/I5xoBNO/QZwGY480X5HGD6lBQFRmEnGNV/nbzd8EjTEntbx0CE0Zz6W89zw4I8znhYihqMreMZwOZMY8vAGmGxiwrq25SontcBB5i+raM4JWHqDqA3Hqyup0cFdTnAZMOScUBK1fQIqZpANAfwmpi2WfoChuVzgOk1GFpKNJcgu8e1oTa5DnO3dcL1R0XDdi+Wo7x1mOXQ/c3tImHTL8q5nRY5wsncHKmZN6CPEN0eF5g8NMRLS0XColF9Vumla1MEjLAN1eGB3FbG1xeLgG3mgR1blrjbOpYjjI1FY9w9S6nDLOBk0XiER89ptbNKDxeYVYNjvcDeEBAjeDSuvuoAJjt0tLKiErVXANM1nR4VrTWYH92mDVjtwAoObQV2EjB5SuI6NMVljQBzt3WYhuUJi6roLEnMCPemElih4TgqAzB5WwenJIVaWzgwWdEdpRpcOHCbeiHcGmyr/o4kdb3R8t7xIWO66gHw6lSmNLP3turQ2oCHjwhxHiv+NpXAgv/QuD9rwN60ArNgbTs06q8AAwC1swu0LaowrwAAAABJRU5ErkJggg==',
 
@@ -1714,18 +1709,21 @@ module.exports = {
 'use strict';
 
 
-var Button = require('./button'),
-    Form = require('./form'),
+var DataStore = require('./util/datastore'),
+    constants = require('./constants'),
+    button = require('./button'),
+    css = require('./util/css'),
+    form = require('./form'),
     QR = require('./qr'),
-    DataStore = require('./util/datastore'),
-    constants = require('./constants');
+    hasCss = false;
 
 
 
 module.exports = function factory(business, raw, config) {
-    var data, el, key, label, type, env;
+    var data, wrapper, html, key, label, type, env;
 
     if (!business) { return false; }
+
 
     // Normalize incoming data if needed
     if (raw.items) {
@@ -1738,28 +1736,28 @@ module.exports = function factory(business, raw, config) {
         }
     }
 
+
     // Defaults
     config = config || {};
     label = config.label || constants.DEFAULT_LABEL;
     type = config.type || constants.DEFAULT_TYPE;
 
-    // Cart buttons
+
+    // Cart
     if (type === 'cart') {
         data.add('cmd', '_cart');
         data.add('add', true);
-    // Donation buttons
+    // Donation
     } else if (type === 'donate') {
         data.add('cmd', '_donations');
-    // Subscribe buttons
+    // Subscribe
     } else if (type === 'subscribe') {
         data.add('cmd', '_xclick-subscriptions');
 
-        // TODO: "amount" cannot be used in prettyParams since it's overloaded
-        // Find a better way to do this
         if (data.get('amount') && !data.get('a3')) {
-            data.add('a3', data.get('amount'));
+            data.add('a3', data.pluck('amount'));
         }
-    // Buy Now buttons
+    // Buy Now
     } else {
         if (data.get('hosted_button_id')) {
             data.add('cmd', '_s-xclick');
@@ -1772,35 +1770,46 @@ module.exports = function factory(business, raw, config) {
     data.add('business', business);
     data.add('bn', constants.BN_CODE.replace(/\{label\}/, label));
 
+
     // Build the UI components
     if (type === 'qr') {
-        el = QR(data, config);
+        html = QR(data, config);
     } else if (type === 'button') {
-        el = Button(label, data, config);
+        html = button(label, data, config);
     } else {
-        el = Form(label, data, config);
+        html = form(label, data, config);
     }
 
-    // Inject CSS
-    // injectCSS();
+
+    // Inject the CSS onto the page
+    if (!hasCss) {
+        hasCss = true;
+        css.inject(document.getElementsByTagName('head')[0], constants.STYLES);
+    }
+
+
+    // Wrap it up all nice and neat and return it
+    wrapper = document.createElement('div');
+    wrapper.className = constants.WIDGET_NAME;
+    wrapper.innerHTML = html;
 
     return {
         label: label,
         type: type,
-        el: document.createElement('div').innerHTML = el
+        el: wrapper
     };
 };
 
-},{"./button":9,"./constants":10,"./form":12,"./qr":14,"./util/datastore":16}],12:[function(require,module,exports){
+},{"./button":9,"./constants":10,"./form":12,"./qr":14,"./util/css":15,"./util/datastore":16}],12:[function(require,module,exports){
 'use strict';
 
 
 var constants = require('./constants'),
 	template = require('./util/template'),
-    Button = require('./button');
+    button = require('./button');
 
 
-module.exports = function Form(type, data, config) {
+module.exports = function form(type, data, config) {
     // var form = document.createElement('form'),
     //     hidden = document.createElement('input'),
     //     paraElem = document.createElement('p'),
@@ -1924,13 +1933,20 @@ module.exports = function Form(type, data, config) {
     //     }
     // }
     
-    var model = {
+    var model, btn, url;
+
+    btn = button(type, data, config);
+    
+    url = constants.PAYPAL_URL;
+    url = url.replace('{host}', config.host || constants.DEFAULT_HOST);
+
+    model = {
         data: data.items,
-        button: new Button(type, data, config),
-        url: constants.PAYPAL_URL.replace('{host}', config.host || constants.DEFAULT_HOST)
+        button: btn,
+        url: url
     };
 
-    return template(constants.TEMPLATE.form, model);
+    return template(constants.TEMPLATES.form, model);
 };
 
 
@@ -2034,15 +2050,15 @@ if (typeof window === 'undefined') {
 'use strict';
 
 
-var constants = require('./constants');
+var constants = require('./constants'),
+    template = require('./util/template');
 
 
-module.exports = function QrCode(data, config) {
-    var img, url, item, key, size;
-
+module.exports = function Qr(data, config) {
+    var model = {}, url, key;
     // Defaults
     config = config || {};
-    size = config.size || constants.QR_SIZE;
+    config.size = config.size || constants.QR_SIZE;
     config.host = config.host || constants.DEFAULT_HOST;
 
     // Construct URL
@@ -2056,18 +2072,18 @@ module.exports = function QrCode(data, config) {
 
     url = encodeURIComponent(url);
 
-    // Build the image
-    img = document.createElement('img');
-    img.src = constants.QR_URL
+    // Render
+    model.url = constants.QR_URL
 		.replace('{host}', config.host)
 		.replace('{url}', url)
 		.replace('{pattern}', constants.QR_PATTERN)
-		.replace('{size}', size);
+		.replace('{size}', config.size);
 
-    return img;
+
+    return template(constants.TEMPLATES.qr, model);
 };
 
-},{"./constants":10}],15:[function(require,module,exports){
+},{"./constants":10,"./util/template":17}],15:[function(require,module,exports){
 /* jshint quotmark:double */
 
 
