@@ -30,7 +30,7 @@ app.create = function (business, data, config, parent) {
 
 
 app.process = function (el) {
-    var nodes = document.getElementsByTagName('script'),
+    var nodes = el.getElementsByTagName('script'),
         node, data, business, i, len;
 
     for (i = 0, len = nodes.length; i < len; i++) {
