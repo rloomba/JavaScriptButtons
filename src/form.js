@@ -2,11 +2,28 @@
 
 
 var constants = require('./constants'),
-	template = require('./util/template'),
+    template = require('./util/template'),
     button = require('./button');
 
 
 module.exports = function form(type, data, config) {
+    var model, btn, url;
+
+    btn = button(type, data, config);
+    
+    url = constants.PAYPAL_URL;
+    url = url.replace('{host}', config.host || constants.DEFAULT_HOST);
+
+    model = {
+        data: data.items,
+        button: btn,
+        url: url
+    };
+
+    return template(constants.TEMPLATES.form, model);
+};
+
+    
     // var form = document.createElement('form'),
     //     hidden = document.createElement('input'),
     //     paraElem = document.createElement('p'),
@@ -129,23 +146,6 @@ module.exports = function form(type, data, config) {
     //         form.appendChild(child);
     //     }
     // }
-    
-    var model, btn, url;
-
-    btn = button(type, data, config);
-    
-    url = constants.PAYPAL_URL;
-    url = url.replace('{host}', config.host || constants.DEFAULT_HOST);
-
-    model = {
-        data: data.items,
-        button: btn,
-        url: url
-    };
-
-    return template(constants.TEMPLATES.form, model);
-};
-
 
 
 // /**
