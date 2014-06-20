@@ -7,9 +7,10 @@ var constants = require('./constants'),
 
 
 module.exports = function form(type, data, config) {
-    var model, btn, url;
+    var model, btn, url, locale;
 
     btn = button(type, data, config);
+    locale = data.get('lc') || constants.DEFAULT_LOCALE;
     
     url = constants.PAYPAL_URL;
     url = url.replace('{host}', config.host || constants.DEFAULT_HOST);
@@ -17,7 +18,8 @@ module.exports = function form(type, data, config) {
     model = {
         data: data.items,
         button: btn,
-        url: url
+        url: url,
+        content: constants.STRINGS[locale]
     };
 
     return template(constants.TEMPLATES.form, model);

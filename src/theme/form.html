@@ -1,10 +1,10 @@
 <form method="post" action="<%= url %>" target="_top">
 	<% for (var key in data) { %>
 		<% if (data[key].isEditable) { %>
-			<div class="paypal-group">
-				<label for="<%= key %>" class="paypal-label"><%= data[key].key %></label>
+			<p class="paypal-group">
+				<label for="<%= key %>" class="paypal-label"><%= content[data[key].key] || data[key].key %></label>
 				<input type="text" id="<%= key %>" name="<%= key %>" value="<%= data[key].value %>" class="paypal-input" />
-			</div>
+			</p>
 		<% } else { %>
 			<input type="hidden" name="<%= key %>" value="<%= data[key].value %>" />
 		<% } %>

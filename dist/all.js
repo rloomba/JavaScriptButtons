@@ -1692,7 +1692,7 @@ module.exports = {
 
 	DEFAULT_ENV: 'www',
 
-	TEMPLATES: {"button":"<button class=\"paypal-button <%= style %> <%= size %>\" type=\"submit\">\t<span class=\"paypal-button-logo\">\t\t<img src=\"<%= logo %>\" />\t</span><span class=\"paypal-button-content\"><%- label %></span></button>","form":"<form method=\"post\" action=\"<%= url %>\" target=\"_top\">\t<% for (var key in data) { %>\t\t<% if (data[key].isEditable) { %>\t\t\t<div class=\"paypal-group\">\t\t\t\t<label for=\"<%= key %>\" class=\"paypal-label\"><%= data[key].key %></label>\t\t\t\t<input type=\"text\" id=\"<%= key %>\" name=\"<%= key %>\" value=\"<%= data[key].value %>\" class=\"paypal-input\" />\t\t\t</div>\t\t<% } else { %>\t\t\t<input type=\"hidden\" name=\"<%= key %>\" value=\"<%= data[key].value %>\" />\t\t<% } %>\t<% } %>\t<%- button %></form>","qr":"<img src=\"<%= url %>\" alt=\"PayPal QR code\" />"},
+	TEMPLATES: {"button":"<button class=\"paypal-button <%= style %> <%= size %>\" type=\"submit\">\t<span class=\"paypal-button-logo\">\t\t<img src=\"<%= logo %>\" />\t</span><span class=\"paypal-button-content\"><%- label %></span></button>","form":"<form method=\"post\" action=\"<%= url %>\" target=\"_top\">\t<% for (var key in data) { %>\t\t<% if (data[key].isEditable) { %>\t\t\t<p class=\"paypal-group\">\t\t\t\t<label for=\"<%= key %>\" class=\"paypal-label\"><%= content[data[key].key] || data[key].key %></label>\t\t\t\t<input type=\"text\" id=\"<%= key %>\" name=\"<%= key %>\" value=\"<%= data[key].value %>\" class=\"paypal-input\" />\t\t\t</p>\t\t<% } else { %>\t\t\t<input type=\"hidden\" name=\"<%= key %>\" value=\"<%= data[key].value %>\" />\t\t<% } %>\t<% } %>\t<%- button %></form>","qr":"<img src=\"<%= url %>\" alt=\"PayPal QR code\" />"},
 
 	STRINGS: {"en_AU":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate","subscribe":"Subscribe","paynow":"Pay Now","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"},"fr_CA":{"buynow":"Acheter","cart":"Ajouter au panier","donate":"Faire un don","subscribe":"Souscrire","paynow":"Payer maintenant","item_name":"Objet","number":"Numéro","amount":"Montant","quantity":"Quantité"},"zh_CH":{"buynow":"立即购买","cart":"添加到购物车","donate":"捐赠","subscribe":"租用","paynow":"现在支付","item_name":"物品","number":"编号","amount":"金额","quantity":"数量"},"de_DE":{"buynow":"Jetzt kaufen","cart":"In den Warenkorb","donate":"Spenden","subscribe":"Abonnieren","paynow":"Jetzt bezahlen","item_name":"Artikel","number":"Nummer","amount":"Betrag","quantity":"Menge"},"es_ES":{"buynow":"Comprar ahora","cart":"Añadir al carro","donate":"Donar","subscribe":"Suscribirse","paynow":"Pague ahora","item_name":"Artículo","number":"Número","amount":"Importe","quantity":"Cantidad"},"fr_FR":{"buynow":"Acheter","cart":"Ajouter au panier","donate":"Faire un don","subscribe":"Souscrire","paynow":"Payer maintenant","item_name":"Objet","number":"Numéro","amount":"Montant","quantity":"Quantité"},"en_GB":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate","subscribe":"Subscribe","paynow":"Pay Now","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"},"zh_HK":{"buynow":"立即買","cart":"加入購物車","donate":"捐款","subscribe":"訂用","paynow":"现在支付","item_name":"項目","number":"號碼","amount":"金額","quantity":"數量"},"id_ID":{"buynow":"Beli Sekarang","cart":"Tambah ke Keranjang","donate":"Donasikan","subscribe":"Berlangganan","paynow":"Bayar Sekarang","item_name":"Barang","number":"Nomor","amount":"Harga","quantity":"Kuantitas"},"he_IL":{"buynow":"וישכע הנק","cart":"תוינקה לסל ףסוה","donate":"םורת","subscribe":"יונמכ ףרטצה","paynow":"כשיו שלם ע","item_name":"טירפ","number":"רפסמ","amount":"םוכס","quantity":"מותכ"},"it_IT":{"buynow":"Paga adesso","cart":"Aggiungi al carrello","donate":"Donazione","subscribe":"Iscriviti","paynow":"Paga Ora","item_name":"Oggetto","number":"Numero","amount":"Importo","quantity":"Quantità"},"ja_JP":{"buynow":"今すぐ購入","cart":"カートに追加","donate":"寄付","subscribe":"購読","paynow":"今すぐ支払う","item_name":"商品","number":"番号","amount":"価格","quantity":"数量"},"nl_NL":{"buynow":"Nu kopen","cart":"Aan winkelwagentje toevoegen","donate":"Doneren","subscribe":"Abonneren","paynow":"Nu betalen","item_name":"Item","number":"Nummer","amount":"Bedrag","quantity":"Hoeveelheid"},"no_NO":{"buynow":"Kjøp nå","cart":"Legg til i kurv","donate":"Doner","subscribe":"Abonner","paynow":"Betal nå","item_name":"Vare","number":"Nummer","amount":"Beløp","quantity":"Antall"},"pl_PL":{"buynow":"Kup teraz","cart":"Dodaj do koszyka","donate":"Przekaż darowiznę","subscribe":"Subskrybuj","paynow":"Zapłać teraz","item_name":"Przedmiot","number":"Numer","amount":"Kwota","quantity":"Ilość"},"br_PT":{"buynow":"Comprar agora","cart":"Adicionar ao carrinho","donate":"Doar","subscribe":"Assinar","paynow":"Pagar agora","item_name":"Produto","number":"Número","amount":"Valor","quantity":"Quantidade"},"ru_RU":{"buynow":"Купить сейчас","cart":"Добавить в корзину","donate":"Пожертвовать","subscribe":"Подписаться","paynow":"Оплатить сейчас","item_name":"Товар","number":"Номер","amount":"Сумма","quantity":"Количество"},"sv_SE":{"buynow":"Köp nu","cart":"Lägg till i kundvagn","donate":"Donera","subscribe":"Abonnera","paynow":"Betal nu","item_name":"Objekt","number":"Nummer","amount":"Belopp","quantity":"Antal"},"th_TH":{"buynow":"ซื้อทันที","cart":"เพิ่มลงตะกร้า","donate":"บริจาค","subscribe":"บอกรับสมาชิก","paynow":"จ่ายตอนนี้","item_name":"ชื่อสินค้า","number":"รหัสสินค้า","amount":"ราคา","quantity":"จำนวน"},"tr_TR":{"buynow":"Hemen Alın","cart":"Sepete Ekleyin","donate":"Bağış Yapın","subscribe":"Abone Olun","paynow":"Şimdi öde","item_name":"Ürün","number":"Numara","amount":"Tutar","quantity":"Miktar"},"zh_TW":{"buynow":"立即購","cart":"加到購物車","donate":"捐款","subscribe":"訂閱","paynow":"现在支付","item_name":"商品","number":"商品編號","amount":"單價","quantity":"數量"},"en_US":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate with {wordmark}","subscribe":"Subscribe with {wordmark}","paynow":"Pay now with {wordmark}","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"}},
 
@@ -1812,9 +1812,10 @@ var constants = require('./constants'),
 
 
 module.exports = function form(type, data, config) {
-    var model, btn, url;
+    var model, btn, url, locale;
 
     btn = button(type, data, config);
+    locale = data.get('lc') || constants.DEFAULT_LOCALE;
     
     url = constants.PAYPAL_URL;
     url = url.replace('{host}', config.host || constants.DEFAULT_HOST);
@@ -1822,7 +1823,8 @@ module.exports = function form(type, data, config) {
     model = {
         data: data.items,
         button: btn,
-        url: url
+        url: url,
+        content: constants.STRINGS[locale]
     };
 
     return template(constants.TEMPLATES.form, model);
@@ -2304,5 +2306,5 @@ if (!String.prototype.trim) {
         return this.replace(/^\s+|\s+$/g, '');
     };
 }
-},{"ejs":6}]},{},[9,10,11,12,13,14,15,16,17])
+},{"ejs":6}]},{},[9,10,11,12,13,14,16,15,17])
 ;
