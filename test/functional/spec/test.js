@@ -132,11 +132,11 @@ describe('Editable buttons', function () {
 	});
 
 	it('Should have a CSS class on the label', function () {
-		inputs[0].parentNode.className.should.include('paypal-label');
+		inputs[0].parentNode.children[0].className.should.include('paypal-label');
 	});
 
 	it('Should have a CSS class on the container', function () {
-		inputs[0].parentNode.parentNode.className.should.include('paypal-group');
+		inputs[0].parentNode.className.should.include('paypal-group');
 	});
 
 });

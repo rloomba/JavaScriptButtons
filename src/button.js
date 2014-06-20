@@ -14,9 +14,7 @@ module.exports = function button(label, data, config) {
 
     label = constants.STRINGS[locale][label];
     label = label.replace('{wordmark}', '<img src="' + constants.WORDMARK[style] + '" alt="PayPal" />');
-
-    console.log(label);
-
+    
     model = {
         style: style,
         size: config.size || constants.DEFAULT_SIZE,
