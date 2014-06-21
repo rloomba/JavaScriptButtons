@@ -19,7 +19,9 @@ module.exports = function Qr(data, config) {
     url = url + '?';
 
     for (key in data.items) {
-        url += key + '=' + encodeURIComponent(data.get(key)) + '&';
+        if (data.items.hasOwnProperty(key)) {
+            url += key + '=' + encodeURIComponent(data.get(key)) + '&';
+        }
     }
 
     url = encodeURIComponent(url);

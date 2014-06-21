@@ -6,7 +6,7 @@ var template = require('./util/template'),
 
 
 module.exports = function button(label, data, config) {
-    var model, locale, style, label;
+    var model, locale, style;
 
     config = config || {};
     locale = data.get('lc') || constants.DEFAULT_LOCALE;

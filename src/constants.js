@@ -40,9 +40,9 @@ module.exports = {
 
 	DEFAULT_ENV: 'www',
 
-	TEMPLATES: $TEMPLATES$,
+	TEMPLATES: '$TEMPLATES$',
 
-	STRINGS: $STRINGS$,
+	STRINGS: '$STRINGS$',
 
 	STYLES: '$STYLES$',
 

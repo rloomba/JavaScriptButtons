@@ -23,7 +23,7 @@ DataStore.prototype.add = function addData(key, val) {
     this.items[key] = {
         label: val.label || '',
         value: val.value || '',
-        editable: !!val.editable,
+        editable: !!val.editable
     };
 };
 

@@ -38,7 +38,9 @@ app.process = function (el) {
     for (i = 0, len = nodes.length; i < len; i++) {
         node = nodes[i];
 
-        if (!node || !node.src) { continue; }
+        if (!node || !node.src) {
+            continue;
+        }
 
         data = new DataStore();
         data.parse(node);
