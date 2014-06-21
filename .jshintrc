@@ -14,13 +14,25 @@
     "mootools": false,
     "dojo": false,
 
-    "predef": [],
+    "predef": [
+        "describe",
+        "it",
+        "before",
+        "beforeEach",
+        "after",
+        "afterEach"
+    ],
 
     "debug": false,
     "devel": false,
 
     "strict": true,
     "globalstrict": false,
+
+    "globals": {
+        "$TEMPLATES$": true,
+        "$STRINGS$": true
+    },
 
     "asi": false,
     "laxbreak": false,

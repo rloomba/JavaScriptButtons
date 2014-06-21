@@ -1,61 +1,25 @@
+'use strict';
+
+
 module.exports = function (grunt) {
 
-	'use strict';
 
-	// Project configuration.
-	grunt.initConfig({
+    // load all grunt tasks matching the `grunt-*` pattern
+    require('load-grunt-config')(grunt, {
+        configPath: require('path').resolve('tasks')
+    });
 
-		pkg: grunt.file.readJSON('package.json'),
 
-		meta: {
-			banner: '/*!\n * <%= pkg.name %>\n * <%= pkg.description %>\n * @version <%= pkg.version %> - <%= grunt.template.today(\'yyyy-mm-dd\') %>\n * @author <%= pkg.author.name %> <<%= pkg.author.url %>>\n */\n'
-		},
+    // Aliases for ease of use.
+    grunt.registerTask('lint', ['jshint', 'eslint']);
+    grunt.registerTask('coverage', ['mocha_istanbul']);
+    grunt.registerTask('mocha', ['mochaTest']);
+    grunt.registerTask('themify', ['templates', 'css', 'images', 'content']);
+    grunt.registerTask('test', ['lint', 'build', 'coverage']);
+    grunt.registerTask('develop', ['browserify', 'themify']);
+    grunt.registerTask('build', ['browserify', 'themify', 'uglify', 'usebanner']);
 
-		jshint: {
-			all: {
-				src: ['src/*.js', 'test/spec/*.js'],
-				options: {
-					jshintrc: '.jshintrc'
-				}
-			}
-		},
-
-		uglify: {
-			dist: {
-				src: ['<%= meta.banner %>', 'src/paypal-button.js'],
-				dest: 'dist/paypal-button.min.js',
-				options: {
-					banner: '<%= meta.banner %>'
-				}
-			}
-		},
-
-		mochaTest: {
-			all: {
-				options: {
-					reporter: 'spec'
-				},
-				src: ['test/spec/*.js']
-			}
-		},
-		watch: {
-			scripts: {
-				files: ['src/**/*.js'],
-				tasks: ['build'],
-				options: {
-					spawn: false
-				}
-			}
-		}
-	});
-
-	// Load grunt tasks from npm packages
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-mocha-test');
-
-	grunt.registerTask('build', ['jshint', 'uglify']);
-	grunt.registerTask('test', ['jshint', 'mochaTest']);
 
 };
+
+

@@ -106,33 +106,22 @@ All of PayPal's [HTML button variables](https://developer.paypal.com/webapps/dev
 * `data-style` The style of the button. Can be set to `primary` (default) and `secondary`.
 * `data-locale` The desired locale of the PayPal site.
 * `data-callback` The IPN notify URL to be called on completion of the transaction.
-* `data-env` The PayPal environment to checkout in, e.g. `sandbox` (defaults to 'www').
+* `data-host` The PayPal host to checkout in, e.g. `www.sandbox.paypal.com` (defaults to 'www.paypal.com').
 * `data-type` The type of button to render. `button` for a plain button (default), `form` to create a button with a PayPal Payments Standard HTML form, or `qr` to create a PayPal Payments Standard compatible QR code.
 
 
-### Editable fields
-Creating editable fields is easy! Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.
+### Editable inputs
+Creating editable inputs is easy. Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.
 
 
-### Custom fields
-You can also add custom text fields and dropdowns to your form.
+### Options fields
+Allow the user to choose from multiple options with the following sytax:
 
-
-For a text field:
-```javascript
-data-option0name="Coupon Number"
+```
+data-option0="Color=Blue:8.00,Green:12.00,Red:10.00"
+data-option1="Size=Small,Medium,Large"
 ```
 
-For a dropdown:
-```javascript
-data-option0name="Size"
-data-option0select0="Small"
-data-option0select1="Medium"
-data-option0select2="Large"
-data-option0price0="8.00"
-data-option0price1="10.00"
-data-option0price2="12.00"
-```
 
 ### Callback notification
 On completion of a transaction you can get a payment notification ([IPN](https://developer.paypal.com/docs/classic/ipn/integration-guide/IPNIntro/)) on a callback URL you specify using the `data-callback` attribute. An [IPN simulator](https://developer.paypal.com/webapps/developer/applications/ipn_simulator) is available on the sandbox.
@@ -142,21 +131,21 @@ On completion of a transaction you can get a payment notification ([IPN](https:/
 
 ### Localization
 * Changing the default language of a button can be done by setting the variable `data-lc` with the correct locale code, e.g. es_ES.
-* Changing the default input labels of editable buttons can be done by overriding the default configuration, e.g. PAYPAL.apps.ButtonFactory.config.labels.
+* Changing the default input labels of editable buttons can be done by overriding the default configuration, e.g. `paypal.button.config.labels`.
 
 
 ### JavaScript API
 There's even a fancy JavaScript API if you'd like to pragmatically create your buttons.
 
-**PAYPAL.apps.ButtonFactory.config**  
-This can be overridden to change the default behavior of the buttons.
-
-**PAYPAL.apps.ButtonFactory.create(business, data, type, parentNode)**  
+**paypal.button.create(business, data, config, parentNode)**  
 Creates and returns an HTML element that contains the button code. 
 > **business** - A string containing either the business ID or the business email  
 > **data** - A JavaScript object containing the button variables  
-> **type** - The button type, e.g. "buynow", "cart", "qr"  
+> **config** - A configuration object for the button. Possible settings are `button`, `type`, `style`, `size`, and `host`   
 > **parentNode** - An HTML element to add the newly created button to (Optional)  
+
+**paypal.button.process(node)** 
+Parses `node` and automatically runs `paypal.button.create` on any `<script>` element it finds matching the right criteria. This is called automatically on `document.body`.
 
 
 ## Browser support 
