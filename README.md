@@ -11,7 +11,7 @@ We have a few flavors of buttons for you to use:
 Perfect for use with Express Checkout or other API-based solutions
 
 ```html
-<script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
+<script async src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="buynow"
 ></script>
 ```
@@ -29,7 +29,7 @@ Buttons that create a PayPal button and HTML checkout form for you.
 Buy Now buttons are for single item purchases.
 
 ```html
-<script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
+<script async src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="buynow"
     data-type="form"
     data-name="My product"
@@ -44,7 +44,7 @@ Add `data-hosted_button_id` to your script along with your button ID for hosted 
 Add To Cart buttons let users add multiple items to their PayPal cart.
 
 ```html
-<script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
+<script async src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="cart"
     data-type="form"
     data-name="Product in your cart"
@@ -56,7 +56,7 @@ Add To Cart buttons let users add multiple items to their PayPal cart.
 QR codes can be easily scanned with a smart phone to check out.
 
 ```html
-<script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
+<script async src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="buynow"
     data-type="qr"
     data-name="Product via QR code"
@@ -68,7 +68,7 @@ QR codes can be easily scanned with a smart phone to check out.
 Donation buttons let you accept donations from your users.
 
 ```html
-<script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
+<script async src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="donate"
     data-type="form"
     data-name="My donation"
@@ -80,7 +80,7 @@ Donation buttons let you accept donations from your users.
 Subscribe buttons let you set up payment subscriptions.
 
 ```html
-<script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
+<script async src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="subscribe"
     data-type="form"
     data-name="My product"
