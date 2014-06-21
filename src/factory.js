@@ -4,7 +4,7 @@
 var DataStore = require('./util/datastore'),
     constants = require('./constants'),
     button = require('./button'),
-    css = require('./util/css'),
+    css = require('browserlib').css,
     form = require('./form'),
     QR = require('./qr'),
     hasCss = false;
