@@ -1,19 +1,9 @@
 'use strict';
 
 
-function base64(str) {
-    return 'data:image/png;base64,' + str.toString('base64');
-}
-
-
 module.exports = function content(grunt) {
 
-    var src = 'dist/all.js',
-        tokens = {
-            logo: '$LOGO$',
-            primary: '$WORDMARK_PRIMARY$',
-            secondary: '$WORDMARK_SECONDARY$'
-        };
+    var src = 'dist/all.js';
 
     function processContent(str) {
         var bundles = grunt.file.expand('locales/**/*.properties'),

@@ -8,21 +8,26 @@ function base64(str) {
 
 module.exports = function images(grunt) {
 
-    var src = 'dist/all.js',
-        tokens = {
-            logo: '$LOGO$',
-            primary: '$WORDMARK_PRIMARY$',
-            secondary: '$WORDMARK_SECONDARY$'
-        };
+    var src = 'dist/all.js';
 
     function processImages(str) {
-        var logo = grunt.file.read('src/theme/images/logo.png', { encoding: null }),
-            primary = grunt.file.read('src/theme/images/wordmark_white.png', { encoding: null }),
-            secondary = grunt.file.read('src/theme/images/wordmark_blue.png', { encoding: null });
+        var files = grunt.file.expand('src/theme/images/*.*'),
+            templates = {},
+            name,
+            token,
+            contents;
 
-        str = str.replace(tokens.logo, base64(logo));
-        str = str.replace(tokens.primary, base64(primary));
-        str = str.replace(tokens.secondary, base64(secondary));
+        files.forEach(function (file) {
+            name = file.split(/src\/theme\/images\/(.*)\.(.*)/);
+            token = '$' + name[1].toUpperCase() + '$';
+            contents = grunt.file.read(file, { encoding: null });
+
+            if (contents) {
+                str = str.replace(token, base64(contents));
+            } else {
+                grunt.fail.warn('Looks like ' + file + ' is missing. Check that it exists.');
+            }
+        });
 
         return str;
     }
