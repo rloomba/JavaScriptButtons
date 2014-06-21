@@ -28,7 +28,9 @@ module.exports = (function (window, document) {
             add: function (obj, type, fn, scope) {
                 scope = scope || obj;
 
-                var wrappedFn = function (e) { fn.call(scope, e); };
+                var wrappedFn = function (e) {
+                    fn.call(scope, e);
+                };
 
                 obj.addEventListener(type, wrappedFn, false);
                 cache.push([obj, type, fn, wrappedFn]);

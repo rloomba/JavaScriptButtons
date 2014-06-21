@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 
 
     // Aliases for ease of use.
-    grunt.registerTask('lint', ['jshint']);
+    grunt.registerTask('lint', ['jshint', 'eslint']);
     grunt.registerTask('coverage', ['mocha_istanbul']);
     grunt.registerTask('mocha', ['mochaTest']);
     grunt.registerTask('test', ['lint', 'build', 'coverage']);

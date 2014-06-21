@@ -12,9 +12,11 @@ var DataStore = require('./util/datastore'),
 
 
 module.exports = function factory(business, raw, config) {
-    var data, wrapper, html, key, label, type, env;
+    var data, wrapper, html, key, label, type;
 
-    if (!business) { return false; }
+    if (!business) {
+        return false;
+    }
 
 
     // Normalize incoming data if needed
@@ -24,7 +26,9 @@ module.exports = function factory(business, raw, config) {
         data = new DataStore();
 
         for (key in raw) {
-            data.add(key, raw[key]);
+            if (raw.hasOwnProperty(key)) {
+                data.add(key, raw[key]);
+            }
         }
     }
 
@@ -50,12 +54,10 @@ module.exports = function factory(business, raw, config) {
             data.add('a3', data.pluck('amount'));
         }
     // Buy Now
+    } else if (data.get('hosted_button_id')) {
+        data.add('cmd', '_s-xclick');
     } else {
-        if (data.get('hosted_button_id')) {
-            data.add('cmd', '_s-xclick');
-        } else {
-            data.add('cmd', '_xclick');
-        }
+        data.add('cmd', '_xclick');
     }
 
     // Add common data
