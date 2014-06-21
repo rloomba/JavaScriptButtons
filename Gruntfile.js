@@ -10,9 +10,11 @@ module.exports = function (grunt) {
     });
 
 
-    // Tasks
+    // Aliases for ease of use.
     grunt.registerTask('lint', ['jshint']);
-    grunt.registerTask('test', ['lint', 'build', 'mochaTest']);
+    grunt.registerTask('coverage', ['mocha_istanbul']);
+    grunt.registerTask('mocha', ['mochaTest']);
+    grunt.registerTask('test', ['lint', 'build', 'coverage']);
     grunt.registerTask('develop', ['browserify', 'themify']);
     grunt.registerTask('build', ['browserify', 'themify', 'uglify', 'usebanner']);
 
