@@ -39,7 +39,8 @@
     "coverage": "istanbul cover _mocha -- test/**/*.js"
   },
   "dependencies": {
-    "ejs": "^0.8.4"
+    "ejs": "^0.8.4",
+    "browserlib": "^1.0.0"
   },
   "devDependencies": {
     "browserify": "^2.35.0",

@@ -18,8 +18,10 @@ app.create = function (business, data, config, parent) {
     var result = factory(business, data, config);
 
     if (result) {
+        // Log how many buttons were created
         app.counter[result.label] += 1;
 
+        // Add it to the page
         if (parent) {
             parent.appendChild(result.el);
         }
