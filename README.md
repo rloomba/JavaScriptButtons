@@ -115,7 +115,7 @@ Creating editable inputs is easy. Just add `-editable` to the name of your varia
 
 
 ### Options fields
-Allow the user to choose from multiple options with the following sytax:
+Allow the user to choose from multiple options with the following syntax:
 
 ```
 data-option0="Color=Blue:8.00,Green:12.00,Red:10.00"
