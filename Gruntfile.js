@@ -13,7 +13,7 @@ module.exports = function (grunt) {
     // Aliases for ease of use.
     grunt.registerTask('lint', ['jshint', 'eslint']);
     grunt.registerTask('coverage', ['mocha_istanbul']);
-    grunt.registerTask('mocha', ['mochaTest']);
+    grunt.registerTask('mocha', ['mocha_istanbul']);
     grunt.registerTask('themify', ['templates', 'css', 'images', 'content']);
     grunt.registerTask('test', ['lint', 'build', 'coverage']);
     grunt.registerTask('develop', ['browserify', 'themify']);
