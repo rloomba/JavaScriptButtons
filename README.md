@@ -163,7 +163,7 @@ Your merchant ID needs to be added to the URL of the referenced script. This ID 
 
 ## Contributing 
 
-We love contributions! If you'd like to contribute please submit a pull request via Github. 
+We love contributions! If you'd like to contribute please submit a pull request via GitHub. 
 
 [Mocha](https://github.com/visionmedia/mocha) is used to run our test cases. Please be sure to run these prior to your pull request and ensure nothing is broken.
 
