@@ -22,6 +22,11 @@
     "strict": true,
     "globalstrict": false,
 
+    "globals": {
+        "$TEMPLATES$": true,
+        "$STRINGS$": true
+    },
+
     "asi": false,
     "laxbreak": false,
     "bitwise": false,

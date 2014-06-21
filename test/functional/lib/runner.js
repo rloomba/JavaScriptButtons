@@ -1,10 +1,12 @@
 /*global require, window, module */
-require.config({
-	paths: {
-		"mocha": "../../../node_modules/mocha/mocha",
-		"chai": "../../../node_modules/chai/chai"
-	}
-});
+if (require.config) {
+	require.config({
+		paths: {
+			"mocha": "../../../node_modules/mocha/mocha",
+			"chai": "../../../node_modules/chai/chai"
+		}
+	});
+}
 
 (function (module) {
 

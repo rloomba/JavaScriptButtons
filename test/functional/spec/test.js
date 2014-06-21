@@ -9,11 +9,11 @@ if (typeof window === 'undefined') {
 		should = require('should'),
 		jsdom = require('jsdom').jsdom,
 		jsdomOptions = { features: { QuerySelector: true }},
-		testFile = fs.readFileSync('./test/index.html').toString(),
+		testFile = fs.readFileSync('./test/functional/index.html').toString(),
 		document = jsdom(testFile, null, jsdomOptions),
 		window = document.createWindow();
 
-	eval(fs.readFileSync('src/paypal-button.js').toString());
+	eval(fs.readFileSync('dist/all.js').toString());
 }
 
 // Test the object's integrity
@@ -22,7 +22,7 @@ describe('JavaScript API', function () {
 	var namespace;
 
 	before(function () {
-		namespace = paypal;
+		namespace = window.paypal;
 	});
 
 	it('Should have a paypal namespace', function () {
@@ -48,7 +48,7 @@ describe('Test page button counter', function () {
 	var buttons;
 
 	before(function () {
-		buttons = paypal.button.counter;
+		buttons = window.paypal.button.counter;
 	});
 
 	it('Should have seven buy now buttons', function () {
