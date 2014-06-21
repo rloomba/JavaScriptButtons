@@ -1,6 +1,9 @@
 /*jshint node:true, evil:true */
 /*global describe:true, it:true, paypal:true, document:true, window:true, before:true, beforeEach:true */
 
+'use strict';
+
+
 if (typeof window === 'undefined') {
 	var fs = require('fs'),
 		should = require('should'),
@@ -15,8 +18,6 @@ if (typeof window === 'undefined') {
 
 // Test the object's integrity
 describe('JavaScript API', function () {
-
-	'use strict';
 
 	var namespace;
 
@@ -43,8 +44,6 @@ describe('JavaScript API', function () {
 
 // Test the buttons counter object
 describe('Test page button counter', function () {
-
-	'use strict';
 
 	var buttons;
 
@@ -73,8 +72,6 @@ describe('Test page button counter', function () {
 // Test environments
 describe('Environments', function () {
 
-	'use strict';
-
 	var sandbox, www;
 
 	before(function () {
@@ -95,7 +92,6 @@ describe('Environments', function () {
 
 // Test different forms
 describe('Form factors', function () {
-	'use strict';
 
 	it('Should produce a valid form', function () {
 		document.querySelectorAll('#buynow-sm form').length.should.equal(1);
@@ -115,8 +111,6 @@ describe('Form factors', function () {
 // Test editable fields
 describe('Editable buttons', function () {
 
-	'use strict';
-
 	var inputs;
 
 	before(function () {
@@ -132,19 +126,19 @@ describe('Editable buttons', function () {
 	});
 
 	it('Should have a CSS class on the label', function () {
-		inputs[0].parentNode.children[0].className.should.include('paypal-label');
+		inputs[0].parentNode.className.should.include('paypal-label');
 	});
 
 	it('Should have proper labels', function () {
 		var labels = document.querySelectorAll('#buynow-editable label');
 
-		labels[0].textContent.should.equal('Item');
-		labels[1].textContent.should.equal('Amount');
-		labels[2].textContent.should.equal('Quantity');
+		labels[0].textContent.replace(/^\s+/, '').replace(/\s+$/, '').should.equal('Item');
+		labels[1].textContent.replace(/^\s+/, '').replace(/\s+$/, '').should.equal('Amount');
+		labels[2].textContent.replace(/^\s+/, '').replace(/\s+$/, '').should.equal('Quantity');
 	});
 
 	it('Should have a CSS class on the container', function () {
-		inputs[0].parentNode.className.should.include('paypal-group');
+		inputs[0].parentNode.parentNode.className.should.include('paypal-group');
 	});
 
 });
@@ -152,8 +146,6 @@ describe('Editable buttons', function () {
 
 // Test multi-language support
 describe('Multi-language button images', function () {
-
-	'use strict';
 
 	function testLanguage(locale, type, expected) {
 		it('Should have a ' + locale + ' version of the ' + type + ' button', function () {
@@ -172,8 +164,6 @@ describe('Multi-language button images', function () {
 
 // Test multiple button image sizes
 describe('Multiple button image sizes', function () {
-
-	'use strict';
 
 	function testSize(size, type, expected) {
 		it('Should have a ' + size + ' version of ' + type + ' button', function () {
@@ -205,8 +195,6 @@ describe('Multiple button image sizes', function () {
 // Test button styles
 describe('Styled buttons', function () {
 
-	'use strict';
-
 	var primary, secondary;
 
 	before(function () {
@@ -220,6 +208,30 @@ describe('Styled buttons', function () {
 
 	it('Should have secondary buttons', function () {
 		secondary.length.should.equal(3);
+	});
+
+});
+
+
+describe('Options buttons', function () {
+	var form = document.getElementById('button-options');
+	var selects = form.getElementsByTagName('select');
+
+	it('Should have two selects', function () {
+		selects.length.should.equal(2);
+	});
+
+	it('Should have the right number of options per select', function () {
+		selects[0].options.length.should.equal(3);
+		selects[1].options.length.should.equal(5);
+	});
+
+	it('Should have the right values per options', function () {
+		selects[0].options[0].textContent.should.equal('Blue 8.00');
+		selects[0].options[0].value.should.equal('Blue');
+
+		selects[1].options[0].textContent.should.equal('Tiny');
+		selects[1].options[0].value.should.equal('Tiny');
 	});
 
 });
