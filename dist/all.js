@@ -1692,7 +1692,7 @@ module.exports = {
 
 	DEFAULT_ENV: 'www',
 
-	TEMPLATES: {"button":"<button class=\"paypal-button <%= style %> <%= size %>\" type=\"submit\">\t<span class=\"paypal-button-logo\">\t\t<img src=\"<%= logo %>\" />\t</span><span class=\"paypal-button-content\"><%- label %></span></button>","form":"<form method=\"post\" action=\"<%= url %>\" target=\"_top\">\t<% for (var key in data) { %>\t\t<% if (data[key].isEditable) { %>\t\t\t<p class=\"paypal-group\">\t\t\t\t<label for=\"<%= key %>\" class=\"paypal-label\"><%= content[data[key].key] || data[key].key %></label>\t\t\t\t<input type=\"text\" id=\"<%= key %>\" name=\"<%= key %>\" value=\"<%= data[key].value %>\" class=\"paypal-input\" />\t\t\t</p>\t\t<% } else { %>\t\t\t<input type=\"hidden\" name=\"<%= key %>\" value=\"<%= data[key].value %>\" />\t\t<% } %>\t<% } %>\t<%- button %></form>","qr":"<img src=\"<%= url %>\" alt=\"PayPal QR code\" />"},
+	TEMPLATES: {"button":"<button class=\"paypal-button <%= style %> <%= size %>\" type=\"submit\">\t<span class=\"paypal-button-logo\">\t\t<img src=\"<%= logo %>\" />\t</span><span class=\"paypal-button-content\"><%- label %></span></button>","form":"<form method=\"post\" action=\"<%= url %>\" target=\"_top\">\t<% var optionIdx = 0; %>\t<% for (var key in data) { %>\t\t<% \t\t\tvar item = data[key];\t\t\tvar renderable = (item.editable || item.value instanceof Array);\t\t%>\t\t<% if (renderable) { %>\t\t\t\t\t<p class=\"paypal-group\">\t\t\t\t<label class=\"paypal-label\">\t\t\t\t\t<%= item.label || content[key] || key %>\t\t\t\t\t\t\t\t\t<% if (item.value instanceof Array) { %>\t\t\t\t\t\t<select class=\"paypal-select\" name=\"os<%= optionIdx %>\">\t\t\t\t\t\t\t<% for (var i = 0, len = item.value.length; i < len; i++) { %>\t\t\t\t\t\t\t\t<% var option = item.value[i].split(':') %>\t\t\t\t\t\t\t\t<option value=\"<%= option[0] %>\"><%= option.join(' ') %></option>\t\t\t\t\t\t\t<% } %>\t\t\t\t\t\t</select>\t\t\t\t\t\t<input type=\"hidden\" name=\"on<%= optionIdx %>\" value=\"<%= item.label %>\">\t\t\t\t\t\t<% ++optionIdx; %>\t\t\t\t\t<% } else { %>\t\t\t\t\t\t\t\t\t\t\t<input type=\"text\" id=\"<%= key %>\" name=\"<%= key %>\" value=\"<%= item.value %>\" class=\"paypal-input\" />\t\t\t\t\t\t\t\t\t\t<% } %>\t\t\t\t</label>\t\t\t</p>\t\t<% } else { %>\t\t\t<input type=\"hidden\" name=\"<%= key %>\" value=\"<%= item.value %>\" />\t\t<% } %>\t<% } %>\t<%- button %></form>","qr":"<img src=\"<%= url %>\" alt=\"PayPal QR code\" />"},
 
 	STRINGS: {"en_AU":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate","subscribe":"Subscribe","paynow":"Pay Now","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"},"fr_CA":{"buynow":"Acheter","cart":"Ajouter au panier","donate":"Faire un don","subscribe":"Souscrire","paynow":"Payer maintenant","item_name":"Objet","number":"Numéro","amount":"Montant","quantity":"Quantité"},"zh_CH":{"buynow":"立即购买","cart":"添加到购物车","donate":"捐赠","subscribe":"租用","paynow":"现在支付","item_name":"物品","number":"编号","amount":"金额","quantity":"数量"},"de_DE":{"buynow":"Jetzt kaufen","cart":"In den Warenkorb","donate":"Spenden","subscribe":"Abonnieren","paynow":"Jetzt bezahlen","item_name":"Artikel","number":"Nummer","amount":"Betrag","quantity":"Menge"},"es_ES":{"buynow":"Comprar ahora","cart":"Añadir al carro","donate":"Donar","subscribe":"Suscribirse","paynow":"Pague ahora","item_name":"Artículo","number":"Número","amount":"Importe","quantity":"Cantidad"},"fr_FR":{"buynow":"Acheter","cart":"Ajouter au panier","donate":"Faire un don","subscribe":"Souscrire","paynow":"Payer maintenant","item_name":"Objet","number":"Numéro","amount":"Montant","quantity":"Quantité"},"en_GB":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate","subscribe":"Subscribe","paynow":"Pay Now","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"},"zh_HK":{"buynow":"立即買","cart":"加入購物車","donate":"捐款","subscribe":"訂用","paynow":"现在支付","item_name":"項目","number":"號碼","amount":"金額","quantity":"數量"},"id_ID":{"buynow":"Beli Sekarang","cart":"Tambah ke Keranjang","donate":"Donasikan","subscribe":"Berlangganan","paynow":"Bayar Sekarang","item_name":"Barang","number":"Nomor","amount":"Harga","quantity":"Kuantitas"},"he_IL":{"buynow":"וישכע הנק","cart":"תוינקה לסל ףסוה","donate":"םורת","subscribe":"יונמכ ףרטצה","paynow":"כשיו שלם ע","item_name":"טירפ","number":"רפסמ","amount":"םוכס","quantity":"מותכ"},"it_IT":{"buynow":"Paga adesso","cart":"Aggiungi al carrello","donate":"Donazione","subscribe":"Iscriviti","paynow":"Paga Ora","item_name":"Oggetto","number":"Numero","amount":"Importo","quantity":"Quantità"},"ja_JP":{"buynow":"今すぐ購入","cart":"カートに追加","donate":"寄付","subscribe":"購読","paynow":"今すぐ支払う","item_name":"商品","number":"番号","amount":"価格","quantity":"数量"},"nl_NL":{"buynow":"Nu kopen","cart":"Aan winkelwagentje toevoegen","donate":"Doneren","subscribe":"Abonneren","paynow":"Nu betalen","item_name":"Item","number":"Nummer","amount":"Bedrag","quantity":"Hoeveelheid"},"no_NO":{"buynow":"Kjøp nå","cart":"Legg til i kurv","donate":"Doner","subscribe":"Abonner","paynow":"Betal nå","item_name":"Vare","number":"Nummer","amount":"Beløp","quantity":"Antall"},"pl_PL":{"buynow":"Kup teraz","cart":"Dodaj do koszyka","donate":"Przekaż darowiznę","subscribe":"Subskrybuj","paynow":"Zapłać teraz","item_name":"Przedmiot","number":"Numer","amount":"Kwota","quantity":"Ilość"},"br_PT":{"buynow":"Comprar agora","cart":"Adicionar ao carrinho","donate":"Doar","subscribe":"Assinar","paynow":"Pagar agora","item_name":"Produto","number":"Número","amount":"Valor","quantity":"Quantidade"},"ru_RU":{"buynow":"Купить сейчас","cart":"Добавить в корзину","donate":"Пожертвовать","subscribe":"Подписаться","paynow":"Оплатить сейчас","item_name":"Товар","number":"Номер","amount":"Сумма","quantity":"Количество"},"sv_SE":{"buynow":"Köp nu","cart":"Lägg till i kundvagn","donate":"Donera","subscribe":"Abonnera","paynow":"Betal nu","item_name":"Objekt","number":"Nummer","amount":"Belopp","quantity":"Antal"},"th_TH":{"buynow":"ซื้อทันที","cart":"เพิ่มลงตะกร้า","donate":"บริจาค","subscribe":"บอกรับสมาชิก","paynow":"จ่ายตอนนี้","item_name":"ชื่อสินค้า","number":"รหัสสินค้า","amount":"ราคา","quantity":"จำนวน"},"tr_TR":{"buynow":"Hemen Alın","cart":"Sepete Ekleyin","donate":"Bağış Yapın","subscribe":"Abone Olun","paynow":"Şimdi öde","item_name":"Ürün","number":"Numara","amount":"Tutar","quantity":"Miktar"},"zh_TW":{"buynow":"立即購","cart":"加到購物車","donate":"捐款","subscribe":"訂閱","paynow":"现在支付","item_name":"商品","number":"商品編號","amount":"單價","quantity":"數量"},"en_US":{"buynow":"Buy with {wordmark}","cart":"Add to Cart","donate":"Donate with {wordmark}","subscribe":"Subscribe with {wordmark}","paynow":"Pay now with {wordmark}","item_name":"Item","number":"Number","amount":"Amount","quantity":"Quantity"}},
 
@@ -2025,31 +2025,28 @@ function DataStore() {
 
 
 DataStore.prototype.add = function addData(key, val) {
-	// Remap nice values
-	key = constants.PRETTY_PARAMS[key] || key;
+    // Remap nice values
+    key = constants.PRETTY_PARAMS[key] || key;
 
-	// Convenience to let you use add(key, 'some value')
-	if (typeof val === 'string') {
-		val = {
-			key: key,
-			value: val
-		};
-	}
+    // Wrap strings in the value object
+    if (typeof val === 'string') {
+        val = {
+            value: val
+        };
+    }
 
     this.items[key] = {
-        key: key,
-        value: val.value,
-        isEditable: !!val.isEditable,
-        hasOptions : !!val.hasOptions,
-        displayOrder : !!val.displayOrder
+        label: val.label || '',
+        value: val.value || '',
+        editable: !!val.editable,
     };
 };
 
 
 DataStore.prototype.get = function getData(key) {
-	var item = this.items[key];
+    var item = this.items[key];
 
-	return item && item.value;
+    return item && item.value;
 };
 
 
@@ -2059,93 +2056,43 @@ DataStore.prototype.remove = function removeData(key) {
 
 
 DataStore.prototype.pluck = function pluckData(key) {
-	var val = this.get(key);
-	this.remove(key);
+    var val = this.get(key);
+    this.remove(key);
 
-	return val;
+    return val;
 };
 
 
 DataStore.prototype.parse = function parseData(el) {
-    var attrs, attr, matches, len, i;
+    var attrs, attr, matches, key, label, value, editable, len, i;
 
     if ((attrs = el.attributes)) {
+
         for (i = 0, len = attrs.length; i < len; i++) {
             attr = attrs[i];
 
-            // var customFields = [];
-            //if ((matches = attr.name.match(/^data-option([0-9])([a-z]+)([0-9])?/i))) {
-            //    customFields.push({ 'name' : 'option.' + matches[1] + '.' + matches[2] + (matches[3] ? '.' + matches[3] : ''), value: attr.value });
-            //} else
             if ((matches = attr.name.match(/^data-([a-z0-9_]+)(-editable)?/i))) {
-				this.add(matches[1], {
-					value: attr.value,
-					isEditable: !!matches[2]
-				});
+                key = matches[1];
+                editable = !!matches[2];
+                value = attr.value;
+
+                if (key.indexOf('option') === 0) {
+                    value = value.split('=');
+                    label = value[0];
+                    value = value[1].split(',');
+                }
+
+                this.add(key, {
+                    label: label,
+                    value: value,
+                    editable: editable
+                });
             }
+
+
         }
     }
-
-    //processCustomFieldValues(customFields, dataset);
-
-	return this;
 };
-
-
-
-// function processCustomFieldValues(customFields, dataset) {
-//     var result = {}, keyValuePairs, name, nameParts, accessor, cursor;
-
-//     for (i = 0; i < customFields.length; i++) {
-//         keyValuePairs = customFields[i];
-//         name = keyValuePairs.name;
-//         nameParts = name.split('.');
-//         accessor = nameParts.shift();
-//         cursor = result;
-//         while (accessor) {
-//             if (!cursor[accessor]) {
-//                 cursor[accessor] = {};
-//             }
-//             if (!nameParts.length) {
-//                 cursor[accessor] = keyValuePairs.value;
-//             }
-//             cursor = cursor[accessor];
-//             accessor = nameParts.shift();
-//         }
-//     }
-
-//     //Store custom fields in dataset
-//     var key, i, j, field, selectMap = {}, priceMap = {}, optionArray = [], optionMap = {}, owns = Object.prototype.hasOwnProperty;
-
-//     for (key in result) {
-//         if (owns.call(result, key)) {
-//             field = result[key];
-//             for (i in field) {
-//                 dataset['option_' + i] = {
-//                     value: { 'options' : '', 'label' : field[i].name},
-//                     hasOptions: true,
-//                     displayOrder: parseInt(i, 10)
-//                 };
-//                 selectMap = field[i].select;
-//                 priceMap = field[i].price;
-//                 optionArray = [];
-//                 for (j in selectMap) {
-//                     optionMap = {};
-//                     if (priceMap) {
-//                         optionMap[selectMap[j]] = selectMap[j] + ' ' + priceMap[j];
-//                         optionArray.push(optionMap);
-//                     } else {
-//                         optionArray.push(selectMap[j]);
-//                     }
-//                 }
-//                 dataset['option_' + i].value.options = optionArray;
-//             }
-//         }
-//     }
-// }
-
-
-
 
 
 

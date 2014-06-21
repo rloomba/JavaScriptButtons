@@ -110,8 +110,17 @@ All of PayPal's [HTML button variables](https://developer.paypal.com/webapps/dev
 * `data-type` The type of button to render. `button` for a plain button (default), `form` to create a button with a PayPal Payments Standard HTML form, or `qr` to create a PayPal Payments Standard compatible QR code.
 
 
-### Editable fields
-Creating editable fields is easy! Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.
+### Editable inputs
+Creating editable inputs is easy. Just add `-editable` to the name of your variable, e.g. `data-quantity-editable`, and an input field will magically appear for your users.
+
+
+### Options fields
+Allow the user to choose from multiple options with the following sytax:
+
+```
+data-option0="Color=Blue:8.00,Green:12.00,Red:10.00"
+data-option1="Size=Small,Medium,Large"
+```
 
 
 ### Callback notification
