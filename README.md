@@ -13,6 +13,7 @@ Perfect for use with Express Checkout or other API-based solutions
 ```html
 <script src="paypal-button.min.js?merchant=YOUR_MERCHANT_ID"
     data-button="buynow"
+    async
 ></script>
 ```
 
@@ -34,6 +35,7 @@ Buy Now buttons are for single item purchases.
     data-type="form"
     data-name="My product"
     data-amount="1.00"
+    async
 ></script>
 ```
 
@@ -49,6 +51,7 @@ Add To Cart buttons let users add multiple items to their PayPal cart.
     data-type="form"
     data-name="Product in your cart"
     data-amount="1.00"
+    async
 ></script>
 ```
 
@@ -61,6 +64,7 @@ QR codes can be easily scanned with a smart phone to check out.
     data-type="qr"
     data-name="Product via QR code"
     data-amount="1.00"
+    async
 ></script>
 ```
 
@@ -73,6 +77,7 @@ Donation buttons let you accept donations from your users.
     data-type="form"
     data-name="My donation"
     data-amount="1.00"
+    async
 ></script>
 ```
 
@@ -87,6 +92,7 @@ Subscribe buttons let you set up payment subscriptions.
     data-amount="1.00"
     data-recurrence="1"
     data-period="M"
+    async
 ></script>
 ```
 
