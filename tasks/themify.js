@@ -23,8 +23,8 @@ module.exports = function (grunt) {
         logo: '$LOGO$',
         primary: '$WORDMARK_PRIMARY$',
         secondary: '$WORDMARK_SECONDARY$',
-        strings: '$STRINGS$',
-        templates: '$TEMPLATES$'
+        strings: '\'$STRINGS$\'',
+        templates: '\'$TEMPLATES$\''
     };
 
     function processTemplates(str) {
