@@ -156,9 +156,9 @@ describe('Multi-language button images', function () {
 		});
 	}
 
-	testLanguage('es_ES', 'buynow', 'Comprar ahora');
-	testLanguage('de_DE', 'buynow', 'Jetzt kaufen');
-	testLanguage('ja_JP', 'buynow', '今すぐ購入');
+	testLanguage('es_ES', 'buynow', 'Comprar con ');
+	testLanguage('de_DE', 'buynow', 'Kaufen mit ');
+	testLanguage('ja_JP', 'buynow', 'で購入手続きに進む');
 });
 
 
