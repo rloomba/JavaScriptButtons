@@ -22,8 +22,8 @@
 }
 
 .paypal-button-content { 
-		padding: 4px 8px 4px;
-		border: 1px solid transparent;
+	padding: 4px 8px 4px;
+	border: 1px solid transparent;
 	border-radius: 0 3px 3px 0;
 	min-width: 57px !important;
 }
@@ -62,18 +62,18 @@
 
 /* Medium */
 
-.paypal-button.medium .paypal-button-logo { 
+.paypal-button.paypal-size-medium .paypal-button-logo { 
 	width: 30px;
 	height: 30px;
 }
 
-.paypal-button.medium .paypal-button-logo img { 
+.paypal-button.paypal-size-medium .paypal-button-logo img { 
 	width: 22px;
 	height: 22px;
 	margin: 4px 0 0 0px;
 }
 
-.paypal-button.medium .paypal-button-content { 
+.paypal-button.paypal-size-medium .paypal-button-content { 
 	height: 19px;
 	font-size: 10px !important;
 	line-height: 19px !important;
@@ -81,7 +81,7 @@
 	min-width: 71px !important;
 }
 
-.paypal-button.medium .paypal-button-content img { 
+.paypal-button.paypal-size-medium .paypal-button-content img { 
 	width: 71px;
 	height: 19px;
 	margin: 2px 0 0 1px;
@@ -90,18 +90,18 @@
         
 /* Large */
 
-.paypal-button.large .paypal-button-logo { 
+.paypal-button.paypal-size-large .paypal-button-logo { 
 	width: 42px;
 	height: 42px;
 }
 
-.paypal-button.large .paypal-button-logo img { 
+.paypal-button.paypal-size-large .paypal-button-logo img { 
 	width: 30px;
 	height: 30px;
 	margin: 6px 0 0 -1px;
 }
 
-.paypal-button.large .paypal-button-content { 
+.paypal-button.paypal-size-large .paypal-button-content { 
 	height: 25px;
 	font-size: 13px !important;
 	line-height: 25px !important;
@@ -109,7 +109,7 @@
 	min-width: 109px !important;
 }
 
-.paypal-button.large .paypal-button-content img { 
+.paypal-button.paypal-size-large .paypal-button-content img { 
 	width: 93px;
 	height: 25px;
 	margin: 2px 0 0 2px;
@@ -118,7 +118,7 @@
 
 /* Primary */
 
-.paypal-button.primary .paypal-button-content { 
+.paypal-button.paypal-style-primary .paypal-button-content { 
 	background: #009cde;
 	border-color: #009cde;
 	color: #fff;
@@ -127,12 +127,12 @@
 
 /* Secondary */
 
-.paypal-button.secondary .paypal-button-logo { 
+.paypal-button.paypal-style-secondary .paypal-button-logo { 
 	border: 1px solid #cfcfcf;
 	border-right: 0;
 }
 
-.paypal-button.secondary .paypal-button-content { 
+.paypal-button.paypal-style-secondary .paypal-button-content { 
 	background: #eee;
 	border-color: #cfcfcf;
 	color: #333;

@@ -13,7 +13,7 @@ if (typeof window === 'undefined') {
 		document = jsdom(testFile, null, jsdomOptions),
 		window = document.createWindow();
 
-	eval(fs.readFileSync('dist/all.js').toString());
+	eval(fs.readFileSync('dist/button.js').toString());
 }
 
 // Test the object's integrity
@@ -198,8 +198,8 @@ describe('Styled buttons', function () {
 	var primary, secondary;
 
 	before(function () {
-		primary = document.querySelectorAll('.primary');
-		secondary = document.querySelectorAll('.secondary');
+		primary = document.querySelectorAll('.paypal-style-primary');
+		secondary = document.querySelectorAll('.paypal-style-secondary');
 	});
 
 	it('Should have primary buttons', function () {

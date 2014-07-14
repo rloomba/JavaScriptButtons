@@ -8,7 +8,7 @@ function trim(str) {
 
 module.exports = function templates(grunt) {
 
-    var src = 'dist/all.js';
+    var src = 'dist/button.js';
 
     function processTemplates(str) {
         var files = grunt.file.expand('src/theme/**/*.html'),

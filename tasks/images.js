@@ -8,7 +8,7 @@ function base64(str) {
 
 module.exports = function images(grunt) {
 
-    var src = 'dist/all.js';
+    var src = 'dist/button.js';
 
     function processImages(str) {
         var files = grunt.file.expand('src/theme/images/*.*'),

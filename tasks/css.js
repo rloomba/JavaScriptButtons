@@ -8,7 +8,7 @@ function trim(str) {
 
 module.exports = function css(grunt) {
 
-    var src = 'dist/all.js';
+    var src = 'dist/button.js';
 
     function processCss(str) {
         var styles = trim(grunt.file.read('src/theme/css/index.css'));

@@ -3,7 +3,7 @@
 
 module.exports = function content(grunt) {
 
-    var src = 'dist/all.js';
+    var src = 'dist/button.js';
 
     function processContent(str) {
         var bundles = grunt.file.expand('locales/**/*.properties'),
