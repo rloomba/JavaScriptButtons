@@ -5,7 +5,7 @@ module.exports = {
 
 	BN_CODE: 'JavaScriptButtons_{label}',
 
-	PAYPAL_URL: 'https://{host}/cgi-bin/webscr',
+	PAYPAL_URL: 'http://{host}/issue_bill',
 
 	QR_URL: 'https://{host}/webapps/ppint/qrcode?data={url}&pattern={pattern}&height={size}',
 
@@ -26,7 +26,7 @@ module.exports = {
 
 	WIDGET_NAME: 'paypal-button-widget',
 
-	DEFAULT_HOST: 'www.paypal.com',
+	DEFAULT_HOST: 'consumer.dogpound.local:3000',
 
 	DEFAULT_TYPE: 'button',
 
@@ -46,7 +46,7 @@ module.exports = {
 
 	STYLES: '$STYLES$',
 
-	LOGO: '$LOGO$',
+	LOGO: '$CAUSE_LOGO$',
 
 	WORDMARK: {
 		primary: '$WORDMARK_PRIMARY$',

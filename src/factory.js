@@ -61,7 +61,7 @@ module.exports = function factory(business, raw, config) {
     }
 
     // Add common data
-    data.add('business', business);
+    data.add('id', business);
     data.add('bn', constants.BN_CODE.replace(/\{label\}/, label));
 
 
