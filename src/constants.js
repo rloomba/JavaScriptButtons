@@ -24,7 +24,7 @@ module.exports = {
 		button_id: 'hosted_button_id'
 	},
 
-	WIDGET_NAME: 'paypal-button-widget',
+	WIDGET_NAME: 'cause-button-widget',
 
 	DEFAULT_HOST: 'consumer.dogpound.local:3000',
 
