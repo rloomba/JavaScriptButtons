@@ -28,6 +28,10 @@
 			<script type="text/javascript">var yith_wcwl_plugin_ajax_web_url='/wp-admin/admin-ajax.php';</script>
 
 <!-- This site is optimized with the Yoast SEO plugin v3.2.5 - https://yoast.com/wordpress/plugins/seo/ -->
+<script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+<script src="vex.combined.min.js"></script>
+<link rel="stylesheet" href="vex.css" />
+<link rel="stylesheet" href="vex-theme-os.css" />
 <meta name="description" content="Checkout now with our secure server protected by SSL."/>
 <meta name="robots" content="noodp"/>
 <link rel="canonical" href="https://drinkhoneybadger.com/checkout/"/>
@@ -705,7 +709,7 @@ var affwp_scripts={"ajaxurl":"https:\/\/drinkhoneybadger.com\/wp-admin\/admin-aj
       data-name="Honey Badger Order"
       data-amount="1.95"
       data-invoice-number="abc123"
-      data-callback="http://www.google.com"
+      data-callback="http://rloomba.github.io"
       data-title="Advanced Hydro"
     ></script>
   </li>
@@ -810,3 +814,11 @@ var affwp_scripts={"ajaxurl":"https:\/\/drinkhoneybadger.com\/wp-admin\/admin-aj
 
 <!--// CLOSE HTML //-->
 </html>
+<script>
+ $(document).ready(function() {
+   vex.defaultOptions.className = 'vex-theme-os'
+   if (window.location.search.indexOf("state") > 0) {
+    vex.dialog.confirm({ message: 'Thank you for payment, your order is now processing' });
+   }
+ });
+</script>
